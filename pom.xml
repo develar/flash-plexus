@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.flyti.superPOMs</groupId>
+		<artifactId>common</artifactId>
+		<version>1.1.2</version>
+	</parent>
+
+	<groupId>com.asfusion</groupId>
+	<artifactId>mate</artifactId>
+	<version>0.8.9-de8-SNAPSHOT</version>
+	<packaging>swc</packaging>
+
+	<properties>
+		<fdk.version>4.0.0.11833</fdk.version>
+		<flex.sdk.version>4.0.0.11833</flex.sdk.version>
+		<flexMojos.version>3.4-SNAPSHOT</flexMojos.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.flyti</groupId>
+			<artifactId>collections</artifactId>
+			<version>1.1-SNAPSHOT</version>
+			<type>swc</type>
+		</dependency>
+		<dependency>
+			<groupId>org.flyti</groupId>
+			<artifactId>lang</artifactId>
+			<version>1.0</version>
+			<type>swc</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sources</id>
+						<goals>
+							<goal>sources</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<compiledLocales/>
+					<namespaces>
+						<namespace>
+							<uri>http://mate.asfusion.com/</uri>
+							<manifest>${build.sourceDirectory}/manifest.xml</manifest>
+						</namespace>
+					</namespaces>
+					<includeNamespaces>
+						<namespaces>http://mate.asfusion.com/</namespaces>
+					</includeNamespaces>
+					<includeClasses>
+						<class>com.asfusion.mate.ioc.InjectorRegistry</class>
+						<class>com.asfusion.mate.configuration.events.ApplicationConfigurationEvent</class>
+					</includeClasses>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<downloadUrl>http://192.168.0.7:8081/artifactory/repo</downloadUrl>
+		<repository>
+			<id>twp-thirdparty</id>
+			<url>http://192.168.0.7:8081/artifactory/thirdparty</url>
+		</repository>
+	</distributionManagement>
+</project>
