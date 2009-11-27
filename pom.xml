@@ -15,8 +15,8 @@
 	<packaging>swc</packaging>
 
 	<properties>
-		<fdk.version>4.0.0.11833</fdk.version>
-		<flex.sdk.version>4.0.0.11833</flex.sdk.version>
+		<fdk.version>4.0.0.12027</fdk.version>
+		<flex.sdk.version>4.0.0.12027</flex.sdk.version>
 		<flexMojos.version>3.4-SNAPSHOT</flexMojos.version>
 	</properties>
 
@@ -55,20 +55,52 @@
 					</execution>
 				</executions>
 				<configuration>
-					<compiledLocales/>
-					<namespaces>
-						<namespace>
-							<uri>http://mate.asfusion.com/</uri>
-							<manifest>${build.sourceDirectory}/manifest.xml</manifest>
-						</namespace>
-					</namespaces>
-					<includeNamespaces>
-						<namespaces>http://mate.asfusion.com/</namespaces>
-					</includeNamespaces>
-					<includeClasses>
-						<class>com.asfusion.mate.ioc.InjectorRegistry</class>
-						<class>com.asfusion.mate.configuration.events.ApplicationConfigurationEvent</class>
-					</includeClasses>
+					<manifests>
+						<manifest>
+							<uri>http://mate.asfusion.com</uri>
+							<includes>
+								<class>com.asfusion.mate.core.EventMap</class>
+								<class>com.asfusion.mate.core.LocalEventMap</class>
+								<class>com.asfusion.mate.core.SmartObject</class>
+								<class>com.asfusion.mate.core.Properties</class>
+								<class>com.asfusion.mate.core.Property</class>
+								<class>com.asfusion.mate.ioc.InjectorSettings</class>
+
+								<class>com.asfusion.mate.actionLists.EventHandlers</class>
+								<class>com.asfusion.mate.actionLists.ServiceHandlers</class>
+								<class>com.asfusion.mate.actionLists.MessageHandlers</class>
+								<class>com.asfusion.mate.actionLists.Injectors</class>
+
+								<class>com.asfusion.mate.componentMap.*</class>
+
+								<class>com.asfusion.mate.actions.DataCopier</class>
+								<class>com.asfusion.mate.actions.StopHandlers</class>
+								<class>com.asfusion.mate.actions.InlineInvoker</class>
+								<class>com.asfusion.mate.actions.PropertyInjector</class>
+								<class>com.asfusion.mate.actions.ListenerInjector</class>
+								<class>com.asfusion.mate.actions.CallBack</class>
+								<class>com.asfusion.mate.actions.CacheSetter</class>
+								<class>com.asfusion.mate.actions.builders.ObjectBuilder</class>
+								<class>com.asfusion.mate.actions.builders.*Announcer</class>
+								<class>com.asfusion.mate.actions.builders.serviceClasses.Request</class>
+								<class>com.asfusion.mate.actions.builders.PropertySetter</class>
+								<class>com.asfusion.mate.actions.builders.*Invoker</class>
+
+								<class>com.asfusion.mate.events.Listener</class>
+								<class>com.asfusion.mate.responses.ResponseHandler</class>
+								<class>com.asfusion.mate.responses.ServiceResponseHandler</class>
+								<class>com.asfusion.mate.events.Dispatcher</class>
+								<class>com.asfusion.mate.events.EventProperties</class>
+
+								<class>com.asfusion.mate.utils.debug.Debugger</class>
+
+								<class>com.asfusion.mate.testing.MockRemoteObject</class>
+								<class>com.asfusion.mate.testing.MockWebService</class>
+								<class>com.asfusion.mate.testing.MockMethod</class>
+								<class>com.asfusion.mate.testing.MockDelegate</class>
+							</includes>
+						</manifest>
+					</manifests>
 				</configuration>
 			</plugin>
 		</plugins>
