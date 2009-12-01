@@ -21,16 +21,16 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.NonInjectable;
 import com.asfusion.mate.events.InjectorEvent;
-	import com.asfusion.mate.events.InjectorSettingsEvent;
-	
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
-	
-	/**
+import com.asfusion.mate.events.InjectorSettingsEvent;
+
+import flash.display.DisplayObject;
+import flash.display.DisplayObjectContainer;
+import flash.events.Event;
+import flash.events.IEventDispatcher;
+import flash.utils.Dictionary;
+import flash.utils.getQualifiedClassName;
+
+/**
 	 * The ListenerProxy is used by the injector (via MateManager)
 	 * to register to the dispatcher to listen to events and dispatch
 	 * a new InjectorEvent each time the rules match.
@@ -170,17 +170,25 @@ import com.asfusion.mate.events.InjectorEvent;
 		 */
 		protected function globalListenerProxyHandler(event:Event):void
 		{
-			var weekDispatcher:IEventDispatcher = dispatcher;
-			var appDispatcher:Sprite = GlobalDispatcher( weekDispatcher ).applicationDispatcher as Sprite;
-			if(event.target is DisplayObject &&  appDispatcher.contains(event.target as DisplayObject ) ) return;
-			
-			if( weekDispatcher.hasEventListener( getQualifiedClassName( event.target ) ) )
+			if (event.target is NonInjectable)
 			{
-				weekDispatcher.dispatchEvent(new InjectorEvent( null, event.target ) );
+				return;
 			}
-			
-			weekDispatcher.dispatchEvent( new InjectorEvent(InjectorEvent.INJECT_DERIVATIVES, event.target ) );
 
+			var weekDispatcher:IEventDispatcher = dispatcher;
+			var appDispatcher:DisplayObjectContainer = DisplayObjectContainer(GlobalDispatcher(weekDispatcher).applicationDispatcher);
+			if (event.target is DisplayObject && appDispatcher.contains(DisplayObject(event.target)))
+			{
+				return;
+			}
+
+			var targetClassName:String = getQualifiedClassName(event.target);
+			if (weekDispatcher.hasEventListener(targetClassName))
+			{
+				weekDispatcher.dispatchEvent(new InjectorEvent(targetClassName, event.target));
+			}
+
+			weekDispatcher.dispatchEvent(new InjectorEvent(InjectorEvent.INJECT_DERIVATIVES, event.target));
 		}
 		
 		//.........................................typeChangeHandler........................................

@@ -181,6 +181,7 @@ public class Injectors extends AbstractHandlers
 	 */
 	protected function fireEvent(event:InjectorEvent):void
 	{
+		//trace(target, event.injectorTarget);
 		if (targetId != null && event.uid != targetId)
 		{
 			return;
@@ -236,6 +237,7 @@ public class Injectors extends AbstractHandlers
 	 */
 	protected function injectDerivativesHandler(event:InjectorEvent):void
 	{
+		//trace(target, event.injectorTarget);
 		if (target != null)
 		{
 			if ((targetId == null || event.uid == targetId) && isDerivative(event.injectorTarget, target))
