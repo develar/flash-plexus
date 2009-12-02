@@ -130,7 +130,7 @@ use namespace mate;
 			
 			if(!currentInstance || cache == Cache.NONE)
 			{
-				currentInstance = scope.getManager().instantiator.create(generator, scope, registerTarget, constructorArguments, cache);
+				currentInstance = scope.manager.instantiator.create(generator, scope, registerTarget, constructorArguments, cache);
 			}
 			return currentInstance;
 		}

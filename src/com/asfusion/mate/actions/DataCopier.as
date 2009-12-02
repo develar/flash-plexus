@@ -190,7 +190,7 @@ package com.asfusion.mate.actions
 
 			if (obj is Class)
 			{
-				return Cache.getCachedInstance(obj, cache, scope);
+				return Cache.getCachedInstance(Class(obj), cache, scope);
 			}
 			else if (obj is ISmartObject)
 			{

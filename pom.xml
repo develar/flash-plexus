@@ -15,8 +15,8 @@
 	<packaging>swc</packaging>
 
 	<properties>
-		<fdk.version>4.0.0.12223</fdk.version>
-		<flex.sdk.version>4.0.0.12223</flex.sdk.version>
+		<fdk.version>4.0.0.12352</fdk.version>
+		<flex.sdk.version>4.0.0.12352</flex.sdk.version>
 		<flexMojos.version>3.4-SNAPSHOT</flexMojos.version>
 	</properties>
 

@@ -194,14 +194,13 @@ import mx.core.IMXMLObject;
 				}
 				else if(dispatcherType == "inherit" && map)
 				{
-					currentDispatcher = map.getDispatcher();
+					currentDispatcher = map.dispatcher;
 				}
 			}
 			return currentDispatcher;
 		}
 		mate function set dispatcher(value:IEventDispatcher):void
 		{
-			var oldValue:IEventDispatcher = _dispatcher;
 			if(_dispatcher !== value)
 			{
 				currentDispatcher = _dispatcher = value;
@@ -276,8 +275,7 @@ import mx.core.IMXMLObject;
 		 */ 
 		public function errorString():String
 		{
-			var str:String = "Error was found in a AbstractHandlers in file " + document;
-			return str;
+			return "Error was found in a AbstractHandlers in file " + document;
 		}
 		
 		/**
@@ -406,7 +404,7 @@ import mx.core.IMXMLObject;
 			}
 			if(dispatcherType == "inherit" && map)
 			{
-				var inheritDispatcher:IEventDispatcher = map.getDispatcher();
+				var inheritDispatcher:IEventDispatcher = map.dispatcher;
 				
 				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false, 0, true);
 				if(inheritDispatcher)

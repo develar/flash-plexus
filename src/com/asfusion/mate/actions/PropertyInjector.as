@@ -150,10 +150,11 @@ import com.asfusion.mate.events.InjectorEvent;
 		*/
 		protected function createInstance(scope:IScope):Object
 		{
-			var sourceObject:Object = Cache.getCachedInstance(source, sourceCache, scope);
+			var clazz:Class = Class(source);
+			var sourceObject:Object = Cache.getCachedInstance(clazz, sourceCache, scope);
 			if (sourceObject == null)
 			{
-				sourceObject = scope.getManager().instantiator.create(Class(source), scope, true, null, sourceCache);
+				sourceObject = scope.manager.instantiator.create(clazz, scope, true, null, sourceCache);
 			}
 			return sourceObject;
 		}
@@ -172,8 +173,7 @@ import com.asfusion.mate.events.InjectorEvent;
 				return;
 			}
 			
-			var event:InjectorEvent = InjectorEvent(scope.event);
-			if(targetId == null || targetId == event.uid)
+			if(targetId == null || targetId == InjectorEvent(scope.event).uid)
 			{
 				if(source is Class)
 				{

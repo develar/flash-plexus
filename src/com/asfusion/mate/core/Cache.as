@@ -138,23 +138,14 @@ package com.asfusion.mate.core
 		 * Stores an instance in the cache. The cache can be local, global or inherit. 
 		 * The key that we use to store the instance is the class of the object that we want to store.
 		 */
-		public static function addCachedInstance(key:*, instance:Object, type:String, scope:IScope):void
+		public static function addCachedInstance(key:Class, instance:Object, type:String, scope:IScope):void
 		{
-			if(type == NONE) return;
-			if(type == INHERIT)
+			if (type == INHERIT)
 			{
-				type = scope.eventMap.cache;
+				type = scope.eventMap.cachePolicy;
 			}
-			
-			var cacheCollection:Dictionary;
-			if(type == LOCAL)
-			{
-				cacheCollection = scope.eventMap.getCacheCollection();
-			}
-			else
-			{
-				cacheCollection =  scope.getManager().getCacheCollection();
-			}
+
+			var cacheCollection:Dictionary = type == LOCAL ? scope.eventMap.cacheCollection : scope.manager.cacheCollection;
 			cacheCollection[key] = instance;
 		}
 		
@@ -163,20 +154,20 @@ package com.asfusion.mate.core
 		 * Get an instance from the cache. The cache can be local, global or inherit. 
 		 * The key used is the class of the object that we want to access.
 		 */
-		public static function getCachedInstance(key:*, type:String, scope:IScope):Object
+		public static function getCachedInstance(key:Class, type:String, scope:IScope):Object
 		{
 			if(type == INHERIT)
 			{
-				type = scope.eventMap.cache;
+				type = scope.eventMap.cachePolicy;
 			}
 			var cacheCollection:Dictionary;
 			if(type == LOCAL)
 			{
-				cacheCollection = scope.eventMap.getCacheCollection();
+				cacheCollection = scope.eventMap.cacheCollection;
 			}
 			else
 			{
-				cacheCollection =  scope.getManager().getCacheCollection();
+				cacheCollection =  scope.manager.cacheCollection;
 			}
 			return cacheCollection[key];
 		}
@@ -186,21 +177,21 @@ package com.asfusion.mate.core
 		 * Removes an instance from the cache. The cache can be local, global or inherit. 
 		 * The key used is the class of the object that we want to removed.
 		 */
-		public static function clearCachedInstance(key:Object, type:String, scope:IScope):Object
+		public static function clearCachedInstance(key:Class, type:String, scope:IScope):Object
 		{
 			var instance:Object;
 			if(type == INHERIT)
 			{
-				type = scope.eventMap.cache;
+				type = scope.eventMap.cachePolicy;
 			}
 			var cacheCollection:Dictionary;
 			if(type == LOCAL)
 			{
-				cacheCollection = scope.eventMap.getCacheCollection();
+				cacheCollection = scope.eventMap.cacheCollection;
 			}
 			else
 			{
-				cacheCollection =  scope.getManager().getCacheCollection();
+				cacheCollection =  scope.manager.cacheCollection;
 			}
 			instance = cacheCollection[key];
 			delete cacheCollection[key];
@@ -236,7 +227,7 @@ package com.asfusion.mate.core
 			var instance:Object = getCachedInstance(generatorKey, cacheType, scope);
 			if(!instance && autoCreate)
 			{
-				instance = scope.getManager().instantiator.create(generatorKey, scope, registerTarget, constructorArguments, cacheType);
+				instance = scope.manager.instantiator.create(generatorKey, scope, registerTarget, constructorArguments, cacheType);
 			}
 			value = instance;
 			if(instance && chain != null)

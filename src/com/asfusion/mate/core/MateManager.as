@@ -37,8 +37,7 @@ package com.asfusion.mate.core
 		 */
 		public static function get instance():IMateManager
 		{
-			var inst:IMateManager = (!_instance)? createInstance():_instance;
-			return inst;
+			return (!_instance)? createInstance():_instance;
 		}
 		
         //-----------------------------------------------------------------------------------------------------------
@@ -58,22 +57,25 @@ package com.asfusion.mate.core
 
 /******************************************************************************************************************
 *                                         Inner Class MateManagerInstance
-*******************************************************************************************************************/	
-import com.asfusion.mate.core.*;
+*******************************************************************************************************************/
+
+import com.asfusion.mate.core.Creator;
+import com.asfusion.mate.core.GlobalDispatcher;
+import com.asfusion.mate.core.IMateManager;
+import com.asfusion.mate.core.ListenerProxy;
 import com.asfusion.mate.events.DispatcherEvent;
 import com.asfusion.mate.events.InjectorSettingsEvent;
-import com.asfusion.mate.utils.debug.*;
 
-import flash.display.DisplayObject;
-import flash.events.Event;
+import com.asfusion.mate.utils.debug.IMateLogger;
+
+import com.asfusion.mate.utils.debug.Logger;
+
 import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
-import flash.utils.getDefinitionByName;
 
 import mx.events.FlexEvent;
 import mx.logging.ILoggingTarget;
-
 
 class MateManagerInstance extends EventDispatcher implements IMateManager
 {
@@ -81,17 +83,11 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 	{
 		_instantiator = new Creator();
 	}
-	
-	private var methodQueue:Dictionary = new Dictionary();
+
 	private var listenerProxies:Dictionary = new Dictionary(true);
-	
-	//-----------------------------------------------------------------------------------------------------------
-    //                                          Public setters and Getters
-    //-----------------------------------------------------------------------------------------------------------
-     
-     //.........................................getCacheCollection..........................................
+
     private var _cache:Dictionary = new Dictionary();
-	public function getCacheCollection():Dictionary
+	public function get cacheCollection():Dictionary
 	{
 		return _cache;
 	}
@@ -196,13 +192,14 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 	public function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy
 	{
 		var listenerProxy:ListenerProxy = listenerProxies[eventDispatcher];
-		
-		if(listenerProxy == null)
+
+		if (listenerProxy == null)
 		{
 			listenerProxy = new ListenerProxy(eventDispatcher);
 			listenerProxies[eventDispatcher] = listenerProxy;
 		}
-		if(type == null)
+
+		if (type == null)
 		{
 			listenerProxy.addListener(listenerProxyType, this);
 		}

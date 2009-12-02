@@ -19,12 +19,14 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.actionLists
 {
-	import com.asfusion.mate.core.*;
-	import com.asfusion.mate.utils.debug.IMateLogger;
+import com.asfusion.mate.core.IEventMap;
+import com.asfusion.mate.core.IMateManager;
+import com.asfusion.mate.core.MateManager;
+import com.asfusion.mate.core.mate;
+import com.asfusion.mate.utils.debug.IMateLogger;
 	
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
 	
 	use namespace mate;
 	
@@ -54,10 +56,11 @@ package com.asfusion.mate.actionLists
 		 */
 		mate var logger:IMateLogger;
 		
-		/**
-		 * Instance of <code>IMateManager</code> used to get the logger and dispatcher.
-		 */
-		mate var manager:IMateManager;
+		private var _manager:IMateManager;
+		public function get manager():IMateManager
+		{
+			return _manager;
+		}
 		
 		/*-----------------------------------------------------------------------------------------------------------
 		*                                      Public Getters and Setters
@@ -182,9 +185,9 @@ package com.asfusion.mate.actionLists
 				data = new Object();
 			}
 			eventMap = map;
-			manager = MateManager.instance;
-			logger = manager.getLogger(active);
-			dispatcher = map.getDispatcher();
+			_manager = MateManager.instance;
+			logger = _manager.getLogger(active);
+			dispatcher = map.dispatcher;
 		}
 		
 		
@@ -234,15 +237,6 @@ package com.asfusion.mate.actionLists
 		public function stopRunning():void
 		{
 			running = false;
-		}
-		
-		/*-.........................................getMateManager..........................................*/
-		/**
-		 * @inheritDoc
-		 */
-		public function getManager():IMateManager
-		{
-			return manager;
 		}
 		
 		/*-.........................................isRunning..........................................*/

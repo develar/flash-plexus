@@ -167,7 +167,7 @@ package com.asfusion.mate.actions.builders
 			var realObject:Object = obj;
 			if(obj is Function ) obj = (obj as Function)();
 			
-			if(obj is Class) realObject = Cache.getCachedInstance(obj, cache, scope);
+			if(obj is Class) realObject = Cache.getCachedInstance(Class(obj), cache, scope);
 			
 			if(obj is ISmartObject)
 			{

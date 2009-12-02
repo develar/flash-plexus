@@ -210,7 +210,7 @@ import flash.events.Event;
 				return null;
 			}
 			
-			currentInstance = scope.getManager().instantiator.create(generator, scope, false, realArguments);
+			currentInstance = scope.manager.instantiator.create(generator, scope, false, realArguments);
 
 			return currentInstance;
 		}
@@ -223,7 +223,7 @@ import flash.events.Event;
 		{
 			if(currentInstance is Event)
 			{
-				var dispatcher:IEventDispatcher = (dispatcherType == "inherit") ? scope.dispatcher : scope.getManager().dispatcher;
+				var dispatcher:IEventDispatcher = (dispatcherType == "inherit") ? scope.dispatcher : scope.manager.dispatcher;
 				scope.lastReturn = dispatcher.dispatchEvent(currentInstance as Event);
 			}
 			else

@@ -94,6 +94,6 @@ package com.asfusion.mate.actionLists
 		/**
 		 * Returns an instance of <code>IMateManager</code> used to get the logger and dispatcher.
 		 */
-		function getManager():IMateManager
+		function get manager():IMateManager
 	}
 }

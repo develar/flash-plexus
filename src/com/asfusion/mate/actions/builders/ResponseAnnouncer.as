@@ -72,7 +72,7 @@ package com.asfusion.mate.actions.builders
 			if(event)
 			{
 				var uidu:String = UIDUtil.getUID(event);
-				var dispatcher:IEventDispatcher = scope.getManager().responseDispatcher;
+				var dispatcher:IEventDispatcher = scope.manager.responseDispatcher;
 				var hasEventListener:Boolean = dispatcher.hasEventListener(uidu);
 				if(hasEventListener)
 				{

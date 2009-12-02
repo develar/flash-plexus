@@ -34,15 +34,15 @@ package com.asfusion.mate.actions
 		//-----------------------------------------------------------------------------------------------------------
 		
 		//.........................................cacheKey..........................................
-		private var _cacheKey:Object;
+		private var _cacheKey:Class;
 		/**
 		 * The key to use for the cache
 		 */
-		public function get cacheKey():Object
+		public function get cacheKey():Class
 		{
 			return _cacheKey;
 		}
-		public function set cacheKey(value:Object):void
+		public function set cacheKey(value:Class):void
 		{
 			_cacheKey = value;
 		}

@@ -167,11 +167,11 @@ package com.asfusion.mate.core
 		protected function getRealObject(obj:Object, scope:IScope, cache:String):Object
 		{
 			var realObject:Object = obj;
-			
-			if(obj is Class)
+
+			if (obj is Class)
 			{
-				var value:Object = Cache.getCachedInstance(obj, cache, scope);
-				if( value != null ) realObject = value;
+				var value:Object = Cache.getCachedInstance(Class(obj), cache, scope);
+				if (value != null) realObject = value;
 			}
 			
 			if(obj is ISmartObject)

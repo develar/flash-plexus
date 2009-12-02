@@ -97,25 +97,25 @@ import flash.utils.getQualifiedClassName;
 		public function addListener( type:String, typeWatcher:IEventDispatcher = null ):void
 		{
 			var weekDispatcher:IEventDispatcher = dispatcher;
-			
-			if(this.type != type && registered)
+
+			if (this.type != type && registered)
 			{
 				removeListener(this.type);
 			}
-			
-			weekDispatcher.addEventListener( type, listenerProxyHandler, true, 1, true );
-			weekDispatcher.addEventListener( type, listenerProxyHandler, false, 1, true );
-			
-			if( weekDispatcher is GlobalDispatcher )
+
+			weekDispatcher.addEventListener(type, listenerProxyHandler, true, 1, true);
+			weekDispatcher.addEventListener(type, listenerProxyHandler, false, 1, true);
+
+			if (weekDispatcher is GlobalDispatcher)
 			{
-				GlobalDispatcher( weekDispatcher ).popupDispatcher.addEventListener( type, globalListenerProxyHandler, true, 1, true );
+				GlobalDispatcher(weekDispatcher).popupDispatcher.addEventListener(type, globalListenerProxyHandler, true, 1, true);
 			}
 			this.type = type;
 			registered = true;
-			
-			if( typeWatcher )
+
+			if (typeWatcher)
 			{
-				typeWatcher.addEventListener( InjectorSettingsEvent.TYPE_CHANGE, typeChangeHandler, false, 0, true );
+				typeWatcher.addEventListener(InjectorSettingsEvent.TYPE_CHANGE, typeChangeHandler, false, 0, true);
 			}
 		}
 		

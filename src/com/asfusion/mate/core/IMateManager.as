@@ -19,14 +19,14 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.core
 {
-	import com.asfusion.mate.utils.debug.IMateLogger;
-	
-	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
-	
-	import mx.logging.ILoggingTarget;
-	import mx.managers.ISystemManager;
-	/**
+import com.asfusion.mate.utils.debug.IMateLogger;
+
+import flash.events.IEventDispatcher;
+import flash.utils.Dictionary;
+
+import mx.logging.ILoggingTarget;
+
+/**
 	 * <code>IMateManager</code> is the core class of Mate
 	 */
 	public interface IMateManager extends IEventDispatcher
@@ -72,7 +72,7 @@ package com.asfusion.mate.core
 		/**
 		 * Global cache.
 		 */
-		function getCacheCollection():Dictionary
+		function get cacheCollection():Dictionary
 		
 		//-----------------------------------------------------------------------------------------------------------
 		//                                      Methods
