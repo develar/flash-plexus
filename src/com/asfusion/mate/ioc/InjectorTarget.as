@@ -1,6 +1,8 @@
 package com.asfusion.mate.ioc
 {
-	import flash.events.EventDispatcher;
+import com.asfusion.mate.actionLists.Injectors;
+
+import flash.events.EventDispatcher;
 	import mx.core.IMXMLObject;
 
 	[Exclude(name="activate", kind="event")]
@@ -12,7 +14,7 @@ package com.asfusion.mate.ioc
 		-------------------------------------------------------------------------------------------------------------*/
 		public function register():void
 		{
-			InjectorRegistry.register(this, id);
+			Injectors.injectByInstanceInGlobalScope(this, id);
 		}
 		
 		/*-----------------------------------------------------------------------------------------------------------

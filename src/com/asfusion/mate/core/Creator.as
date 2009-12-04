@@ -20,13 +20,13 @@
 package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.componentMap.Component;
 import com.asfusion.mate.componentMap.ComponentMap;
 import com.asfusion.mate.componentMap.Requirement;
 import com.asfusion.mate.configuration.Configurable;
 import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.di;
-import com.asfusion.mate.events.InjectorEvent;
 
 use namespace mate;
 use namespace di;
@@ -82,8 +82,7 @@ public class Creator
 
 		if (notify && scope != null)
 		{
-			scope.dispatcher.dispatchEvent(new InjectorEvent(null, instance));
-			scope.dispatcher.dispatchEvent(new InjectorEvent(InjectorEvent.INJECT_DERIVATIVES, instance));
+			Injectors.inject(instance, scope);
 		}
 
 		if (instance is Configurable)

@@ -20,6 +20,7 @@
 
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.actionLists.ScopeProperties;
 
 import flash.events.EventDispatcher;
@@ -243,6 +244,17 @@ public class EventMap extends EventDispatcher implements IEventMap
 		}
 
 		return _dispatcher;
+	}
+
+	private var _injectors:Vector.<Injectors>;
+	public function get injectors():Vector.<Injectors>
+	{
+		if (_injectors == null && cachePolicy == Cache.LOCAL)
+		{
+			_injectors = new Vector.<Injectors>();
+		}
+
+		return _injectors;
 	}
 }
 }

@@ -99,21 +99,14 @@ import mx.core.IMXMLObject;
 		{
 			_actions = value;
 		}
-		
-		
-		
-		/*-.........................................scope..........................................*/
+
 		private var _scope:IScope;
 		[Bindable (event="scopeChange")]
-		/**
-		 * @inheritDoc
-		 */
 		public function get scope():IScope
 		{
 			return _scope;
 		}
-		
-		/*-.........................................debug..........................................*/
+
 		private var _debug:Boolean;
 		/**
 		 * @inheritDoc
@@ -347,8 +340,7 @@ import mx.core.IMXMLObject;
 		{
 			// this method is abstract it will be implemented by children
 		}
-		
-		/*-.........................................setScope..........................................*/
+
 		/**
 		 * Set the scope on this IActionList.
 		*/

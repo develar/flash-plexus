@@ -59,15 +59,13 @@ package com.asfusion.mate.core
 *                                         Inner Class MateManagerInstance
 *******************************************************************************************************************/
 
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.core.Creator;
 import com.asfusion.mate.core.GlobalDispatcher;
 import com.asfusion.mate.core.IMateManager;
-import com.asfusion.mate.core.ListenerProxy;
 import com.asfusion.mate.events.DispatcherEvent;
 import com.asfusion.mate.events.InjectorSettingsEvent;
-
 import com.asfusion.mate.utils.debug.IMateLogger;
-
 import com.asfusion.mate.utils.debug.Logger;
 
 import flash.events.EventDispatcher;
@@ -84,7 +82,7 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 		_instantiator = new Creator();
 	}
 
-	private var listenerProxies:Dictionary = new Dictionary(true);
+//	private var listenerProxies:Dictionary = new Dictionary(true);
 
     private var _cache:Dictionary = new Dictionary();
 	public function get cacheCollection():Dictionary
@@ -189,24 +187,30 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
     }
     
     //.........................................addListenerProxy........................................
-	public function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy
+//	public function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy
+//	{
+//		var listenerProxy:ListenerProxy = listenerProxies[eventDispatcher];
+//
+//		if (listenerProxy == null)
+//		{
+//			listenerProxy = new ListenerProxy(eventDispatcher);
+//			listenerProxies[eventDispatcher] = listenerProxy;
+//		}
+//
+//		if (type == null)
+//		{
+//			listenerProxy.addListener(listenerProxyType, this);
+//		}
+//		else
+//		{
+//			listenerProxy.addListener(type);
+//		}
+//		return listenerProxy;
+//	}
+
+	private var _injectors:Vector.<Injectors> = new Vector.<Injectors>();
+	public function get injectors():Vector.<Injectors>
 	{
-		var listenerProxy:ListenerProxy = listenerProxies[eventDispatcher];
-
-		if (listenerProxy == null)
-		{
-			listenerProxy = new ListenerProxy(eventDispatcher);
-			listenerProxies[eventDispatcher] = listenerProxy;
-		}
-
-		if (type == null)
-		{
-			listenerProxy.addListener(listenerProxyType, this);
-		}
-		else
-		{
-			listenerProxy.addListener(type);
-		}
-		return listenerProxy;
+		return _injectors;
 	}
 }

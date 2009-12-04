@@ -19,6 +19,8 @@
  */
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
+
 import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
@@ -50,5 +52,7 @@ public interface IEventMap extends IEventDispatcher
 	 * Returns an event dispatcher.
 	 */
 	function get dispatcher():IEventDispatcher;
+
+	function get injectors():Vector.<Injectors>;
 }
 }

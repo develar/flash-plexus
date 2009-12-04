@@ -1,13 +1,10 @@
 package com.asfusion.mate.actionLists
 {
-import com.asfusion.mate.core.mate;
+import com.asfusion.mate.core.LocalEventMap;
+import com.asfusion.mate.core.MateManager;
 import com.asfusion.mate.events.InjectorEvent;
-import com.asfusion.mate.utils.debug.DebuggerUtil;
 
-import flash.events.IEventDispatcher;
-import flash.utils.getQualifiedClassName;
-
-use namespace mate;
+import mx.core.IID;
 
 /**
  * An <code>Injectors</code> defined in the <code>EventMap</code> will run whenever an instance of the
@@ -15,8 +12,6 @@ use namespace mate;
  */
 public class Injectors extends AbstractHandlers
 {
-	protected var targetRegistered:Boolean;
-
 	private var _target:Class;
 	/**
 	 * The class that, when an object is created, should trigger the <code>InjectorHandlers</code> to run.
@@ -27,13 +22,7 @@ public class Injectors extends AbstractHandlers
 	}
 	public function set target(value:Class):void
 	{
-		var oldValue:Class = _target;
-		if (oldValue !== value)
-		{
-			if (targetRegistered) unregister();
-			_target = value;
-			validateNow();
-		}
+		_target = value;
 	}
 
 	private var _targetId:String;
@@ -46,106 +35,75 @@ public class Injectors extends AbstractHandlers
 		_targetId = value;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	override public function errorString():String
+	override public function initialized(document:Object, id:String):void
 	{
-		return "Injector target:" + DebuggerUtil.getClassName(target) + ". Error was found in a Injectors list in file "
-				+ DebuggerUtil.getClassName(document);
-	}
+		super.initialized(document, id);
 
-	override protected function commitProperties():void
-	{
-		if (dispatcher == null)
+		var injectors:Vector.<Injectors> = map.injectors;
+		if (injectors == null)
 		{
-			return;
+			injectors = MateManager.instance.injectors;
 		}
 
-		if (dispatcherTypeChanged)
-		{
-			dispatcherTypeChanged = false;
-			unregister();
-		}
-
-		if (!targetRegistered && target != null)
-		{
-			var type:String = getQualifiedClassName(target);
-			dispatcher.addEventListener(type, fireEvent, false, 0, true);
-			targetRegistered = true;
-		}
-
-		if (target != null)
-		{
-			manager.addListenerProxy(dispatcher);
-			dispatcher.addEventListener(InjectorEvent.INJECT_DERIVATIVES, injectDerivativesHandler, false, 0, true);
-		}
-	}
-
-	/**
-	 * Called by the dispacher when the event gets triggered.
-	 * This method creates a scope and then runs the sequence.
-	 */
-	protected function fireEvent(event:InjectorEvent):void
-	{
-		//trace(target, event.injectorTarget);
-		if (targetId != null && event.uid != targetId)
-		{
-			return;
-		}
-
-		var currentScope:Scope = new Scope(event, debug, map, inheritedScope);
-		currentScope.owner = this;
-		setScope(currentScope);
-		runSequence(currentScope, actions);
-	}
-
-	/**
-	 * Unregisters a target or targets. Used internally whenever a new target/s is set or dispatcher changes.
-	 */
-	protected function unregister():void
-	{
-		if (dispatcher == null)
-		{
-			return;
-		}
-
-		if (targetRegistered && target != null)
-		{
-			var type:String = getQualifiedClassName(target);
-			dispatcher.removeEventListener(type, fireEvent);
-			targetRegistered = false;
-		}
-	}
-
-	override public function setDispatcher(value:IEventDispatcher, local:Boolean = true):void
-	{
-		if (currentDispatcher != null && currentDispatcher != value)
-		{
-			unregister();
-		}
-		super.setDispatcher(value, local);
+		injectors.push(this);
 	}
 
 	/**
 	 * This function is a handler for the injection event, if the target it is a
 	 * derivative class the injection gets triggered
 	 */
-	protected function injectDerivativesHandler(event:InjectorEvent):void
+	private function check(instance:Object, injectorEvent:InjectorEvent, uid:String = null):void
 	{
-		if ((targetId == null || event.uid == targetId) && isDerivative(event.injectorTarget, target))
+		if ((targetId == null || uid == targetId) && instance is target)
 		{
-			fireEvent(event);
+			var currentScope:Scope = new Scope(injectorEvent, debug, map, inheritedScope);
+			currentScope.owner = this;
+			setScope(currentScope);
+			runSequence(currentScope, actions);
 		}
 	}
 
-	/**
-	 * Check if the current object is a derivative class and return a boolean value
-	 * true / false.
-	 */
-	protected function isDerivative(injectorTarget:Object, targetClass:Class):Boolean
+	public static function injectByInstanceInMap(instance:Object, localEventMap:LocalEventMap):void
 	{
-		return injectorTarget is targetClass && (injectorTarget is Class ? Class(injectorTarget) : injectorTarget.constructor) != targetClass;
+		var uid:String = instance is IID ? IID(instance).id : null;
+		var injectorEvent:InjectorEvent = new InjectorEvent();
+		injectorEvent.injectorTarget = instance;
+		injectorEvent.uid = uid;
+
+		if (localEventMap != null)
+		{
+			checkInjectors(localEventMap.injectors, instance, uid, injectorEvent);
+		}
+		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
+	}
+
+	public static function inject(instance:Object, scope:IScope, uid:String = null):void
+	{
+		var injectorEvent:InjectorEvent = new InjectorEvent();
+		injectorEvent.injectorTarget = instance;
+		injectorEvent.uid = uid;
+		var localInjectors:Vector.<Injectors> = scope.eventMap.injectors;
+		if (localInjectors != null)
+		{
+			checkInjectors(localInjectors, instance, uid, injectorEvent);
+		}
+		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
+	}
+
+	public static function injectByInstanceInGlobalScope(instance:Object, uid:String = null):void
+	{
+		var injectorEvent:InjectorEvent = new InjectorEvent();
+		injectorEvent.injectorTarget = instance;
+		injectorEvent.uid = uid;
+		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
+	}
+
+	private static function checkInjectors(injectors:Vector.<Injectors>, instance:Object, uid:String, injectorEvent:InjectorEvent):void
+	{
+		for each (var injector:Injectors in injectors)
+		{
+			injector.check(instance, injectorEvent, uid);
+		}
 	}
 }
 }

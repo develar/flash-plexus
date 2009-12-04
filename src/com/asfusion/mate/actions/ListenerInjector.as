@@ -22,8 +22,9 @@ package com.asfusion.mate.actions
 {
 	import com.asfusion.mate.actionLists.IScope;
 	import com.asfusion.mate.core.ISmartObject;
-	import com.asfusion.mate.events.InjectorEvent;
-	import mx.core.EventPriority;
+import com.asfusion.mate.events.InjectorEvent;
+
+import mx.core.EventPriority;
 	import flash.events.IEventDispatcher;
 	
 	/**
@@ -160,8 +161,6 @@ package com.asfusion.mate.actions
 		 */
 		override protected function run(scope:IScope):void
 		{
-			if(!scope.event is InjectorEvent) return;
-			
 			var event:InjectorEvent = InjectorEvent(scope.event);
 			if(eventType && (targetId == null || targetId == event.uid))
 			{

@@ -19,6 +19,7 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.utils.debug.IMateLogger;
 
 import flash.events.IEventDispatcher;
@@ -89,6 +90,8 @@ import mx.logging.ILoggingTarget;
 		/**
 		 * Adds a proxy listener for a specific type.
 		 */
-		function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy
+//		function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy;
+
+		function get injectors():Vector.<Injectors>;
 	}
 }

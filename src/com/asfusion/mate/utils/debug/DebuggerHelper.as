@@ -501,7 +501,7 @@ package com.asfusion.mate.utils.debug
 			{
 				var target:Object = info.data.target;
 				var targetKey:String = info.data.targetKey;
-				var source:Object = info.data.source;
+				var source:Object = info.data.instance;
 				var sourceKey:String = info.data.sourceKey;
 				var type:String = getType(target, targetKey);
 				var value:Object;
