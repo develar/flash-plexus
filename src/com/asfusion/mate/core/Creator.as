@@ -28,6 +28,8 @@ import com.asfusion.mate.configuration.Configurable;
 import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.di;
 
+import flash.utils.Dictionary;
+
 use namespace mate;
 use namespace di;
 
@@ -61,17 +63,25 @@ public class Creator
 		}
 
 		var instance:Object = createInstance(implementation, realArguments);
-		if (cache != Cache.NONE && scope != null)
+		if (cache != Cache.NONE)
 		{
-			Cache.addCachedInstance(role, instance, cache, scope);
+			if (scope == null)
+			{
+				MateManager.instance.cacheCollection[role] = instance;
+			}
+			else
+			{
+				Cache.addCachedInstance(role, instance, cache, scope);
+			}
 		}
 
 		if (component != null && component.requirements != null)
 		{
+			var cacheCollection:Dictionary = MateManager.instance.cacheCollection;
 			for each (var requirement:Requirement in component.requirements)
 			{
 				// компоненты всегда создаются с кешем GLOBAL
-				var requiredComponent:Object = Cache.getCachedInstance(requirement.role, Cache.GLOBAL, scope);
+				var requiredComponent:Object = cacheCollection[requirement.role];
 				if (requiredComponent == null)
 				{
 					requiredComponent = create(requirement.role, scope, true, null, Cache.GLOBAL);
