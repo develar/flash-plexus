@@ -28,7 +28,7 @@ package com.asfusion.mate.events
 	 * The event that gets dispatched when an event of the type
 	 * specified in the <code>type</code> attribute is dispatched.
 	 */ 
-	[Event(name="receive",type="*")]
+	[Event(name="receive",type="flash.events.Event")]
 	
 	/**
 	 * Listener allows you to register a view as a listener for an event type. 
