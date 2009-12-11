@@ -63,8 +63,7 @@ import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.core.Creator;
 import com.asfusion.mate.core.GlobalDispatcher;
 import com.asfusion.mate.core.IMateManager;
-import com.asfusion.mate.events.DispatcherEvent;
-import com.asfusion.mate.events.InjectorSettingsEvent;
+import com.asfusion.mate.events.InjectorEvent;
 import com.asfusion.mate.utils.debug.IMateLogger;
 import com.asfusion.mate.utils.debug.Logger;
 
@@ -72,7 +71,6 @@ import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
-import mx.events.FlexEvent;
 import mx.logging.ILoggingTarget;
 
 class MateManagerInstance extends EventDispatcher implements IMateManager
@@ -80,9 +78,13 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 	public function MateManagerInstance()
 	{
 		_instantiator = new Creator();
+		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
 	}
 
-//	private var listenerProxies:Dictionary = new Dictionary(true);
+	private function injectHandler(event:InjectorEvent):void
+	{
+		Injectors.checkInjectors(injectors, event);
+	}
 
     private var _cache:Dictionary = new Dictionary();
 	public function get cacheCollection():Dictionary
@@ -107,27 +109,6 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 		_loggerClass = value;
 	}
 	
-	
-	//.........................................listenerProxyType........................................
-	private var _listenerProxyType:String = FlexEvent.PREINITIALIZE;
-	public function get listenerProxyType():String
-	{
-		return _listenerProxyType;
-	}
-	public function set listenerProxyType(value:String):void
-	{
-		var oldValue:String = _listenerProxyType;
-		if(oldValue !== value)
-		{
-			_listenerProxyType = value;
-			var event:InjectorSettingsEvent = new InjectorSettingsEvent(InjectorSettingsEvent.TYPE_CHANGE);
-			event.globalType = value;
-			dispatchEvent(event);
-		}
-		
-	}
-	
-	
 	//.........................................debugger........................................
 	private  var _debugger:ILoggingTarget;
 	public function get debugger():ILoggingTarget
@@ -145,18 +126,6 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 	public function get dispatcher():IEventDispatcher
 	{
 		return _dispatcher;
-	}
-	public function set dispatcher(value:IEventDispatcher):void
-	{
-		var oldDispatcher:IEventDispatcher = _dispatcher;
-		if(oldDispatcher !== value)
-		{
-			_dispatcher = value;
-			var event:DispatcherEvent = new DispatcherEvent(DispatcherEvent.CHANGE);
-			event.oldDispatcher = oldDispatcher;
-			event.newDispatcher = _dispatcher;
-			dispatchEvent(event);
-		}
 	}
 	
 	
@@ -185,28 +154,6 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
     	}
     	return logger;
     }
-    
-    //.........................................addListenerProxy........................................
-//	public function addListenerProxy(eventDispatcher:IEventDispatcher, type:String = null):ListenerProxy
-//	{
-//		var listenerProxy:ListenerProxy = listenerProxies[eventDispatcher];
-//
-//		if (listenerProxy == null)
-//		{
-//			listenerProxy = new ListenerProxy(eventDispatcher);
-//			listenerProxies[eventDispatcher] = listenerProxy;
-//		}
-//
-//		if (type == null)
-//		{
-//			listenerProxy.addListener(listenerProxyType, this);
-//		}
-//		else
-//		{
-//			listenerProxy.addListener(type);
-//		}
-//		return listenerProxy;
-//	}
 
 	private var _injectors:Vector.<Injectors> = new Vector.<Injectors>();
 	public function get injectors():Vector.<Injectors>

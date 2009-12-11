@@ -1,10 +1,7 @@
 package com.asfusion.mate.actionLists
 {
-import com.asfusion.mate.core.LocalEventMap;
 import com.asfusion.mate.core.MateManager;
 import com.asfusion.mate.events.InjectorEvent;
-
-import mx.core.IID;
 
 /**
  * An <code>Injectors</code> defined in the <code>EventMap</code> will run whenever an instance of the
@@ -52,9 +49,9 @@ public class Injectors extends AbstractHandlers
 	 * This function is a handler for the injection event, if the target it is a
 	 * derivative class the injection gets triggered
 	 */
-	private function check(instance:Object, injectorEvent:InjectorEvent, uid:String = null):void
+	private function check(injectorEvent:InjectorEvent):void
 	{
-		if ((targetId == null || uid == targetId) && instance is target)
+		if ((targetId == null || injectorEvent.uid == targetId) && injectorEvent.instance is target)
 		{
 			var currentScope:Scope = new Scope(injectorEvent, debug, map, inheritedScope);
 			currentScope.owner = this;
@@ -63,46 +60,27 @@ public class Injectors extends AbstractHandlers
 		}
 	}
 
-	public static function injectByInstanceInMap(instance:Object, localEventMap:LocalEventMap):void
-	{
-		var uid:String = instance is IID ? IID(instance).id : null;
-		var injectorEvent:InjectorEvent = new InjectorEvent();
-		injectorEvent.injectorTarget = instance;
-		injectorEvent.uid = uid;
-
-		if (localEventMap != null)
-		{
-			checkInjectors(localEventMap.injectors, instance, uid, injectorEvent);
-		}
-		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
-	}
-
 	public static function inject(instance:Object, scope:IScope, uid:String = null):void
 	{
-		var injectorEvent:InjectorEvent = new InjectorEvent();
-		injectorEvent.injectorTarget = instance;
-		injectorEvent.uid = uid;
+		var injectorEvent:InjectorEvent = new InjectorEvent(instance, uid);
 		var localInjectors:Vector.<Injectors> = scope.eventMap.injectors;
 		if (localInjectors != null)
 		{
-			checkInjectors(localInjectors, instance, uid, injectorEvent);
+			checkInjectors(localInjectors, injectorEvent);
 		}
-		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
+		checkInjectors(MateManager.instance.injectors, injectorEvent);
 	}
 
 	public static function injectByInstanceInGlobalScope(instance:Object, uid:String = null):void
 	{
-		var injectorEvent:InjectorEvent = new InjectorEvent();
-		injectorEvent.injectorTarget = instance;
-		injectorEvent.uid = uid;
-		checkInjectors(MateManager.instance.injectors, instance, uid, injectorEvent);
+		checkInjectors(MateManager.instance.injectors, new InjectorEvent(instance, uid));
 	}
 
-	private static function checkInjectors(injectors:Vector.<Injectors>, instance:Object, uid:String, injectorEvent:InjectorEvent):void
+	public static function checkInjectors(injectors:Vector.<Injectors>, injectorEvent:InjectorEvent):void
 	{
 		for each (var injector:Injectors in injectors)
 		{
-			injector.check(instance, injectorEvent, uid);
+			injector.check(injectorEvent);
 		}
 	}
 }

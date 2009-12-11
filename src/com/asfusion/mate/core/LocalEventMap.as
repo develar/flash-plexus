@@ -19,7 +19,9 @@
  */
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.events.DispatcherEvent;
+import com.asfusion.mate.events.InjectorEvent;
 
 import flash.events.IEventDispatcher;
 
@@ -45,7 +47,14 @@ public class LocalEventMap extends EventMap
 			event.newDispatcher = value;
 			event.oldDispatcher = oldValue;
 			dispatchEvent(event);
+
+			dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
 		}
+	}
+
+	private function injectHandler(event:InjectorEvent):void
+	{
+		Injectors.checkInjectors(injectors, event);
 	}
 }
 }

@@ -176,15 +176,15 @@ public class PropertyInjector extends AbstractAction implements IAction
 
 		if (sourceKey == null)
 		{
-			event.injectorTarget[targetKey] = currentInstance;
+			event.instance[targetKey] = currentInstance;
 		}
 		else if (currentInstance is IEventDispatcher)
 		{
-			ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKey.split("."), event.injectorTarget, targetKey);
+			ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKey.split("."), event.instance, targetKey);
 		}
 		else
 		{
-			event.injectorTarget[targetKey] = currentInstance[sourceKey];
+			event.instance[targetKey] = currentInstance[sourceKey];
 		}
 	}
 }

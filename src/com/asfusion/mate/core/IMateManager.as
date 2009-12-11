@@ -46,7 +46,7 @@ import mx.logging.ILoggingTarget;
 		 * <li><code>IActionList</code></li>
 		 * <li><code>Listener</code></li></ul>
 		 */
-		function set dispatcher(value:IEventDispatcher):void
+//		function set dispatcher(value:IEventDispatcher):void
 		function get dispatcher():IEventDispatcher
 		
 		//.........................................responseDispatcher..........................................
@@ -61,13 +61,6 @@ import mx.logging.ILoggingTarget;
 		 */
 		function set debugger(value:ILoggingTarget):void
 		function get debugger():ILoggingTarget
-		
-		//.........................................listenerProxyType..........................................
-		/**
-		 * The default event type used by the injectors.
-		 */
-		function set listenerProxyType(value:String):void
-		function get listenerProxyType():String
 		
 		//.........................................getCacheCollection..........................................
 		/**

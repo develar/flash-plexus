@@ -151,30 +151,19 @@ import mx.core.EventPriority;
 			_targetId = value;
 		}
 		
-		//-----------------------------------------------------------------------------------------------------------
-		//                                         Override protected methods
-		//-----------------------------------------------------------------------------------------------------------
-		
-		//.........................................run.................................................
-		/**
-		 * @inheritDoc
-		 */
 		override protected function run(scope:IScope):void
 		{
 			var event:InjectorEvent = InjectorEvent(scope.event);
 			if(eventType && (targetId == null || targetId == event.uid))
 			{
-				if(event.injectorTarget.hasOwnProperty(method) && event.injectorTarget[method] is Function)
+				var targetFunction:Function = event.instance[method] as Function;
+				var currentDispatcher:IEventDispatcher = IEventDispatcher((currentDispatcher is ISmartObject) ? ISmartObject(currentDispatcher).getValue(scope) : dispatcher);
+				if (currentDispatcher == null)
 				{
-					var targetFunction:Function = event.injectorTarget[method];
-					var currentDispatcher:Object = (currentDispatcher is ISmartObject) ? ISmartObject(currentDispatcher).getValue(scope) : currentDispatcher;
-					if(!currentDispatcher) currentDispatcher = scope.dispatcher;
-					
-					if(currentDispatcher is IEventDispatcher)
-					{
-						IEventDispatcher(currentDispatcher).addEventListener(eventType, targetFunction, useCapture, priority, useWeakReference);
-					}
+					currentDispatcher = scope.dispatcher;
 				}
+
+				currentDispatcher.addEventListener(eventType, targetFunction, useCapture, priority, useWeakReference);
 			}
 		}
 	}
