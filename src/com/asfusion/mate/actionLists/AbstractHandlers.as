@@ -140,19 +140,19 @@ import mx.core.IMXMLObject;
 			{
 				if(oldValue == "global")
 				{
-					manager.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false);
+					manager.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 				}
 				else if(oldValue == "inherit" && map)
 				{
-					map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false);
+					map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 				}
 				if(value == "global")
 				{
-					manager.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false, 0, true);
+					manager.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 				}
 				else if(value == "inherit" && map)
 				{
-					map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false, 0, true);
+					map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 				}
 				_dispatcherType = value;
 				dispatcherTypeChanged = true;
@@ -319,7 +319,7 @@ import mx.core.IMXMLObject;
 			
 			for each(var action:IAction in actionList)
 			{
-				if(scope.isRunning()) 
+				if (scope.isRunning())
 				{
 					scope.currentTarget = action;
 					scope.getLogger().info( LogTypes.SEQUENCE_TRIGGER, new LogInfo( scope,  null ));
@@ -390,30 +390,33 @@ import mx.core.IMXMLObject;
 		public function initialized(document:Object, id:String):void
 		{
 			this.document = document;
-			if(document is IEventMap)
+
+			if (document is IEventMap)
 			{
 				map = IEventMap(document);
 			}
-			if(dispatcherType == "inherit" && map)
+
+			if (dispatcherType == "inherit" && map)
 			{
 				var inheritDispatcher:IEventDispatcher = map.dispatcher;
 				
-				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler, false, 0, true);
-				if(inheritDispatcher)
+				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
+				if (inheritDispatcher)
 				{
 					setDispatcher(inheritDispatcher, false);
 				}
 			}
-			else if(dispatcherType == "global")
+			else if (dispatcherType == "global")
 			{
 				setDispatcher(manager.dispatcher,false);
 			}
 			
-			if( needsInvalidation )
+			if ( needsInvalidation )
 			{
 				commitProperties();
 				needsInvalidation = false;
 			}
+
 			isInitialized = true;
 		}
 	}

@@ -9,6 +9,8 @@ import com.asfusion.mate.events.InjectorEvent;
  */
 public class Injectors extends AbstractHandlers
 {
+	private var documentId:String;
+
 	private var _target:Class;
 	/**
 	 * The class that, when an object is created, should trigger the <code>InjectorHandlers</code> to run.
@@ -34,6 +36,8 @@ public class Injectors extends AbstractHandlers
 
 	override public function initialized(document:Object, id:String):void
 	{
+		documentId = id;
+
 		super.initialized(document, id);
 
 		var injectors:Vector.<Injectors> = map.injectors;
@@ -45,6 +49,10 @@ public class Injectors extends AbstractHandlers
 		injectors.push(this);
 	}
 
+//	import org.flyti.util.HashMap;
+//	import org.flyti.util.Map;
+//	private static var runnedInstances:Map = new HashMap();
+
 	/**
 	 * This function is a handler for the injection event, if the target it is a
 	 * derivative class the injection gets triggered
@@ -53,6 +61,15 @@ public class Injectors extends AbstractHandlers
 	{
 		if ((targetId == null || injectorEvent.uid == targetId) && injectorEvent.instance is target)
 		{
+//			if (runnedInstances.containsKey(injectorEvent.instance))
+//			{
+//				trace("WARNING: " + injectorEvent.instance + " already injected by " + runnedInstances.get(injectorEvent.instance));
+//			}
+//			else
+//			{
+//				runnedInstances.put(injectorEvent.instance, this);
+//			}
+
 			var currentScope:Scope = new Scope(injectorEvent, debug, map, inheritedScope);
 			currentScope.owner = this;
 			setScope(currentScope);

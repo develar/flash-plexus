@@ -4,8 +4,8 @@ import flash.events.Event;
 
 public class ApplicationConfigurationEvent extends Event
 {
-	public static const LOAD:String = "loadApplicationConfiguration";
-	public static const LOADED:String = "applicationConfigurationLoaded";
+	public static const LOAD:String = "mate_loadApplicationConfiguration";
+	public static const LOADED:String = "mate_applicationConfigurationLoaded";
 
 	public function ApplicationConfigurationEvent(type:String, data:XML = null)
 	{

@@ -20,12 +20,10 @@ Author: Nahuel Foronda, Principal Architect
 
 package com.asfusion.mate.actions
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.core.MethodCaller;
-	import com.asfusion.mate.utils.debug.LogInfo;
-	import com.asfusion.mate.utils.debug.LogTypes;
-	
-	/**
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.core.MethodCaller;
+
+/**
 	 *  When placed inside a <code>IActionList</code> tag and the list is executed, 
 	 * <code>CallBack</code>  will call the function specified in the <code>method</code> attribute on the target of the event. 
 	 * You can pass arguments to this function that come from a variety of sources, such as the event itself, 
@@ -33,6 +31,8 @@ package com.asfusion.mate.actions
 	 */
 	public class CallBack extends BaseAction implements IAction
 	{
+		private static var methodCaller:MethodCaller = new MethodCaller();
+
 		//-----------------------------------------------------------------------------------------------------------
 		//                                         Public Getters and Setters
 		//-----------------------------------------------------------------------------------------------------------
@@ -119,16 +119,7 @@ package com.asfusion.mate.actions
 		{
 			if(targetId == null || !currentInstance["id"] || targetId == currentInstance.id)
 			{
-				if(method)
-				{
-					var methodCaller:MethodCaller = new MethodCaller();
-					scope.lastReturn = methodCaller.call(scope, currentInstance, method, this.arguments);
-				}
-				else
-				{
-					var logInfo:LogInfo = new LogInfo( scope, currentInstance, null, null, this.arguments);
-					scope.getLogger().error(LogTypes.METHOD_UNDEFINED, logInfo);
-				}
+				scope.lastReturn = methodCaller.call(scope, currentInstance, method, this.arguments);
 			}
 		}
 	}

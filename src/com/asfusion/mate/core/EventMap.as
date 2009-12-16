@@ -17,7 +17,6 @@
 
  @ignore
  */
-
 package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.Injectors;
@@ -189,6 +188,7 @@ public class EventMap extends EventDispatcher implements IEventMap
 	}
 
 	protected var _cache:String = Cache.GLOBAL;
+
 	/**
 	 * @inheritDoc
 	 */
@@ -196,6 +196,7 @@ public class EventMap extends EventDispatcher implements IEventMap
 	{
 		return _cache;
 	}
+
 	[Inspectable(enumeration="local,global")]
 	public function set cachePolicy(value:String):void
 	{

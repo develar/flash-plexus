@@ -2,7 +2,7 @@ package com.asfusion.mate.events
 {
 import flash.events.Event;
 
-import mx.core.IID;
+import mx.core.IDeferredInstantiationUIComponent;
 
 /**
  * This event is used by the InjectorRegistry to register a target for Injection.
@@ -22,9 +22,9 @@ public class InjectorEvent extends Event
 	{
 		this.instance = target;
 		this.uid = uid;
-		if (uid == null && target is IID)
+		if (uid == null && target is IDeferredInstantiationUIComponent)
 		{
-			this.uid = IID(target).id;
+			this.uid = IDeferredInstantiationUIComponent(target).id;
 		}
 
 		super(INJECT, true);

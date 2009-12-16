@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.flyti.superPOMs</groupId>
 		<artifactId>common</artifactId>
-		<version>1.1.2</version>
+		<version>1.1.4</version>
 	</parent>
 
 	<groupId>com.asfusion</groupId>
@@ -15,9 +15,8 @@
 	<packaging>swc</packaging>
 
 	<properties>
-		<fdk.version>4.0.0.12687</fdk.version>
-		<flex.sdk.version>4.0.0.12687</flex.sdk.version>
-		<flexMojos.version>3.4-SNAPSHOT</flexMojos.version>
+		<fdk.version>4.0.0.12948</fdk.version>
+		<flex.sdk.version>4.0.0.12948</flex.sdk.version>
 	</properties>
 
 	<dependencies>

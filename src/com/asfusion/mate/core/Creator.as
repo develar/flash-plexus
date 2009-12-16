@@ -107,10 +107,10 @@ public class Creator
 	/**
 	 * It is the actual creation method. It can throw errors if parameters are wrong.
 	 */
-	private function createInstance(template:Class, p:Array):Object
+	public function createInstance(template:Class, p:Array):Object
 	{
 		var newInstance:Object;
-		if (!p || p.length == 0)
+		if (p == null || p.length == 0)
 		{
 			newInstance = new template();
 		}
