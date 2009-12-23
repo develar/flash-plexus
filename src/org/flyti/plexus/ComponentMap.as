@@ -1,4 +1,4 @@
-package com.asfusion.mate.componentMap
+package org.flyti.plexus
 {
 import org.flyti.util.HashMap;
 import org.flyti.util.Map;

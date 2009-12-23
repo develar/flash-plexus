@@ -1,5 +1,7 @@
-package com.asfusion.mate.componentMap
+package org.flyti.plexus
 {
+import com.asfusion.mate.componentMap.*;
+
 [DefaultProperty("requirements")]
 public class ComponentDescriptor
 {

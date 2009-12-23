@@ -21,9 +21,9 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actionLists.Injectors;
-import com.asfusion.mate.componentMap.ComponentDescriptor;
-import com.asfusion.mate.componentMap.ComponentMap;
-import com.asfusion.mate.componentMap.Requirement;
+import org.flyti.plexus.ComponentDescriptor;
+import org.flyti.plexus.ComponentMap;
+import org.flyti.plexus.Requirement;
 import com.asfusion.mate.configuration.Configurable;
 import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.di;

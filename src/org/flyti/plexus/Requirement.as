@@ -1,4 +1,4 @@
-package com.asfusion.mate.componentMap
+package org.flyti.plexus
 {
 public class Requirement
 {
