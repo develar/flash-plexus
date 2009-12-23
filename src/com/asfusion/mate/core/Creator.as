@@ -21,7 +21,7 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actionLists.Injectors;
-import com.asfusion.mate.componentMap.Component;
+import com.asfusion.mate.componentMap.ComponentDescriptor;
 import com.asfusion.mate.componentMap.ComponentMap;
 import com.asfusion.mate.componentMap.Requirement;
 import com.asfusion.mate.configuration.Configurable;
@@ -51,7 +51,7 @@ public class Creator
 		}
 
 		var implementation:Class;
-		var component:Component;
+		var component:ComponentDescriptor;
 		if (ComponentMap.has(role))
 		{
 			component = ComponentMap.get(role);

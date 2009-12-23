@@ -11,9 +11,9 @@ public class ComponentMap
 	/**
 	 * Мы разрешаем иметь в качестве role конкретный класс, а не интерфейс, и не указывать implementation
 	 */
-	public function set components(value:Vector.<Component>):void
+	public function set components(value:Vector.<ComponentDescriptor>):void
 	{
-		for each (var component:Component in value)
+		for each (var component:ComponentDescriptor in value)
 		{
 			if (component.implementation == null)
 			{
@@ -22,7 +22,7 @@ public class ComponentMap
 
 			if (map.containsKey(component.role))
 			{
-				var existingComponent:Component = Component(map.get(component.role));
+				var existingComponent:ComponentDescriptor = ComponentDescriptor(map.get(component.role));
 				existingComponent.implementation = component.implementation;
 				if (component.requirements != null)
 				{
@@ -41,9 +41,9 @@ public class ComponentMap
 		return map.containsKey(role);
 	}
 
-	public static function get(role:Class):Component
+	public static function get(role:Class):ComponentDescriptor
 	{
-		return Component(map.get(role));
+		return ComponentDescriptor(map.get(role));
 	}
 }
 }

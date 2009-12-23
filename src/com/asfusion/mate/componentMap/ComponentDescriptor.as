@@ -1,7 +1,7 @@
 package com.asfusion.mate.componentMap
 {
 [DefaultProperty("requirements")]
-public class Component
+public class ComponentDescriptor
 {
 	public var role:Class;
 	public var implementation:Class;
