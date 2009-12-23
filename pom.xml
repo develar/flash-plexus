@@ -11,7 +11,7 @@
 
 	<groupId>com.asfusion</groupId>
 	<artifactId>mate</artifactId>
-	<version>0.8.9-de9</version>
+	<version>0.8.9-de10-SNAPSHOT</version>
 	<packaging>swc</packaging>
 
 	<!--<properties>-->
@@ -70,7 +70,9 @@
 								<class>com.asfusion.mate.actionLists.MessageHandlers</class>
 								<class>com.asfusion.mate.actionLists.Injectors</class>
 
-								<class>com.asfusion.mate.componentMap.*</class>
+								<class>org.flyti.plexus.ComponentDescriptor</class>
+								<class>org.flyti.plexus.Requirement</class>
+								<class>org.flyti.plexus.ComponentDescriptorRegistry</class>
 
 								<class>com.asfusion.mate.actions.DataCopier</class>
 								<class>com.asfusion.mate.actions.StopHandlers</class>
@@ -85,10 +87,6 @@
 								<class>com.asfusion.mate.actions.builders.PropertySetter</class>
 								<class>com.asfusion.mate.actions.builders.*Invoker</class>
 
-								<class>com.asfusion.mate.events.Listener</class>
-								<class>com.asfusion.mate.responses.ResponseHandler</class>
-								<class>com.asfusion.mate.responses.ServiceResponseHandler</class>
-								<class>com.asfusion.mate.events.Dispatcher</class>
 								<class>com.asfusion.mate.events.EventProperties</class>
 
 								<class>com.asfusion.mate.utils.debug.Debugger</class>
@@ -98,6 +96,16 @@
 								<class>com.asfusion.mate.testing.MockMethod</class>
 								<class>com.asfusion.mate.testing.MockDelegate</class>
 							</includes>
+							<names>
+								<class>
+									<name>ComponentDescriptor</name>
+									<id>Component</id>
+								</class>
+								<class>
+									<name>ComponentDescriptorRegistry</name>
+									<id>ComponentMap</id>
+								</class>
+							</names>
 						</manifest>
 					</manifests>
 				</configuration>

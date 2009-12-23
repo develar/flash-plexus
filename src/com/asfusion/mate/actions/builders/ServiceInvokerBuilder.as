@@ -20,11 +20,12 @@ Author: Nahuel Foronda, Principal Architect
 
 package com.asfusion.mate.actions.builders
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.actions.AbstractServiceInvoker;
-	import com.asfusion.mate.core.Cache;
-	
-	/**
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.actions.AbstractServiceInvoker;
+
+import org.flyti.plexus.ComponentCachePolicy;
+
+/**
 	 * This base <code>ServiceInvokerBuilder</code> class is very similar 
 	 * to <code>AbstractServiceInvoker</code> with the difference that it 
 	 * also supports the <code>IBuilder</code> interface that will allow 
@@ -105,12 +106,7 @@ package com.asfusion.mate.actions.builders
 		{
 			_registerTarget = value;
 		}
-		
-		//-----------------------------------------------------------------------------------------------------------
-		//                                           Protected methods
-		//------------------------------------------------------------------------------------------------------------
-		
-		//.........................................createInstance..........................................
+
 		/**
 		* Where the currentInstance is created using the 
 		* <code>generator</code> class as the template, passing arguments to the constructor
@@ -119,9 +115,9 @@ package com.asfusion.mate.actions.builders
 		*/
 		protected function createInstance(scope:IScope):Object
 		{	
-			if(cache != Cache.NONE)
+			if(cache != ComponentCachePolicy.NONE)
 			{
-				currentInstance = Cache.getCachedInstance(generator, cache, scope);
+				currentInstance = getCachedInstance(generator, cache, scope);
 			}
 
 			if (currentInstance == null)
@@ -130,12 +126,7 @@ package com.asfusion.mate.actions.builders
 			}
 			return currentInstance;
 		}
-		
-		//-----------------------------------------------------------------------------------------------------------
-		//                                          Override Protected methods
-		//------------------------------------------------------------------------------------------------------------
-		
-		//........................................prepare..........................................
+
 		/**
 		 * @inheritDoc
 		 */

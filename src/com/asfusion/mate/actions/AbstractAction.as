@@ -19,11 +19,16 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.actions
 {
-	import com.asfusion.mate.core.*;
-	import com.asfusion.mate.actionLists.IScope;
-	
-	import mx.core.IMXMLObject;
-	/**
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.core.*;
+
+import mx.core.IMXMLObject;
+
+import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.ComponentCachePolicy;
+import org.flyti.plexus.RoleHint;
+
+/**
 	 * AbstractAction is a base class for all classes implementing <code>IAction</code>.
 	 */
 	public class AbstractAction implements IMXMLObject
@@ -141,6 +146,31 @@ package com.asfusion.mate.actions
 		protected function getRealArguments(scope:IScope, parameters:*):Array
 		{
 			return SmartArguments.getRealArguments(scope, parameters);
+		}
+
+		protected function getCache(cachePolicy:String, scope:IScope):ComponentCache
+		{
+			if (cachePolicy == ComponentCachePolicy.INHERIT)
+			{
+				cachePolicy = scope.eventMap.cachePolicy;
+			}
+
+			return cachePolicy == ComponentCachePolicy.LOCAL ? scope.eventMap.cache : scope.manager.cache;
+		}
+
+		protected function putCachedInstance(instance:Object, role:Class, cachePolicy:String, scope:IScope):void
+		{
+			getCache(cachePolicy, scope).put(role, RoleHint.DEFAULT, instance);
+		}
+
+		protected function getCachedInstance(role:Class, cachePolicy:String, scope:IScope):Object
+		{
+			return getCache(cachePolicy, scope).get(role, RoleHint.DEFAULT);
+		}
+
+		protected function clearCachedInstance(role:Class, cachePolicy:String, scope:IScope):Object
+		{
+			return getCache(cachePolicy, scope).clear(role, RoleHint.DEFAULT);
 		}
 	}
 }

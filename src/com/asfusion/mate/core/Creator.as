@@ -21,14 +21,17 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actionLists.Injectors;
-import org.flyti.plexus.ComponentDescriptor;
-import org.flyti.plexus.ComponentMap;
-import org.flyti.plexus.Requirement;
 import com.asfusion.mate.configuration.Configurable;
 import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.di;
 
-import flash.utils.Dictionary;
+import org.flyti.lang.Enum;
+import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.ComponentCachePolicy;
+import org.flyti.plexus.ComponentDescriptor;
+import org.flyti.plexus.ComponentDescriptorRegistry;
+import org.flyti.plexus.Requirement;
+import org.flyti.plexus.RoleHint;
 
 use namespace mate;
 use namespace di;
@@ -42,49 +45,51 @@ public class Creator
 	 * A method that calls createInstance to create the object
 	 * and logs any problem that may encounter.
 	 */
-	public function create(role:Class, scope:IScope, notify:Boolean = false, constructorArguments:Object = null, cache:String = "none"):Object
+	public function create(role:Class, scope:IScope, notify:Boolean = false, constructorArguments:Object = null, cachePolicy:String = "none", roleHint:Enum = null):Object
 	{
+		if (roleHint == null)
+		{
+			roleHint = RoleHint.DEFAULT;
+		}
+
 		var realArguments:Array;
 		if (constructorArguments != null)
 		{
 			realArguments = SmartArguments.getRealArguments(scope, constructorArguments);
 		}
 
-		var implementation:Class;
-		var component:ComponentDescriptor;
-		if (ComponentMap.has(role))
-		{
-			component = ComponentMap.get(role);
-			implementation = component.implementation;
-		}
-		else
-		{
-			implementation = role;
-		}
+		var component:ComponentDescriptor = ComponentDescriptorRegistry.get(role, roleHint);
+		var implementation:Class = component == null ? role : component.implementation;
 
 		var instance:Object = createInstance(implementation, realArguments);
-		if (cache != Cache.NONE)
+		if (cachePolicy != ComponentCachePolicy.NONE)
 		{
 			if (scope == null)
 			{
-				MateManager.instance.cacheCollection[role] = instance;
+				MateManager.instance.cache[role] = instance;
 			}
 			else
 			{
-				Cache.addCachedInstance(role, instance, cache, scope);
+				if (cachePolicy == ComponentCachePolicy.INHERIT)
+				{
+					cachePolicy = scope.eventMap.cachePolicy;
+				}
+
+				var cache:ComponentCache = cachePolicy == ComponentCachePolicy.LOCAL ? scope.eventMap.cache : scope.manager.cache;
+				cache.put(role, RoleHint.DEFAULT, instance);
 			}
 		}
 
+		var globalCache:ComponentCache = MateManager.instance.cache;
 		if (component != null && component.requirements != null)
 		{
-			var cacheCollection:Dictionary = MateManager.instance.cacheCollection;
+			// компоненты всегда создаются с кешем GLOBAL
 			for each (var requirement:Requirement in component.requirements)
 			{
-				// компоненты всегда создаются с кешем GLOBAL
-				var requiredComponent:Object = cacheCollection[requirement.role];
+				var requiredComponent:Object = globalCache.get(requirement.role, requirement.roleHint);
 				if (requiredComponent == null)
 				{
-					requiredComponent = create(requirement.role, scope, true, null, Cache.GLOBAL);
+					requiredComponent = create(requirement.role, scope, true, null, ComponentCachePolicy.GLOBAL, requirement.roleHint);
 				}
 				instance[requirement.field] = requiredComponent;
 			}
@@ -97,22 +102,18 @@ public class Creator
 
 		if (instance is Configurable)
 		{
-			var configurationManager:ConfigurationManager = ConfigurationManager(Cache.getCachedInstance(ConfigurationManager, Cache.GLOBAL, scope));
+			var configurationManager:ConfigurationManager = ConfigurationManager(globalCache.get(ConfigurationManager, RoleHint.DEFAULT));
 			configurationManager.configurate(Configurable(instance), role);
 		}
 
 		return instance;
 	}
 
-	/**
-	 * It is the actual creation method. It can throw errors if parameters are wrong.
-	 */
 	public function createInstance(template:Class, p:Array):Object
 	{
-		var newInstance:Object;
 		if (p == null || p.length == 0)
 		{
-			newInstance = new template();
+			return new template();
 		}
 		else
 		{
@@ -120,19 +121,17 @@ public class Creator
 			// if someone knows a better way please let me know (nahuel at asfusion dot com).
 			switch (p.length)
 			{
-				case 1:	newInstance = new template(p[0]); break;
-				case 2:	newInstance = new template(p[0], p[1]); break;
-				case 3:	newInstance = new template(p[0], p[1], p[2]); break;
-				case 4:	newInstance = new template(p[0], p[1], p[2], p[3]); break;
-				case 5:	newInstance = new template(p[0], p[1], p[2], p[3], p[4]); break;
-				case 6:	newInstance = new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
-				case 7:	newInstance = new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
-				case 8:	newInstance = new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]); break;
-				case 9:	newInstance = new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]); break;
-				case 10:newInstance = new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
+				case 1:	return new template(p[0]); break;
+				case 2:	return new template(p[0], p[1]); break;
+				case 3:	return new template(p[0], p[1], p[2]); break;
+				case 4:	return new template(p[0], p[1], p[2], p[3]); break;
+				case 5:	return new template(p[0], p[1], p[2], p[3], p[4]); break;
+				case 6:	return new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
+				case 7:	return new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
 			}
+
+			throw new ArgumentError("constructorArguments is too long");
 		}
-		return newInstance;
 	}
 }
 }

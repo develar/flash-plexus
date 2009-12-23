@@ -25,11 +25,13 @@ import com.asfusion.mate.events.InjectorEvent;
 
 import flash.events.IEventDispatcher;
 
+import org.flyti.plexus.ComponentCachePolicy;
+
 public class LocalEventMap extends EventMap
 {
 	public function LocalEventMap()
 	{
-		_cache = Cache.LOCAL;
+		_cachePolicy = ComponentCachePolicy.LOCAL;
 	}
 
 	private var _dispatcher:IEventDispatcher;

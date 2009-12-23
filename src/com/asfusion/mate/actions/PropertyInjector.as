@@ -20,7 +20,6 @@
 package com.asfusion.mate.actions
 {
 import com.asfusion.mate.actionLists.IScope;
-import com.asfusion.mate.core.Cache;
 import com.asfusion.mate.core.ISmartObject;
 import com.asfusion.mate.events.InjectorEvent;
 
@@ -83,8 +82,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	{
 		_source = value;
 	}
-
-	//.........................................sourceKey..........................................
+	
 	private var _sourceKey:String;
 	/**
 	 * The name of the property on the source object that the injector will use to read and set on the target object
@@ -139,7 +137,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	protected function createInstance(scope:IScope):Object
 	{
 		var clazz:Class = Class(source);
-		var sourceObject:Object = Cache.getCachedInstance(clazz, sourceCache, scope);
+		var sourceObject:Object = getCachedInstance(clazz, sourceCache, scope);
 		if (sourceObject == null)
 		{
 			sourceObject = scope.manager.instantiator.create(clazz, scope, true, null, sourceCache);

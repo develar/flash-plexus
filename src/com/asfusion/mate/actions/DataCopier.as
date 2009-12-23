@@ -19,13 +19,12 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.actions
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.core.Cache;
-	import com.asfusion.mate.core.ISmartObject;
-	import com.asfusion.mate.utils.debug.LogInfo;
-	import com.asfusion.mate.utils.debug.LogTypes;
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.core.ISmartObject;
+import com.asfusion.mate.utils.debug.LogInfo;
+import com.asfusion.mate.utils.debug.LogTypes;
 
-	/**
+/**
 	 * The DataSaver tag allows you to save values into some object. A possible storage is the "data" object available while the <code>IActionList</code> is running.
 	 * <p>The DataSaver tags is a handy tag to quickly save values into some storage. 
 	 * You can use the <code>IActionList</code> "data" as a temporary storage from where action that follow in the <code>IActionList</code> can read values. 
@@ -190,7 +189,7 @@ package com.asfusion.mate.actions
 
 			if (obj is Class)
 			{
-				return Cache.getCachedInstance(Class(obj), cache, scope);
+				return getCachedInstance(Class(obj), cache, scope);
 			}
 			else if (obj is ISmartObject)
 			{

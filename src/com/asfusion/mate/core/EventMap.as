@@ -24,7 +24,9 @@ import com.asfusion.mate.actionLists.ScopeProperties;
 
 import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
-import flash.utils.Dictionary;
+
+import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.ComponentCachePolicy;
 
 [Exclude(name="activate", kind="event")]
 [Exclude(name="deactivate", kind="event")]
@@ -92,7 +94,7 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 *
 	 * <p>Available only inside a <code>faultHandlers</code> inner tag.</p>
 	 *
-	 * @see com.asfusion.mate.actionList.ServiceInvoker
+	 * @see com.asfusion.mate.actions.builders.ServiceInvoker
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
 	public function get fault():Object
@@ -110,7 +112,7 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 *
 	 * <p>Available only inside a <code>resultHandlers</code> inner tag.</p>
 	 *
-	 * @see com.asfusion.mate.actionList.ServiceInvoker
+	 * @see com.asfusion.mate.actions.builders.ServiceInvoker
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
 	public function get resultObject():Object
@@ -187,48 +189,25 @@ public class EventMap extends EventDispatcher implements IEventMap
 		return _scope;
 	}
 
-	protected var _cache:String = Cache.GLOBAL;
-
-	/**
-	 * @inheritDoc
-	 */
+	protected var _cachePolicy:String = ComponentCachePolicy.GLOBAL;
 	public function get cachePolicy():String
 	{
-		return _cache;
+		return _cachePolicy;
 	}
-
 	[Inspectable(enumeration="local,global")]
 	public function set cachePolicy(value:String):void
 	{
-		if (_cache !== value)
-		{
-			_cache = value;
-		}
+		_cachePolicy = value;
 	}
 
-	private var _cacheCollection:Dictionary;
-	public function get cacheCollection():Dictionary
+	private var _cache:ComponentCache;
+	public function get cache():ComponentCache
 	{
-		if (_cacheCollection == null)
+		if (_cache == null)
 		{
-			_cacheCollection = new Dictionary();
+			_cache = new ComponentCache();
 		}
-		return _cacheCollection;
-	}
-
-	/**
-	 * Function to get cached instances from the framework.
-	 * A Cache is returned instead of actual instance.
-	 *
-	 * @see com.asfusion.mate.core.Cache
-	 */
-	public function getCached(template:Class,
-							  cacheType:String = Cache.INHERIT,
-							  autoCreate:Boolean = true,
-							  registerTarget:Boolean = false,
-							  constructorArguments:Array = null):*
-	{
-		return new Cache(template, cacheType, autoCreate, registerTarget, constructorArguments);
+		return _cache;
 	}
 
 	public function get globalDispatcher():IEventDispatcher
@@ -250,7 +229,7 @@ public class EventMap extends EventDispatcher implements IEventMap
 	private var _injectors:Vector.<Injectors>;
 	public function get injectors():Vector.<Injectors>
 	{
-		if (_injectors == null && cachePolicy == Cache.LOCAL)
+		if (_injectors == null && cachePolicy == ComponentCachePolicy.LOCAL)
 		{
 			_injectors = new Vector.<Injectors>();
 		}

@@ -170,8 +170,9 @@ package com.asfusion.mate.core
 
 			if (obj is Class)
 			{
-				var value:Object = Cache.getCachedInstance(Class(obj), cache, scope);
-				if (value != null) realObject = value;
+				// @todo getCachedInstance
+//				var value:Object = Cache.get(Class(obj), cache, scope);
+//				if (value != null) realObject = value;
 			}
 			
 			if(obj is ISmartObject)

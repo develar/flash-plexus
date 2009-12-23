@@ -21,7 +21,6 @@ package com.asfusion.mate.actions.builders
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.core.Cache;
 import com.asfusion.mate.core.SmartArguments;
 import com.asfusion.mate.core.mate;
 import com.asfusion.mate.utils.debug.LogInfo;
@@ -31,6 +30,8 @@ import flash.events.Event;
 import flash.events.IEventDispatcher;
 
 import mx.events.DynamicEvent;
+
+import org.flyti.plexus.ComponentCachePolicy;
 
 use namespace mate;
 
@@ -143,7 +144,7 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 
 	override public function get cache():String
 	{
-		return Cache.NONE;
+		return ComponentCachePolicy.NONE;
 	}
 	override public function set cache(value:String):void
 	{

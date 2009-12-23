@@ -48,10 +48,6 @@ public dynamic class Properties implements IProperty
 		for (var propertyName:String in source)
 		{
 			var realValue:Object = source[propertyName];
-			if (realValue is Class)
-			{
-				realValue = new Cache(Class(realValue));
-			}
 			if (realValue is ISmartObject)
 			{
 				realValue = ISmartObject(realValue).getValue(scope);

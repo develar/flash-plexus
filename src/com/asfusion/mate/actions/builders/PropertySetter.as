@@ -19,13 +19,12 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.actions.builders
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.core.Cache;
-	import com.asfusion.mate.core.ISmartObject;
-	import com.asfusion.mate.utils.debug.LogInfo;
-	import com.asfusion.mate.utils.debug.LogTypes;
-	
-	[Exclude(name="properties", kind="property")]
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.core.ISmartObject;
+import com.asfusion.mate.utils.debug.LogInfo;
+import com.asfusion.mate.utils.debug.LogTypes;
+
+[Exclude(name="properties", kind="property")]
 	/**
 	 * <code>PropertySetter</code> will create an object of the class specified
 	 *  in the <code>generator</code> attribute. After that, it will set a 
@@ -167,7 +166,7 @@ package com.asfusion.mate.actions.builders
 			var realObject:Object = obj;
 			if(obj is Function ) obj = (obj as Function)();
 			
-			if(obj is Class) realObject = Cache.getCachedInstance(Class(obj), cache, scope);
+			if(obj is Class) realObject = getCachedInstance(Class(obj), cache, scope);
 			
 			if(obj is ISmartObject)
 			{

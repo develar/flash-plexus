@@ -24,6 +24,8 @@ import com.asfusion.mate.actionLists.Injectors;
 import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
+import org.flyti.plexus.ComponentCache;
+
 /**
  * Interface that provides an event dispatcher.
  * This interface is implemented by the EventMap and is used
@@ -46,7 +48,7 @@ public interface IEventMap extends IEventDispatcher
 	 * Method that returns of the local cache dictionary that will be used to store objects
 	 * created by the mate framework.
 	 */
-	function get cacheCollection():Dictionary;
+	function get cache():ComponentCache;
 
 	/**
 	 * Returns an event dispatcher.
