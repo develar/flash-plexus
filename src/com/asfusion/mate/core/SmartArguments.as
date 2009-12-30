@@ -49,7 +49,6 @@ public class SmartArguments
 						{
 							copied = true;
 							realArguments = parameters.slice();
-							realArguments.fixed = true;
 						}
 						realArguments[i] = ISmartObject(argument).getValue(scope);
 					}

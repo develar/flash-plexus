@@ -99,24 +99,6 @@ public class PropertyInjector extends AbstractAction implements IAction
 		_sourceKey = value;
 	}
 
-	private var _sourceCache:String = "inherit";
-	/**
-	 * If the source is a class we will try to get an instance of that class from the cache.
-	 * This property defines whether the cache is local, global, or inherit.
-	 *
-	 * @default inherit
-	 */
-	public function get sourceCache():String
-	{
-		return _sourceCache;
-	}
-
-	[Inspectable(enumeration="local,global,inherit")]
-	public function set sourceCache(value:String):void
-	{
-		_sourceCache = value;
-	}
-
 	private var _softBinding:Boolean = false;
 	/**
 	 * Flag that will be used to define the type of binding used by the PropertyInjector tag.
@@ -136,13 +118,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	 */
 	protected function createInstance(scope:IScope):Object
 	{
-		var clazz:Class = Class(source);
-		var sourceObject:Object = getCachedInstance(clazz, sourceCache, scope);
-		if (sourceObject == null)
-		{
-			sourceObject = scope.manager.instantiator.create(clazz, scope, true, null, sourceCache);
-		}
-		return sourceObject;
+		return scope.eventMap.container.lookup(Class(source));
 	}
 
 	override protected function prepare(scope:IScope):void

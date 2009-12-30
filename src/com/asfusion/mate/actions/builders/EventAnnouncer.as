@@ -21,17 +21,12 @@ package com.asfusion.mate.actions.builders
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.core.SmartArguments;
 import com.asfusion.mate.core.mate;
 import com.asfusion.mate.utils.debug.LogInfo;
 import com.asfusion.mate.utils.debug.LogTypes;
 
 import flash.events.Event;
 import flash.events.IEventDispatcher;
-
-import mx.events.DynamicEvent;
-
-import org.flyti.plexus.ComponentCachePolicy;
 
 use namespace mate;
 
@@ -77,33 +72,10 @@ use namespace mate;
  */
 public class EventAnnouncer extends ObjectBuilder implements IAction
 {
-	private var _generator:Class = DynamicEvent;
-	/**
-	 * The generator attribute specifies what class should be instantiated.
-	 * If this attribute is not specified, then a DynamicEvent will be generated.
-	 *
-	 *  @default mx.events.DynamicEvent
-	 */
-	override public function get generator():Class
-	{
-		return _generator;
-	}
-
-	override public function set generator(value:Class):void
-	{
-		_generator = value;
-	}
-
 	private var _type:String;
 	/**
 	 *  The type attribute specifies the event type you want to dispatch.
-	 *
-	 *  @default null
 	 */
-	public function get type():String
-	{
-		return _type;
-	}
 	public function set type(value:String):void
 	{
 		_type = value;
@@ -142,10 +114,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 		_cancelable = value;
 	}
 
-	override public function get cache():String
-	{
-		return ComponentCachePolicy.NONE;
-	}
 	override public function set cache(value:String):void
 	{
 		throw(new Error("Events and responses cannot be cached"));
@@ -176,13 +144,13 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 	override protected function createInstance(scope:IScope):Object
 	{
 		var realArguments:Array;
-		if (constructorArguments !== undefined)
+		if (_constructorArguments != null)
 		{
-			realArguments = SmartArguments.getRealArguments(scope, constructorArguments);
+			realArguments = getRealArguments(scope, _constructorArguments);
 		}
-		else if (type != null)
+		else if (_type != null)
 		{
-			realArguments = [type, bubbles, cancelable];
+			realArguments = [_type, bubbles, cancelable];
 		}
 		else
 		{
@@ -191,7 +159,7 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 			return null;
 		}
 
-		currentInstance = scope.manager.instantiator.createInstance(generator, realArguments);
+		currentInstance = newInstance(role, realArguments);
 		return currentInstance;
 	}
 
@@ -199,6 +167,31 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 	{
 		var dispatcher:IEventDispatcher = (dispatcherType == "inherit") ? scope.dispatcher : scope.manager.dispatcher;
 		scope.lastReturn = dispatcher.dispatchEvent(Event(currentInstance));
+	}
+
+	private function newInstance(template:Class, p:Array):Object
+	{
+		if (p == null || p.length == 0)
+		{
+			return new template();
+		}
+		else
+		{
+			// ugly way to call a constructor.
+			// if someone knows a better way please let me know (nahuel at asfusion dot com).
+			switch (p.length)
+			{
+				case 1:	return new template(p[0]); break;
+				case 2:	return new template(p[0], p[1]); break;
+				case 3:	return new template(p[0], p[1], p[2]); break;
+				case 4:	return new template(p[0], p[1], p[2], p[3]); break;
+				case 5:	return new template(p[0], p[1], p[2], p[3], p[4]); break;
+				case 6:	return new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
+				case 7:	return new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
+			}
+
+			throw new ArgumentError("constructorArguments is too long");
+		}
 	}
 }
 }

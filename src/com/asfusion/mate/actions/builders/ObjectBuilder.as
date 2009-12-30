@@ -24,42 +24,35 @@ import com.asfusion.mate.actions.BaseAction;
 import com.asfusion.mate.actions.IAction;
 import com.asfusion.mate.core.mate;
 
-import org.flyti.plexus.ComponentCachePolicy;
+import org.flyti.plexus.component.ComponentCachePolicy;
+import org.flyti.plexus.component.RoleHint;
 
 use namespace mate;
 
 /**
  * ObjectBuilder is the base class for all the classes that use the <code>generator</code> property
  * to create instances. The <code>generator</code> is the class template to use to instantiate new objects.
- *
  */
 public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 {
-	private var _generator:Class;
-	public function get generator():Class
+	private var _role:Class;
+	public function get role():Class
 	{
-		return _generator;
+		return _role;
 	}
-	public function set generator(value:Class):void
+	public function set role(value:Class):void
 	{
-		_generator = value;
+		_role = value;
 	}
 
-	private var _constructorArguments:* = undefined;
+	protected var _constructorArguments:Array;
 	/**
 	 *  The constructorArgs allows you to pass an Object or an Array of objects to the contructor
 	 *  when the instance is created.
 	 *  <p>You can use an array to pass multiple arguments or use a simple Object if your
 	 * signature has only one parameter.</p>
-	 *
-	 *	@default undefined
 	 */
-	public function get constructorArguments():*
-	{
-		return _constructorArguments;
-	}
-
-	public function set constructorArguments(value:*):void
+	public function set constructorArguments(value:Array):void
 	{
 		_constructorArguments = value;
 	}
@@ -69,14 +62,7 @@ public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 	 * The cache attribute lets you specify whether this newly created object should be kept live
 	 * so that the next time an instance of this class is requested, this already created object
 	 * is returned instead.
-	 *
-	 *  @default inherit
 	 */
-	public function get cache():String
-	{
-		return _cache;
-	}
-
 	[Inspectable(enumeration="local,global,inherit,none")]
 	public function set cache(value:String):void
 	{
@@ -93,7 +79,6 @@ public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 		return _registerTarget;
 	}
 
-	[Inspectable(enumeration="true,false")]
 	public function set registerTarget(value:Boolean):void
 	{
 		_registerTarget = value;
@@ -106,14 +91,13 @@ public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 	 */
 	protected function createInstance(scope:IScope):Object
 	{
-		if (cache != ComponentCachePolicy.NONE)
+		if (_cache == ComponentCachePolicy.NONE)
 		{
-			currentInstance = getCachedInstance(generator, cache, scope);
+			currentInstance = new role();
 		}
-
-		if (currentInstance == null || cache == ComponentCachePolicy.NONE)
+		else
 		{
-			currentInstance = scope.manager.instantiator.create(generator, scope, registerTarget, constructorArguments, cache);
+			currentInstance = scope.eventMap.container.lookup(role, RoleHint.DEFAULT, _constructorArguments == null ? null : getRealArguments(scope, _constructorArguments));
 		}
 
 		return currentInstance;

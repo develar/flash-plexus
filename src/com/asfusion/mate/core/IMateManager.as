@@ -19,19 +19,16 @@
  */
 package com.asfusion.mate.core
 {
-import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.utils.debug.IMateLogger;
 
 import flash.events.IEventDispatcher;
 
 import mx.logging.ILoggingTarget;
 
-import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.PlexusContainerProvider;
 
-public interface IMateManager extends IEventDispatcher
+public interface IMateManager extends IEventDispatcher, PlexusContainerProvider
 {
-	function get instantiator():Creator;
-
 	/**
 	 * A reference to the IEventDispatcher instance that is used by the following tags:
 	 * <ul><li><code>Dispatcher</code></li>
@@ -40,21 +37,12 @@ public interface IMateManager extends IEventDispatcher
 	 */
 	function get dispatcher():IEventDispatcher;
 
-	function get injectors():Vector.<Injectors>;
-	
-	/**
-	 * A reference to the IEventDispatcher instance used by the <code>Response</code> tag
-	 */
-	function get responseDispatcher():IEventDispatcher
-
 	/**
 	 * An <code>ILoggingTarget</code> used by debugging purpose.
 	 */
 	function set debugger(value:ILoggingTarget):void;
 
 	function get debugger():ILoggingTarget;
-
-	function get cache():ComponentCache;
 
 	/**
 	 * An <code>IMateLogger</code> used to log errors.

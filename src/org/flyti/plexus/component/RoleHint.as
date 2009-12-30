@@ -1,4 +1,4 @@
-package org.flyti.plexus
+package org.flyti.plexus.component
 {
 import org.flyti.lang.Enum;
 

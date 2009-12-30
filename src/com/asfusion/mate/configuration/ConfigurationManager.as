@@ -1,6 +1,6 @@
 package com.asfusion.mate.configuration
 {
-import com.asfusion.mate.di;
+import org.flyti.plexus.plexus;
 
 import flash.utils.getDefinitionByName;
 
@@ -11,7 +11,7 @@ import org.flyti.util.Map;
 import org.flyti.util.ObjectUtil;
 import org.flyti.util.StringUtil;
 
-use namespace di;
+use namespace plexus;
 
 public class ConfigurationManager
 {

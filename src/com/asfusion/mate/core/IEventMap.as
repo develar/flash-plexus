@@ -19,12 +19,9 @@
  */
 package com.asfusion.mate.core
 {
-import com.asfusion.mate.actionLists.Injectors;
-
 import flash.events.IEventDispatcher;
-import flash.utils.Dictionary;
 
-import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.PlexusContainerProvider;
 
 /**
  * Interface that provides an event dispatcher.
@@ -33,28 +30,8 @@ import org.flyti.plexus.ComponentCache;
  * to get a local dispatcher.
  * This allows us to have a different dispatcher per EventMap
  */
-public interface IEventMap extends IEventDispatcher
+public interface IEventMap extends PlexusContainerProvider
 {
-	/**
-	 * String that indicates whether the event maps will use a global or a local cache.
-	 * Each individual tag (ex: ObjectBuilder) is using this setting by default.
-	 * Their default is inherit, which means that it will use the value that is
-	 * defined in the event map. But each tag can override that to local, global or none.
-	 */
-	function get cachePolicy():String;
-	function set cachePolicy(value:String):void;
-
-	/**
-	 * Method that returns of the local cache dictionary that will be used to store objects
-	 * created by the mate framework.
-	 */
-	function get cache():ComponentCache;
-
-	/**
-	 * Returns an event dispatcher.
-	 */
 	function get dispatcher():IEventDispatcher;
-
-	function get injectors():Vector.<Injectors>;
 }
 }

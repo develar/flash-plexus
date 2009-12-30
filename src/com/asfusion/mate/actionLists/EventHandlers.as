@@ -235,7 +235,7 @@ public class EventHandlers extends AbstractHandlers
 		{
 			currentDispatcher.removeEventListener(type, fireEvent, useCapture);
 			manager.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
+//			map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 			document[documentId] = null;
 		}
 	}

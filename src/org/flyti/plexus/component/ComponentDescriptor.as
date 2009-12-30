@@ -1,4 +1,4 @@
-package org.flyti.plexus
+package org.flyti.plexus.component
 {
 import org.flyti.lang.Enum;
 
@@ -10,6 +10,8 @@ public class ComponentDescriptor
 	
 	public var implementation:Class;
 
-	public var requirements:Vector.<Requirement>;
+	public var requirements:Vector.<ComponentRequirement>;
+
+	public var instantiationStrategy:InstantiationStrategy = InstantiationStrategy.KEEP_ALIVE;
 }
 }

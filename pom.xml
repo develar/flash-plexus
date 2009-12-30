@@ -14,10 +14,10 @@
 	<version>0.8.9-de10-SNAPSHOT</version>
 	<packaging>swc</packaging>
 
-	<!--<properties>-->
-		<!--<fdk.version>4.0.0.12948</fdk.version>-->
-		<!--<flex.sdk.version>4.0.0.12948</flex.sdk.version>-->
-	<!--</properties>-->
+	<properties>
+		<fdk.version>4.0.0.13215</fdk.version>
+		<flex.sdk.version>4.0.0.13215</flex.sdk.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.flyti</groupId>
 			<artifactId>lang</artifactId>
-			<version>1.1</version>
+			<version>1.1.1</version>
 			<type>swc</type>
 		</dependency>
 	</dependencies>
@@ -70,9 +70,9 @@
 								<class>com.asfusion.mate.actionLists.MessageHandlers</class>
 								<class>com.asfusion.mate.actionLists.Injectors</class>
 
-								<class>org.flyti.plexus.ComponentDescriptor</class>
-								<class>org.flyti.plexus.Requirement</class>
-								<class>org.flyti.plexus.ComponentDescriptorRegistry</class>
+								<class>**.ComponentDescriptor</class>
+								<class>**.ComponentRequirement</class>
+								<class>**.ComponentDescriptorRegistry</class>
 
 								<class>com.asfusion.mate.actions.DataCopier</class>
 								<class>com.asfusion.mate.actions.StopHandlers</class>
@@ -100,6 +100,10 @@
 								<class>
 									<name>ComponentDescriptor</name>
 									<id>Component</id>
+								</class>
+								<class>
+									<name>ComponentRequirement</name>
+									<id>Requirement</id>
 								</class>
 								<class>
 									<name>ComponentDescriptorRegistry</name>

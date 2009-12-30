@@ -3,6 +3,7 @@ package org.flyti.plexus
 import flash.utils.Dictionary;
 
 import org.flyti.lang.Enum;
+import org.flyti.plexus.component.ComponentDescriptor;
 
 [DefaultProperty("components")]
 public class ComponentDescriptorRegistry

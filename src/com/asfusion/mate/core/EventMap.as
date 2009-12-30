@@ -19,14 +19,11 @@
  */
 package com.asfusion.mate.core
 {
-import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.actionLists.ScopeProperties;
 
-import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
 
-import org.flyti.plexus.ComponentCache;
-import org.flyti.plexus.ComponentCachePolicy;
+import org.flyti.plexus.PlexusContainer;
 
 [Exclude(name="activate", kind="event")]
 [Exclude(name="deactivate", kind="event")]
@@ -49,11 +46,8 @@ import org.flyti.plexus.ComponentCachePolicy;
  * &lt;/EventMap&gt;
  * </listing>
  */
-public class EventMap extends EventDispatcher implements IEventMap
+public class EventMap implements IEventMap
 {
-	/*-.........................................event..........................................*/
-	private var _event:SmartObject = new SmartObject(ScopeProperties.EVENT);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the event that made the <code>EventHandlers</code> execute. The event itself or properties of the event
 	 * can be used as arguments of <code>MethodInvoker</code> methods, service methods, properties of all the <code>IAction</code>, etc.
@@ -61,14 +55,8 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 * @see currentEvent
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get event():Object
-	{
-		return _event;
-	}
+	public static const event:SmartObject = new SmartObject(ScopeProperties.EVENT);
 
-	/*-.........................................currentEvent..........................................*/
-	private var _currentEvent:SmartObject = new SmartObject(ScopeProperties.CURENT_EVENT);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the currentEvent that made the action-list (or inner-action-list) execute.
 	 * Inside the inner-action-list this property has the value of the current event while event has the
@@ -79,14 +67,8 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 * @see event
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get currentEvent():Object
-	{
-		return _currentEvent;
-	}
+	public static const currentEvent:SmartObject = new SmartObject(ScopeProperties.CURENT_EVENT);
 
-	/*-.........................................fault..........................................*/
-	private var _fault:SmartObject = new SmartObject(ScopeProperties.FAULT);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the fault returned by a service that made the inner-action-list (<code>faultHandlers</code>) execute.
 	 * The fault itself or properties of the fault can be used as arguments of <code>MethodInvoker</code>
@@ -97,14 +79,8 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 * @see com.asfusion.mate.actions.builders.ServiceInvoker
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get fault():Object
-	{
-		return _fault;
-	}
+	public static const fault:SmartObject = new SmartObject(ScopeProperties.FAULT);
 
-	/*-.........................................resultObject..........................................*/
-	private var _resultObject:SmartObject = new SmartObject(ScopeProperties.RESULT);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the result returned by a service that made the inner-action-list (<code>resultHandlers</code>) execute.
 	 * The result itself or properties of the result can be used as arguments of <code>MethodInvoker</code>
@@ -115,14 +91,8 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 * @see com.asfusion.mate.actions.builders.ServiceInvoker
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get resultObject():Object
-	{
-		return _resultObject;
-	}
+	public static const resultObject:SmartObject = new SmartObject(ScopeProperties.RESULT);
 
-	/*-.........................................lastReturn..........................................*/
-	private var _lastReturn:SmartObject = new SmartObject(ScopeProperties.LAST_RETURN);
-	[Bindable(event="propertyChange")]
 	/**
 	 * lastReturn is always available, although its value might be <code>null</code>.
 	 * It typically represents the value returned by a method call made on a <code>MethodInvoker</code>,
@@ -134,14 +104,8 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 *
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get lastReturn():Object
-	{
-		return _lastReturn;
-	}
+	public static const lastReturn:SmartObject = new SmartObject(ScopeProperties.LAST_RETURN);
 
-	/*-.........................................message..........................................*/
-	private var _message:SmartObject = new SmartObject(ScopeProperties.MESSAGE);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the message received that made the <code>MessageHandlers</code> execute.
 	 * The message itself or properties of the message can be used as arguments of
@@ -151,28 +115,16 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 * @see com.asfusion.mate.actionLists.MessageHandlers
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get message():Object
-	{
-		return _message;
-	}
+	public static const message:SmartObject = new SmartObject(ScopeProperties.MESSAGE);
 
-	/*-.........................................data..........................................*/
-	private var _data:SmartObject = new SmartObject(ScopeProperties.DATA);
-	[Bindable(event="propertyChange")]
 	/**
 	 * Every <code>IActionList</code> contains a placeholder object called <code>data</code>.
 	 * This object can be used to store temporary data that many tags in the <code>IActionList</code> can share.
 	 *
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get data():Object
-	{
-		return _data;
-	}
+	public static const data:SmartObject = new SmartObject(ScopeProperties.DATA);
 
-	/*-.........................................scope..........................................*/
-	private var _scope:SmartObject = new SmartObject(ScopeProperties.SCOPE);
-	[Bindable(event="propertyChange")]
 	/**
 	 * It refers to the <code>scope</code> of the <code>IActionList</code>.
 	 * The type of the <code>scope</code> is depending the type of <code>IActionList</code>.
@@ -184,57 +136,32 @@ public class EventMap extends EventDispatcher implements IEventMap
 	 *
 	 * @see com.asfusion.mate.core.SmartObject
 	 */
-	public function get scope():Object
-	{
-		return _scope;
-	}
+	public static const scope:SmartObject = new SmartObject(ScopeProperties.SCOPE);
 
-	protected var _cachePolicy:String = ComponentCachePolicy.GLOBAL;
-	public function get cachePolicy():String
-	{
-		return _cachePolicy;
-	}
-	[Inspectable(enumeration="local,global")]
-	public function set cachePolicy(value:String):void
-	{
-		_cachePolicy = value;
-	}
-
-	private var _cache:ComponentCache;
-	public function get cache():ComponentCache
-	{
-		if (_cache == null)
-		{
-			_cache = new ComponentCache();
-		}
-		return _cache;
-	}
-
-	public function get globalDispatcher():IEventDispatcher
-	{
-		return MateManager.instance.dispatcher;
-	}
-
-	private var _dispatcher:IEventDispatcher;
+	protected var _dispatcher:IEventDispatcher;
 	public function get dispatcher():IEventDispatcher
 	{
 		if (_dispatcher == null)
 		{
-			_dispatcher = globalDispatcher;
+			_dispatcher = MateManager.instance.dispatcher;
 		}
 
 		return _dispatcher;
 	}
 
-	private var _injectors:Vector.<Injectors>;
-	public function get injectors():Vector.<Injectors>
+	protected function createContainer():PlexusContainer
 	{
-		if (_injectors == null && cachePolicy == ComponentCachePolicy.LOCAL)
-		{
-			_injectors = new Vector.<Injectors>();
-		}
+		return MateManager.instance.container;
+	}
 
-		return _injectors;
+	private var _container:PlexusContainer;
+	public function get container():PlexusContainer
+	{
+		if (_container == null)
+		{
+			_container = createContainer();
+		}
+		return _container;
 	}
 }
 }

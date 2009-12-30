@@ -19,7 +19,6 @@
  */
 package com.asfusion.mate.core
 {
-
 /**
  * <code>MateManager</code> is in charge of returning an instance of the
  * <code>IMateManager</code> that is one of the core classes of Mate.
@@ -32,22 +31,16 @@ public class MateManager
 	 */
 	public static function get instance():IMateManager
 	{
-		return _instance == null ? createInstance() : _instance;
-	}
+		if (_instance == null)
+		{
+			_instance = new MateManagerInstance();
+		}
 
-	/**
-	 * Creates the <code>IMateManager</code> instance.
-	 */
-	protected static function createInstance():IMateManager
-	{
-		_instance = new MateManagerInstance();
 		return _instance;
 	}
 }
 }
 
-import com.asfusion.mate.actionLists.Injectors;
-import com.asfusion.mate.core.Creator;
 import com.asfusion.mate.core.GlobalDispatcher;
 import com.asfusion.mate.core.IMateManager;
 import com.asfusion.mate.events.InjectorEvent;
@@ -56,38 +49,30 @@ import com.asfusion.mate.utils.debug.Logger;
 
 import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
-import flash.utils.Dictionary;
 
 import mx.logging.ILoggingTarget;
 
-import org.flyti.plexus.ComponentCache;
+import org.flyti.plexus.DefaultPlexusContainer;
+import org.flyti.plexus.PlexusContainer;
 
 class MateManagerInstance extends EventDispatcher implements IMateManager
 {
 	public function MateManagerInstance()
 	{
-		_instantiator = new Creator();
 		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
 	}
 
 	private function injectHandler(event:InjectorEvent):void
 	{
-		Injectors.checkInjectors(injectors, event);
+		container.checkInjectors(event);
 	}
 
-	private var _cache:ComponentCache = new ComponentCache();
-	public function get cache():ComponentCache
+	private var _container:PlexusContainer = new DefaultPlexusContainer();
+	public function get container():PlexusContainer
 	{
-		return _cache;
+		return _container;
 	}
 
-	private var _instantiator:Creator;
-	public function get instantiator():Creator
-	{
-		return _instantiator;
-	}
-
-	//.........................................loggerClass........................................
 	private var _loggerClass:Class = Logger;
 	public function get loggerClass():Class
 	{
@@ -99,7 +84,6 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 		_loggerClass = value;
 	}
 
-	//.........................................debugger........................................
 	private var _debugger:ILoggingTarget;
 	public function get debugger():ILoggingTarget
 	{
@@ -117,16 +101,10 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 		return _dispatcher;
 	}
 
-	private var _responseDispatcher:IEventDispatcher = new EventDispatcher();
-	public function get responseDispatcher():IEventDispatcher
-	{
-		return _responseDispatcher;
-	}
-
 	public function getLogger(active:Boolean):IMateLogger
 	{
 		var logger:IMateLogger;
-		if (debugger)
+		if (debugger != null)
 		{
 			logger = new loggerClass(active);
 			debugger.addLogger(logger);
@@ -136,11 +114,5 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 			logger = new loggerClass(false);
 		}
 		return logger;
-	}
-
-	private var _injectors:Vector.<Injectors> = new Vector.<Injectors>();
-	public function get injectors():Vector.<Injectors>
-	{
-		return _injectors;
 	}
 }

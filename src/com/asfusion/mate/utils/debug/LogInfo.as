@@ -85,7 +85,7 @@ package com.asfusion.mate.utils.debug
 		 * Constructor
 		 */
 		public function LogInfo(loggerProvider:ILoggerProvider, 
-								instance:* = null,  
+								instance:Object = null,
 								error:Error = null, 
 								method:String = null, 
 								parameters:Array = null,
