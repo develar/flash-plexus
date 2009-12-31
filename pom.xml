@@ -10,7 +10,7 @@
 
 	<groupId>com.asfusion</groupId>
 	<artifactId>mate</artifactId>
-	<version>0.8.9-de10</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>swc</packaging>
 
 	<properties>
