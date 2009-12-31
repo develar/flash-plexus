@@ -1,4 +1,4 @@
-package org.flyti.plexus
+package org.flyti.plexus.component
 {
 import flash.utils.Dictionary;
 
@@ -6,7 +6,7 @@ import org.flyti.lang.Enum;
 import org.flyti.plexus.component.ComponentDescriptor;
 
 [DefaultProperty("components")]
-public class ComponentDescriptorRegistry
+public class ComponentDescriptorSet
 {
 	private static const map:Dictionary/*<Enum role hint, Dictionary of ComponentDescriptor>*/ = new Dictionary();
 

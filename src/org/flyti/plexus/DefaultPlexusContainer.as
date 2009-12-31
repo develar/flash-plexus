@@ -9,6 +9,7 @@ import flash.events.IEventDispatcher;
 
 import org.flyti.lang.Enum;
 import org.flyti.plexus.component.ComponentDescriptor;
+import org.flyti.plexus.component.ComponentDescriptorSet;
 import org.flyti.plexus.component.ComponentRequirement;
 import org.flyti.plexus.component.InstantiationStrategy;
 import org.flyti.plexus.component.RoleHint;
@@ -59,7 +60,7 @@ public class DefaultPlexusContainer implements PlexusContainer
 
 		var globalContainer:PlexusContainer = parentContainer == null ? this : parentContainer;
 
-		var componentDescriptor:ComponentDescriptor = ComponentDescriptorRegistry.get(role, roleHint);
+		var componentDescriptor:ComponentDescriptor = ComponentDescriptorSet.get(role, roleHint);
 		
 		var instance:Object = componentDescriptor == null || globalContainer == this ? cache.get(role, roleHint) : globalContainer.lookup(role, roleHint);
 		if (instance != null)
@@ -70,7 +71,8 @@ public class DefaultPlexusContainer implements PlexusContainer
 		var implementation:Class = componentDescriptor == null ? role : componentDescriptor.implementation;
 
 		instance = createInstance(implementation, constructorArguments);
-		if (componentDescriptor == null || componentDescriptor.instantiationStrategy != InstantiationStrategy.PER_LOOKUP)
+		var perLookup:Boolean = componentDescriptor != null && componentDescriptor.instantiationStrategy == InstantiationStrategy.PER_LOOKUP;
+		if (!perLookup)
 		{
 			cache.put(role, roleHint, instance);
 		}
@@ -89,8 +91,11 @@ public class DefaultPlexusContainer implements PlexusContainer
 			}
 		}
 
-		var injectorEvent:InjectorEvent = new InjectorEvent(instance);
-		checkInjectors(injectorEvent);
+		if (!perLookup)
+		{
+			var injectorEvent:InjectorEvent = new InjectorEvent(instance);
+			checkInjectors(injectorEvent);
+		}
 
 		if (instance is Configurable)
 		{
