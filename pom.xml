@@ -19,6 +19,10 @@
 		<flex.sdk.version>4.0.0.13215</flex.sdk.version>
 	</properties>
 
+	<scm>
+		<connection>scm:hg:${project.basedir}</connection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
