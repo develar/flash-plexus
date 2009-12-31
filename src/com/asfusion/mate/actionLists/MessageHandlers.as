@@ -21,15 +21,12 @@ package com.asfusion.mate.actionLists
 {
 import com.asfusion.mate.actions.IAction;
 import com.asfusion.mate.events.UnhandledMessageFaultEvent;
-	import com.asfusion.mate.utils.debug.DebuggerUtil;
-	import com.asfusion.mate.core.mate;
-	
-	import mx.messaging.*;
-	import mx.messaging.events.MessageEvent;
-	import mx.messaging.events.MessageFaultEvent;
-	
-	use namespace mate;
-	/**
+
+import mx.messaging.Consumer;
+import mx.messaging.events.MessageEvent;
+import mx.messaging.events.MessageFaultEvent;
+
+/**
 	 * The <code>MessageHandlers</code> tag allows you to register a set of handlers as a consumer of a Flex Messaging Service. 
 	 * All the tags inside the <code>MessageHandlers</code> tag will be executed in order when a <code>Message</code> matching the 
 	 * criteria is received. This tag accepts the same attributes as the <code>Consumer</code> tag.
@@ -236,9 +233,7 @@ import com.asfusion.mate.events.UnhandledMessageFaultEvent;
 		 */ 
 		override public function errorString():String
 		{
-			var str:String = "Destination:"+ destination + ". Error was found in a MessageHandlers list in file " 
-							+ DebuggerUtil.getClassName(document);
-			return str;
+			return "Destination:"+ destination + ". Error was found in a MessageHandlers list in " + map;
 		}
 		
 		//.........................................clearReferences..........................................

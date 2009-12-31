@@ -20,15 +20,11 @@
 package com.asfusion.mate.actionLists
 {
 import com.asfusion.mate.core.IEventMap;
-import com.asfusion.mate.core.IMateManager;
 import com.asfusion.mate.core.MateManager;
-import com.asfusion.mate.core.mate;
 import com.asfusion.mate.utils.debug.IMateLogger;
 
 import flash.events.Event;
 import flash.events.IEventDispatcher;
-
-use namespace mate;
 
 /**
  * Scope is an object created by the <code>IActionList</code>.
@@ -53,16 +49,8 @@ public class Scope implements IScope
 	 * An <code>IMateLogger</code> used to log errors.
 	 * Similar to Flex <code>ILogger</code>
 	 */
-	mate var logger:IMateLogger;
+	private var logger:IMateLogger;
 
-	private var _manager:IMateManager;
-	public function get manager():IMateManager
-	{
-		return _manager;
-	}
-
-
-	/*-.........................................data..........................................*/
 	private var _data:Object;
 	/**
 	 * @inheritDoc
@@ -77,11 +65,7 @@ public class Scope implements IScope
 		_data = value;
 	}
 
-	/*-.........................................owner..........................................*/
 	private var _owner:IActionList;
-	/**
-	 * @inheritDoc
-	 */
 	public function get owner():IActionList
 	{
 		return _owner;
@@ -92,11 +76,7 @@ public class Scope implements IScope
 		_owner = value;
 	}
 
-	/*-.........................................event..........................................*/
 	private var _event:Event;
-	/**
-	 * @inheritDoc
-	 */
 	public function get event():Event
 	{
 		return _event;
@@ -107,41 +87,27 @@ public class Scope implements IScope
 		_event = value;
 	}
 
-	/*-.........................................lastReturn..........................................*/
 	private var _lastReturn:Object;
-	/**
-	 * @inheritDoc
-	 */
 	public function get lastReturn():Object
 	{
 		return _lastReturn;
 	}
-
 	public function set lastReturn(value:Object):void
 	{
 		_lastReturn = value;
 	}
 
-	/*-.........................................dispatcher..........................................*/
 	private var _dispatcher:IEventDispatcher;
-	/**
-	 * @inheritDoc
-	 */
 	public function get dispatcher():IEventDispatcher
 	{
 		return _dispatcher;
 	}
-
 	public function set dispatcher(value:IEventDispatcher):void
 	{
 		_dispatcher = value;
 	}
 
-	/*-.........................................currentTarget..........................................*/
 	private var _currentTarget:Object;
-	/**
-	 * @inheritDoc
-	 */
 	public function get currentTarget():Object
 	{
 		return _currentTarget;
@@ -152,11 +118,7 @@ public class Scope implements IScope
 		_currentTarget = value;
 	}
 
-	/*-.........................................eventMap..........................................*/
 	private var _eventMap:IEventMap;
-	/**
-	 * @inheritDoc
-	 */
 	public function get eventMap():IEventMap
 	{
 		return _eventMap;
@@ -183,8 +145,7 @@ public class Scope implements IScope
 			data = new Object();
 		}
 		eventMap = map;
-		_manager = MateManager.instance;
-		logger = _manager.getLogger(active);
+		logger = MateManager.instance.getLogger(active);
 		dispatcher = map.dispatcher;
 	}
 

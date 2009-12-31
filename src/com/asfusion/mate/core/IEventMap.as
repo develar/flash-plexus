@@ -30,7 +30,7 @@ import org.flyti.plexus.PlexusContainerProvider;
  * to get a local dispatcher.
  * This allows us to have a different dispatcher per EventMap
  */
-public interface IEventMap extends PlexusContainerProvider
+public interface IEventMap extends PlexusContainerProvider, IEventDispatcher
 {
 	function get dispatcher():IEventDispatcher;
 }

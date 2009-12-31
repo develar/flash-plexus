@@ -19,13 +19,9 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.actions.builders
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.core.*;
-	import com.asfusion.mate.utils.debug.*;
+import com.asfusion.mate.actionLists.IScope;
 
-	use namespace mate;
-	
-	/**
+/**
 	* When placed inside a <code>IActionList</code> tag and the list is executed, 
 	* <code>PropertyInvoker</code> will create an object of the class specified in the <code>generator</code> attribute.
 	* It will then call the getter specified in the <code>property</code> attribute on the newly created object.

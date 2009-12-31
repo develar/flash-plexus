@@ -20,42 +20,38 @@
 package com.asfusion.mate.core
 {
 import com.asfusion.mate.events.DispatcherEvent;
-import com.asfusion.mate.events.InjectorEvent;
 
 import flash.events.IEventDispatcher;
 
 import org.flyti.plexus.DefaultPlexusContainer;
 import org.flyti.plexus.PlexusContainer;
 
-public class LocalEventMap extends EventMap
+public class LocalEventMap extends EventMapBase implements IEventMap
 {
-	override public function get dispatcher():IEventDispatcher
+	private var _dispatcher:IEventDispatcher;
+	public function get dispatcher():IEventDispatcher
 	{
 		return _dispatcher;
 	}
 	public function set dispatcher(value:IEventDispatcher):void
 	{
 		var oldValue:IEventDispatcher = _dispatcher;
-		if (oldValue !== value)
+		if (oldValue != value)
 		{
 			_dispatcher = value;
+			_container = new DefaultPlexusContainer(_dispatcher, MateManager.instance.container);
+
 			var event:DispatcherEvent = new DispatcherEvent(DispatcherEvent.CHANGE);
 			event.newDispatcher = value;
 			event.oldDispatcher = oldValue;
-			//dispatchEvent(event);
-
-			dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
+			dispatchEvent(event);
 		}
 	}
 
-	override protected function createContainer():PlexusContainer
+	private var _container:PlexusContainer;
+	public function get container():PlexusContainer
 	{
-		return new DefaultPlexusContainer(MateManager.instance.container);
-	}
-
-	private function injectHandler(event:InjectorEvent):void
-	{
-		container.checkInjectors(event);
+		return _container;
 	}
 }
 }

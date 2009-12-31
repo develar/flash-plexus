@@ -22,12 +22,9 @@ package com.asfusion.mate.actions.builders
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.BaseAction;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.core.mate;
 
 import org.flyti.plexus.component.ComponentCachePolicy;
 import org.flyti.plexus.component.RoleHint;
-
-use namespace mate;
 
 /**
  * ObjectBuilder is the base class for all the classes that use the <code>generator</code> property

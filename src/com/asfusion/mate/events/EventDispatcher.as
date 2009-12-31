@@ -12,7 +12,7 @@ public class EventDispatcher extends flash.events.EventDispatcher
 
 	public function EventDispatcher()
 	{
-		dispatcher = MateManager.instance.dispatcher;
+		dispatcher = MateManager.instance.container.dispatcher;
 	}
 
 	public function dispatchContextEvent(event:Event):Boolean

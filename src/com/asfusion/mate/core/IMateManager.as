@@ -30,14 +30,6 @@ import org.flyti.plexus.PlexusContainerProvider;
 public interface IMateManager extends IEventDispatcher, PlexusContainerProvider
 {
 	/**
-	 * A reference to the IEventDispatcher instance that is used by the following tags:
-	 * <ul><li><code>Dispatcher</code></li>
-	 * <li><code>IActionList</code></li>
-	 * <li><code>Listener</code></li></ul>
-	 */
-	function get dispatcher():IEventDispatcher;
-
-	/**
 	 * An <code>ILoggingTarget</code> used by debugging purpose.
 	 */
 	function set debugger(value:ILoggingTarget):void;

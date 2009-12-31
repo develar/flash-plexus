@@ -19,47 +19,40 @@ Author: Nahuel Foronda, Principal Architect
 */
 package com.asfusion.mate.utils.debug
 {
-	import com.asfusion.mate.actionLists.IScope;
-	import com.asfusion.mate.actionLists.Scope;
-	import com.asfusion.mate.actions.builders.IBuilder;
-	import com.asfusion.mate.core.ISmartObject;
-	import com.asfusion.mate.events.MateLogEvent;
-	
-	import flash.events.Event;
-	import flash.utils.*;
-	
-	import mx.logging.LogEvent;
-	import mx.utils.*;
-	
-	[ExcludeClass]
+import com.asfusion.mate.actionLists.IScope;
+import com.asfusion.mate.actionLists.Scope;
+import com.asfusion.mate.actions.builders.IBuilder;
+import com.asfusion.mate.core.ISmartObject;
+import com.asfusion.mate.events.MateLogEvent;
+
+import flash.events.Event;
+
+import flash.utils.Dictionary;
+
+import flash.utils.describeType;
+import flash.utils.getDefinitionByName;
+import flash.utils.getQualifiedClassName;
+
+import mx.logging.LogEvent;
+import mx.utils.DescribeTypeCache;
+import mx.utils.DescribeTypeCacheRecord;
+
+[ExcludeClass]
 	public class DebuggerHelper implements IDebuggerHelper
 	{
 		protected var helperFunctions:Dictionary;
-		
-		/*-----------------------------------------------------------------------------------------------------------
-		*                                          Constructors
-		-------------------------------------------------------------------------------------------------------------*/
+
 		public function DebuggerHelper()
 		{
 			createHelperFunctions();
 		}
-		
-		/*-----------------------------------------------------------------------------------------------------------
-		*                                          Public methods
-		-------------------------------------------------------------------------------------------------------------*/
+
 		public function getMessage(event:LogEvent):String
 		{
 			var message:String;
-			if(event is  MateLogEvent)
+			if (event is MateLogEvent)
 			{
-//				try
-//				{
-					message = helperFunctions[event.message](event as MateLogEvent);
-//				}
-//				catch(e:Error)
-//				{
-//					message = "Cannot debug";
-//				}
+				message = helperFunctions[event.message](event as MateLogEvent);
 			}
 			else
 			{
@@ -178,7 +171,7 @@ package com.asfusion.mate.utils.debug
 	    {
 	        var eventName:String = '"'+event.type+'"';
 	        var eventClass:Class = Class(getDefinitionByName(getQualifiedClassName(event)));
-	        var description:XML = flash.utils.describeType(eventClass);
+	        var description:XML = describeType(eventClass);
 	        for each (var cons:XML in description.constant..@name) 
 	        {
                 if(eventClass[cons] == event.type) 
@@ -246,7 +239,7 @@ package com.asfusion.mate.utils.debug
 	            	var argumentClass:Class;
 	            	var flag:Boolean;
 
-	            	argumentClass = flash.utils.getDefinitionByName(xmlParamters[i]) as Class;
+	            	argumentClass = getDefinitionByName(xmlParamters[i]) as Class;
 	            	flag = info.parameters[i] is argumentClass;
 
 	            	if(!flag)
@@ -336,13 +329,7 @@ package com.asfusion.mate.utils.debug
 			message += "---------------------------------------------------------\n";
 			return message;
 		}
-	    
-	    
-	    
-	    /*-----------------------------------------------------------------------------------------------------------
-		*                                          Helper functions
-		-------------------------------------------------------------------------------------------------------------*/
-	    /*-.........................................createHelperFunctions..........................................*/
+
 		protected function createHelperFunctions():void
 		{
 			helperFunctions = new Dictionary();
@@ -552,8 +539,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "Method " + info.method + " not found in class " + getClassName(info.instance);
-			var message:String = formatError(info,errorString);
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................methodUndefined..........................................*/
@@ -561,9 +547,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "Unable to call the service or function because the method is undefined";// + getClassName(info.instance);
-			var message:String = formatError(info,errorString);
-			
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................notAFunction..........................................*/
@@ -571,8 +555,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "Member " + info.method + " in class " + getClassName(info.instance) + " is not a function";
-			var message:String = formatError(info,errorString);
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................generatorNotFound..........................................*/
@@ -594,16 +577,13 @@ package com.asfusion.mate.utils.debug
 					parameters = [parameters];
 				}
 			}
-			var message:String = formatError(info,errorString, method, parameters as Array);
-			return message;
+			return formatError(info,errorString, method, parameters as Array);
 		}
 		
 		/*-.........................................instanceUndefined..........................................*/
 		protected function instanceUndefined(event:MateLogEvent):String
 		{
-			var message:String = event.message;
-			
-			return message;
+			return event.message;
 		}
 		
 		/*-.........................................propertyNotFound..........................................*/
@@ -611,8 +591,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "Property " + info.property + " not found in class " + getClassName(info.instance);
-			var message:String = formatError(info,errorString);
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................tooManyArguments..........................................*/
@@ -620,9 +599,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "No way, you are trying to call a constructor with more than 15 parameters. Please do some refactoring :)";
-			var message:String = formatError(info,errorString);
-			
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................isNotAndEvent..........................................*/
@@ -630,9 +607,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = "Unable to dispatch " + getClassName(info.instance) + " because it is not an Event";
-			var message:String = formatError(info,errorString);
-			
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................typeNotFound..........................................*/
@@ -640,8 +615,7 @@ package com.asfusion.mate.utils.debug
 		{
 			var info:LogInfo = event.parameters[0];
 			var errorString:String = 'Event type is undefined. Failed when trying to call the default event constructor "Event(type:String, bubbles:Boolean = false, cancelable:Boolean = false)"';
-			var message:String = formatError(info,errorString);
-			return message;
+			return formatError(info,errorString);
 		}
 		
 		/*-.........................................sourceUndefined..........................................*/

@@ -21,9 +21,6 @@ package com.asfusion.mate.actions.builders
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.core.MethodCaller;
-import com.asfusion.mate.core.mate;
-
-use namespace mate;
 
 /**
  * When placed inside a <code>IActionList</code> tag and the list is executed,

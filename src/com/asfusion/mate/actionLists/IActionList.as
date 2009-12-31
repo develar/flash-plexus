@@ -68,7 +68,7 @@ import flash.events.IEventDispatcher;
 		 * A method that allows setting the dispatcher
 		 * that this IActionList will use to register to events.
 		 */
-		function setDispatcher(value:IEventDispatcher, local:Boolean = true):void
+		function setDispatcher(value:IEventDispatcher):void
 		
 		/**
 		 * Validate and update the properties of this object, if necessary.

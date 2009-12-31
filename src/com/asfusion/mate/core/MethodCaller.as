@@ -21,8 +21,6 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.IScope;
 
-use namespace mate;
-
 /**
  * MethodCaller has the ability to call a method on any object.
  * If an error ocurrs, it will send it to the logger.

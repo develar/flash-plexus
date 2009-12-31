@@ -22,8 +22,6 @@ package com.asfusion.mate.core
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.builders.serviceClasses.Request;
 
-use namespace mate;
-
 /**
  * <code>Properties</code> tag allows you to add properties to an object.
  * <p>These properties can be a mix of SmartObject and normal Objects.

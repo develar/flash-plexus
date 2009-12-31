@@ -21,14 +21,10 @@ package com.asfusion.mate.actions.builders
 {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.core.mate;
 import com.asfusion.mate.utils.debug.LogInfo;
 import com.asfusion.mate.utils.debug.LogTypes;
 
 import flash.events.Event;
-import flash.events.IEventDispatcher;
-
-use namespace mate;
 
 [Exclude(name="cache", kind="property")]
 
@@ -119,28 +115,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 		throw(new Error("Events and responses cannot be cached"));
 	}
 
-	//.........................................dispatcherType..........................................
-	private var _dispatcherType:String = "inherit";
-	/**
-	 * String that defines whether the dispatcher used by this tag is <code>global</code> or
-	 * <code>inherit</code>. If it is <code>inherit</code>, the dispatcher used is the
-	 * dispatcher provided by the EventMap where this tag lives.
-	 */
-	public function get dispatcherType():String
-	{
-		return _dispatcherType;
-	}
-
-	[Inspectable(enumeration="inherit,global")]
-	public function set dispatcherType(value:String):void
-	{
-		var oldValue:String = _dispatcherType;
-		if (oldValue != value)
-		{
-			_dispatcherType = value;
-		}
-	}
-
 	override protected function createInstance(scope:IScope):Object
 	{
 		var realArguments:Array;
@@ -165,8 +139,7 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 
 	override protected function run(scope:IScope):void
 	{
-		var dispatcher:IEventDispatcher = (dispatcherType == "inherit") ? scope.dispatcher : scope.manager.dispatcher;
-		scope.lastReturn = dispatcher.dispatchEvent(Event(currentInstance));
+		scope.lastReturn = scope.dispatcher.dispatchEvent(Event(currentInstance));
 	}
 
 	private function newInstance(template:Class, p:Array):Object

@@ -11,7 +11,7 @@ public class ContextEventDispatcher
 
 	public function ContextEventDispatcher()
 	{
-		dispatcher = MateManager.instance.dispatcher;
+		dispatcher = MateManager.instance.container.dispatcher;
 	}
 
 	public function dispatchContextEvent(event:Event):Boolean

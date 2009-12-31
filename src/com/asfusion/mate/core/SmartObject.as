@@ -25,8 +25,6 @@ import com.asfusion.mate.actionLists.ScopeProperties;
 import flash.utils.Proxy;
 import flash.utils.flash_proxy;
 
-use namespace mate;
-
 /**
  * The Smart Objects can be used within the <code>IActionList</code>.
  * These objects expose temporary data such as the current event,

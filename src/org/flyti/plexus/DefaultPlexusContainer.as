@@ -5,6 +5,8 @@ import com.asfusion.mate.configuration.Configurable;
 import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.events.InjectorEvent;
 
+import flash.events.IEventDispatcher;
+
 import org.flyti.lang.Enum;
 import org.flyti.plexus.component.ComponentDescriptor;
 import org.flyti.plexus.component.ComponentRequirement;
@@ -23,9 +25,23 @@ public class DefaultPlexusContainer implements PlexusContainer
 
 	private var cache:ComponentCache = new ComponentCache();
 
-	public function DefaultPlexusContainer(parentContainer:PlexusContainer = null)
+	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, parentContainer:PlexusContainer = null)
 	{
+		_dispatcher = dispatcher;
+		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
+		
 		this.parentContainer = parentContainer;
+	}
+
+	private function injectHandler(event:InjectorEvent):void
+	{
+		checkInjectors(event);
+	}
+
+	private var _dispatcher:IEventDispatcher;
+	public function get dispatcher():IEventDispatcher
+	{
+		return _dispatcher;
 	}
 
 	private var _injectors:Vector.<Injectors> = new Vector.<Injectors>();
@@ -87,7 +103,14 @@ public class DefaultPlexusContainer implements PlexusContainer
 
 	public function checkInjectors(injectorEvent:InjectorEvent):void
 	{
-		Injectors.checkInjectors(injectors, injectorEvent);
+		for each (var injector:Injectors in injectors)
+		{
+			if ((injector.targetId == null || injectorEvent.uid == injector.targetId) && injectorEvent.instance is injector.target)
+			{
+				injector.fire(injectorEvent);
+			}
+		}
+		
 		if (parentContainer)
 		{
 			parentContainer.checkInjectors(injectorEvent);

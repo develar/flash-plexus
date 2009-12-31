@@ -214,16 +214,10 @@ import flash.events.IEventDispatcher;
 			}
 			super.run(scope);
 		}
-		
-		/*-----------------------------------------------------------------------------------------------------------
-		*                                          Protected methods
-		-------------------------------------------------------------------------------------------------------------*/
-		
-		/*-.........................................createInnerHandlers..........................................*/
+
 		/**
 		 * Creates IActionList and sets the properties:
 		 * debug, type, listeners, dispatcher and inheritScope in the newly IActionList (inner-handlers).
-		 * 
 		 */
 		protected function createInnerHandlers(scope:IScope,  
 											innerType:String, 
@@ -248,18 +242,17 @@ import flash.events.IEventDispatcher;
 				innerHandlersList[currentIndex] = siblings;
 			}
 			innerHandlers.setGroupId(currentIndex);
-			innerHandlers.addEventListener(ActionListEvent.START, actionListStartHandler, false, 0, true);
+			innerHandlers.addEventListener(ActionListEvent.START, actionListStartHandler);
 			siblings.push(innerHandlers);
 			
 			innerHandlers.debug = debug;
 			return innerHandlers;
 		}
-		
-		/*-.........................................actionListStartHandler..........................................*/
+
 		/**
 		 * Handler that will be fired when the first of the innerHandlers starts executing.
 		 */
-		protected function actionListStartHandler(event:ActionListEvent):void
+		private function actionListStartHandler(event:ActionListEvent):void
 		{
 			if(event.target is IActionList)
 			{

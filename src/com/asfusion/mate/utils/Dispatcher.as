@@ -8,7 +8,7 @@ public class Dispatcher
 {
 	public static function dispatch(event:Event):void
 	{
-		MateManager.instance.dispatcher.dispatchEvent(event);
+		MateManager.instance.container.dispatcher.dispatchEvent(event);
 	}
 }
 }

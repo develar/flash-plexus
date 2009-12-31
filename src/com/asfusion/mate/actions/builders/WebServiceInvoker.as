@@ -27,8 +27,6 @@ import com.asfusion.mate.utils.debug.*;
 import mx.rpc.AbstractOperation;
 import mx.rpc.soap.mxml.WebService;
 
-use namespace mate;
-	
 	/**
 	 * The <code>WebServiceInvoker</code> tag allows you to create a Web Service (<code>mx.rpc.soap.mxml.WebService</code>) 
 	 * in your <code>IActionList</code> and call a method on that web service, in one step. 

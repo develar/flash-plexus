@@ -72,8 +72,7 @@ package com.asfusion.mate.actionLists
 		 */
 		function get dispatcher():IEventDispatcher
 		function set dispatcher(value:IEventDispatcher):void
-		
-		
+
 		/**
 		 * Instance of the <code>EventMap</code> where this scope lives.
 		 */
@@ -90,10 +89,5 @@ package com.asfusion.mate.actionLists
 		 * Returns a boolean indicating if the <code>IActionList</code> is running or not.
 		 */
 		function isRunning():Boolean
-		
-		/**
-		 * Returns an instance of <code>IMateManager</code> used to get the logger and dispatcher.
-		 */
-		function get manager():IMateManager
 	}
 }

@@ -27,7 +27,6 @@ import com.asfusion.mate.utils.debug.*;
 import mx.rpc.AbstractOperation;
 import mx.rpc.remoting.mxml.RemoteObject;
 
-use namespace mate;
 	
 	/**
 	 * The <code>RemoteObjectInvoker</code> tag is used to create a <code>RemoteObject</code> instance and call 

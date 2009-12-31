@@ -43,12 +43,10 @@ public class MateManager
 
 import com.asfusion.mate.core.GlobalDispatcher;
 import com.asfusion.mate.core.IMateManager;
-import com.asfusion.mate.events.InjectorEvent;
 import com.asfusion.mate.utils.debug.IMateLogger;
 import com.asfusion.mate.utils.debug.Logger;
 
 import flash.events.EventDispatcher;
-import flash.events.IEventDispatcher;
 
 import mx.logging.ILoggingTarget;
 
@@ -59,15 +57,10 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 {
 	public function MateManagerInstance()
 	{
-		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
+		_container = new DefaultPlexusContainer(new GlobalDispatcher());
 	}
 
-	private function injectHandler(event:InjectorEvent):void
-	{
-		container.checkInjectors(event);
-	}
-
-	private var _container:PlexusContainer = new DefaultPlexusContainer();
+	private var _container:PlexusContainer;
 	public function get container():PlexusContainer
 	{
 		return _container;
@@ -93,12 +86,6 @@ class MateManagerInstance extends EventDispatcher implements IMateManager
 	public function set debugger(value:ILoggingTarget):void
 	{
 		_debugger = value;
-	}
-
-	private var _dispatcher:IEventDispatcher = new GlobalDispatcher();
-	public function get dispatcher():IEventDispatcher
-	{
-		return _dispatcher;
 	}
 
 	public function getLogger(active:Boolean):IMateLogger

@@ -38,10 +38,6 @@ import mx.rpc.http.HTTPService;
  */
 public class HTTPServiceInvoker extends ServiceInvoker implements IAction
 {
-	/**
-	 *  @private
-	 *  No documentation about this yet
-	 */
 	protected var proxyChanged:Boolean;
 
 	/*-.........................................resultFormat..........................................*/

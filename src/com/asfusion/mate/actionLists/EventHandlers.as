@@ -19,14 +19,10 @@
  */
 package com.asfusion.mate.actionLists
 {
-import com.asfusion.mate.core.mate;
 import com.asfusion.mate.events.DispatcherEvent;
-import com.asfusion.mate.utils.debug.DebuggerUtil;
 
 import flash.events.Event;
 import flash.events.IEventDispatcher;
-
-use namespace mate;
 
 /**
  * A <code>EventHandlers</code> defined in the <code>EventMap</code> will run whenever an event of the type specified in the <code>EventHandlers</code>'s "type" argument is dispatched.
@@ -156,33 +152,26 @@ public class EventHandlers extends AbstractHandlers
 		}
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	override public function setDispatcher(value:IEventDispatcher, local:Boolean = true):void
+	override public function setDispatcher(value:IEventDispatcher):void
 	{
-		if (value !== dispatcher)
+		if (value == dispatcher)
 		{
-			if (registered)
-			{
-				unregister(type, dispatcher, useCapture);
-			}
+			return;
 		}
-		super.setDispatcher(value, local);
+
+		if (registered)
+		{
+			unregister(type, dispatcher, useCapture);
+		}
+
+		super.setDispatcher(value);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	override public function errorString():String
 	{
-		return "EventType:" + type + ". Error was found in a EventHandlers list in file "
-				+ DebuggerUtil.getClassName(document);
+		return "EventType:" + type + ". Error was found in a EventHandlers list in " + map;
 	}
 
-	/**
-	 *  @inheritDoc
-	 */
 	override public function clearReferences():void
 	{
 		unregister(type, dispatcher, useCapture);
@@ -198,7 +187,7 @@ public class EventHandlers extends AbstractHandlers
 			dispatcherTypeChanged = false;
 			if (registered)
 			{
-				unregister(type, currentDispatcher, useCapture);
+				unregister(type, dispatcher, useCapture);
 			}
 		}
 		if (!registered && type && dispatcher)
@@ -213,7 +202,7 @@ public class EventHandlers extends AbstractHandlers
 	 */
 	protected function unregister(oldType:String, oldDispatcher:IEventDispatcher, oldCapture:Boolean):void
 	{
-		if (oldDispatcher && oldType)
+		if (oldDispatcher != null && oldType != null)
 		{
 			oldDispatcher.removeEventListener(oldType, fireEvent, oldCapture);
 			registered = false;
@@ -233,10 +222,10 @@ public class EventHandlers extends AbstractHandlers
 
 		if (oneTime)
 		{
-			currentDispatcher.removeEventListener(type, fireEvent, useCapture);
+			dispatcher.removeEventListener(type, fireEvent, useCapture);
 			manager.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 //			map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			document[documentId] = null;
+			map[documentId] = null;
 		}
 	}
 

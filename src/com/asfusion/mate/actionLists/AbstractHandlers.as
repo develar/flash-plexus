@@ -23,13 +23,11 @@ import com.asfusion.mate.actions.IAction;
 import com.asfusion.mate.core.IEventMap;
 import com.asfusion.mate.core.IMateManager;
 import com.asfusion.mate.core.MateManager;
-import com.asfusion.mate.core.mate;
 import com.asfusion.mate.events.ActionListEvent;
 import com.asfusion.mate.events.DispatcherEvent;
 import com.asfusion.mate.utils.debug.IMateLogger;
 import com.asfusion.mate.utils.debug.LogInfo;
 import com.asfusion.mate.utils.debug.LogTypes;
-
 
 import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
@@ -37,7 +35,7 @@ import flash.ui.Keyboard;
 
 import mx.core.IMXMLObject;
 
-use namespace mate;
+import org.flyti.plexus.PlexusContainer;
 
 [DefaultProperty("actions")]
 [Exclude(name="activate", kind="event")]
@@ -93,6 +91,7 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 	public function set actions(value:Vector.<IAction>):void
 	{
 		_actions = value;
+		_actions.fixed = true;
 	}
 
 	private var _scope:IScope;
@@ -113,80 +112,20 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 		_debug = value;
 	}
 
-	private var _dispatcherType:String = "inherit";
-	/**
-	 * String that defines whether the dispatcher used by this tag is <code>global</code> or
-	 * <code>inherit</code>. If it is <code>inherit</code>, the dispatcher used is the
-	 * dispatcher provided by the EventMap where this tag lives.
-	 */
-	public function get dispatcherType():String
-	{
-		return _dispatcherType;
-	}
-
-	[Inspectable(enumeration="inherit,global")]
-	public function set dispatcherType(value:String):void
-	{
-		var oldValue:String = _dispatcherType;
-		if (oldValue != value)
-		{
-			if (oldValue == "global")
-			{
-				manager.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			}
-			else if (oldValue == "inherit" && map)
-			{
-//				map.removeEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			}
-			if (value == "global")
-			{
-				manager.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			}
-			else if (value == "inherit" && map)
-			{
-//				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			}
-			_dispatcherType = value;
-			dispatcherTypeChanged = true;
-			validateNow();
-		}
-	}
-
-	protected var currentDispatcher:IEventDispatcher;
 	private var _dispatcher:IEventDispatcher;
 	/**
-	 *	 The IActionList registers itself as an event listener of the dispatcher specified in this property.
-	 *  By the default, this dispatcher is the Application. dispatcher property only available when using mate namespace
-	 *
-	 *  @default Application.application
-	 *
+	 *	The IActionList registers itself as an event listener of the dispatcher specified in this property
 	 */
-	mate function get dispatcher():IEventDispatcher
+	protected function get dispatcher():IEventDispatcher
 	{
-		if (_dispatcher)
-		{
-			currentDispatcher = _dispatcher;
-		}
-		else
-		{
-			if (dispatcherType == "global")
-			{
-				currentDispatcher = manager.dispatcher;
-			}
-			else if (dispatcherType == "inherit" && map)
-			{
-				currentDispatcher = map.dispatcher;
-			}
-		}
-		return currentDispatcher;
+		return _dispatcher;
 	}
 
-	mate function set dispatcher(value:IEventDispatcher):void
+	protected function set dispatcher(value:IEventDispatcher):void
 	{
-		if (_dispatcher !== value)
+		if (_dispatcher != value)
 		{
-			currentDispatcher = _dispatcher = value;
-			dispatcherType = "local";
+			_dispatcher = value;
 		}
 	}
 
@@ -195,64 +134,48 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 		manager = MateManager.instance;
 	}
 
-	public function setDispatcher(value:IEventDispatcher, local:Boolean = true):void
+	public function setDispatcher(value:IEventDispatcher):void
 	{
-		if (local)
+		if (value == dispatcher)
 		{
-			dispatcher = value;
+			return;
 		}
-		else if (!_dispatcher)
-		{
-			currentDispatcher = value;
-		}
+
+		dispatcher = value;
 		validateNow();
 	}
 
 	private var needsInvalidation:Boolean;
 
-	/**
-	 *  @inheritDoc
-	 */
 	public function invalidateProperties():void
 	{
 		if (!isInitialized) needsInvalidation = true;
 		else commitProperties();
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function setInheritedScope(inheritedScope:IScope):void
 	{
 		this.inheritedScope = inheritedScope;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function validateNow():void
 	{
 		commitProperties();
 	}
 
-	/*-.........................................errorString..........................................*/
-	/**
-	 * @inheritDoc
-	 */
 	public function errorString():String
 	{
-		return "Error was found in a AbstractHandlers in file " + document;
+		return "Error was found in a Handlers in " + map;
 	}
 
 	/**
 	 * Internal storage for a group id.
 	 */
 	private var _groupId:int = -1;
-
-	/*-.........................................setGroupIndex..........................................*/
-	/**
-	 *  @inheritDoc
-	 */
+	public function getGroupId():int
+	{
+		return _groupId;
+	}
 	public function setGroupId(id:int):void
 	{
 		_groupId = id;
@@ -261,11 +184,6 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 	public function clearReferences():void
 	{
 		// this method is abstract it will be implemented by children
-	}
-
-	public function getGroupId():int
-	{
-		return _groupId;
 	}
 
 	/**
@@ -304,7 +222,6 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 		_scope = null;
 	}
 
-	/*-.........................................commitProperties..........................................*/
 	/**
 	 * Processes the properties set on the component.
 	 */
@@ -328,43 +245,31 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 	 */
 	protected function dispatcherChangeHandler(event:DispatcherEvent):void
 	{
-		setDispatcher(event.newDispatcher, false);
+		setDispatcher(event.newDispatcher);
 	}
-
-	protected var document:Object;
 
 	public function getDocument():Object
 	{
-		return document;
+		return map;
 	}
 
 	private var isInitialized:Boolean;
 
-	/**
-	 * Called automatically by the MXML compiler if the IActionList is set up using a tag.
-	 */
 	public function initialized(document:Object, id:String):void
 	{
-		this.document = document;
-
-		if (document is IEventMap)
+		map = IEventMap(document);
+		// service can set dispatcher for inner handlers
+		if (dispatcher == null)
 		{
-			map = IEventMap(document);
-		}
-
-		if (dispatcherType == "inherit" && map)
-		{
-			var inheritDispatcher:IEventDispatcher = map.dispatcher;
-
-//			map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			if (inheritDispatcher)
+			var container:PlexusContainer = map.container;
+			if (container == null)
 			{
-				setDispatcher(inheritDispatcher, false);
+				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
 			}
-		}
-		else if (dispatcherType == "global")
-		{
-			setDispatcher(manager.dispatcher, false);
+			else
+			{
+				setDispatcher(container.dispatcher);
+			}
 		}
 
 		if (needsInvalidation)
