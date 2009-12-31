@@ -9,7 +9,7 @@ import flash.events.IEventDispatcher;
 
 import org.flyti.lang.Enum;
 import org.flyti.plexus.component.ComponentDescriptor;
-import org.flyti.plexus.component.ComponentDescriptorSet;
+import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.component.ComponentRequirement;
 import org.flyti.plexus.component.InstantiationStrategy;
 import org.flyti.plexus.component.RoleHint;
@@ -18,20 +18,28 @@ use namespace plexus;
 
 /**
  * Компонент кешируется там, где его дескриптор (http://juick.com/develar/450898)
- * Но так как пока что дескриптор всегда на глобальном, мы и кешируем их только на глобальном уровне
+ * Так как на данный момент для компонента может отсутствовать дескриптор (он тупо как роль в EventMap),
+ * то если мы не нашли дескриптор для него ни у себя, ни в родительских контейнерах — кешируем его у себя
  */
 public class DefaultPlexusContainer implements PlexusContainer
 {
-	private var parentContainer:PlexusContainer;
+	private var _parentContainer:PlexusContainer;
+	public function get parentContainer():PlexusContainer
+	{
+		return _parentContainer;
+	}
+
+	private var componentDescriptorRegistry:ComponentDescriptorRegistry;
 
 	private var cache:ComponentCache = new ComponentCache();
 
-	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, parentContainer:PlexusContainer = null)
+	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, parentContainer:PlexusContainer = null, componentDescriptorRegistry:ComponentDescriptorRegistry = null)
 	{
 		_dispatcher = dispatcher;
 		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
 		
-		this.parentContainer = parentContainer;
+		this._parentContainer = parentContainer;
+		this.componentDescriptorRegistry = componentDescriptorRegistry;
 	}
 
 	private function injectHandler(event:InjectorEvent):void
@@ -51,6 +59,11 @@ public class DefaultPlexusContainer implements PlexusContainer
 		return _injectors;
 	}
 
+	public function getComponentDescriptor(role:Class, roleHint:Enum):ComponentDescriptor
+	{
+		return componentDescriptorRegistry == null ? null : componentDescriptorRegistry.get(role, roleHint);
+	}
+
 	public function lookup(role:Class, roleHint:Enum = null, constructorArguments:Array = null):Object
 	{
 		if (roleHint == null)
@@ -58,11 +71,25 @@ public class DefaultPlexusContainer implements PlexusContainer
 			roleHint = RoleHint.DEFAULT;
 		}
 
-		var globalContainer:PlexusContainer = parentContainer == null ? this : parentContainer;
+		var componentDescriptor:ComponentDescriptor = getComponentDescriptor(role, roleHint);
+		if (componentDescriptor == null)
+		{
+			var currentContainer:PlexusContainer = _parentContainer;
+			while (currentContainer != null)
+			{
+				componentDescriptor = currentContainer.getComponentDescriptor(role, roleHint);
+				if (componentDescriptor != null)
+				{
+					return currentContainer.lookup(role, roleHint);
+				}
+				else
+				{
+					currentContainer = currentContainer.parentContainer;
+				}
+			}
+		}
 
-		var componentDescriptor:ComponentDescriptor = ComponentDescriptorSet.get(role, roleHint);
-		
-		var instance:Object = componentDescriptor == null || globalContainer == this ? cache.get(role, roleHint) : globalContainer.lookup(role, roleHint);
+		var instance:Object = cache.get(role, roleHint);
 		if (instance != null)
 		{
 			return instance;
@@ -77,15 +104,19 @@ public class DefaultPlexusContainer implements PlexusContainer
 			cache.put(role, roleHint, instance);
 		}
 
+		if (instance is PlexusContainerRecipient)
+		{
+			PlexusContainerRecipient(instance).container = this;
+		}
+
 		if (componentDescriptor != null && componentDescriptor.requirements != null)
 		{
-			// компоненты на данный момент всегда создаются с кешем GLOBAL
 			for each (var requirement:ComponentRequirement in componentDescriptor.requirements)
 			{
 				var requiredComponent:Object = cache.get(requirement.role, requirement.roleHint);
 				if (requiredComponent == null)
 				{
-					requiredComponent = globalContainer.lookup(requirement.role, requirement.roleHint);
+					requiredComponent = lookup(requirement.role, requirement.roleHint);
 				}
 				instance[requirement.field] = requiredComponent;
 			}
@@ -99,6 +130,7 @@ public class DefaultPlexusContainer implements PlexusContainer
 
 		if (instance is Configurable)
 		{
+			var globalContainer:PlexusContainer = _parentContainer == null ? this : _parentContainer;
 			var configurationManager:ConfigurationManager = ConfigurationManager(globalContainer.lookup(ConfigurationManager));
 			configurationManager.configurate(Configurable(instance), role);
 		}
@@ -116,9 +148,9 @@ public class DefaultPlexusContainer implements PlexusContainer
 			}
 		}
 		
-		if (parentContainer)
+		if (_parentContainer != null)
 		{
-			parentContainer.checkInjectors(injectorEvent);
+			_parentContainer.checkInjectors(injectorEvent);
 		}
 	}
 
@@ -132,11 +164,11 @@ public class DefaultPlexusContainer implements PlexusContainer
 		{
 			switch (p.length)
 			{
-				case 1:	return new template(p[0]); break;
-				case 2:	return new template(p[0], p[1]); break;
-				case 3:	return new template(p[0], p[1], p[2]); break;
-				case 4:	return new template(p[0], p[1], p[2], p[3]); break;
-				case 5:	return new template(p[0], p[1], p[2], p[3], p[4]); break;
+				case 1:	return new template(p[0]);
+				case 2:	return new template(p[0], p[1]);
+				case 3:	return new template(p[0], p[1], p[2]);
+				case 4:	return new template(p[0], p[1], p[2], p[3]);
+				case 5:	return new template(p[0], p[1], p[2], p[3], p[4]);
 			}
 
 			throw new ArgumentError("constructorArguments is too long");

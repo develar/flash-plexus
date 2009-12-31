@@ -52,12 +52,20 @@ import mx.logging.ILoggingTarget;
 
 import org.flyti.plexus.DefaultPlexusContainer;
 import org.flyti.plexus.PlexusContainer;
+import org.flyti.plexus.component.ComponentDescriptorRegistry;
 
-class MateManagerInstance extends EventDispatcher implements IMateManager
+class MateManagerInstance implements IMateManager
 {
 	public function MateManagerInstance()
 	{
-		_container = new DefaultPlexusContainer(new GlobalDispatcher());
+		_componentDescriptorRegistry = new ComponentDescriptorRegistry();
+		_container = new DefaultPlexusContainer(new GlobalDispatcher(), null, _componentDescriptorRegistry);
+	}
+
+	private var _componentDescriptorRegistry:ComponentDescriptorRegistry;
+	public function get componentDescriptorRegistry():ComponentDescriptorRegistry
+	{
+		return _componentDescriptorRegistry;
 	}
 
 	private var _container:PlexusContainer;

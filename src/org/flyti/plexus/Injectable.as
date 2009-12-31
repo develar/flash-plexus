@@ -1,4 +1,4 @@
-package com.asfusion.mate
+package org.flyti.plexus
 {
 public interface Injectable
 {

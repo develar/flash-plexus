@@ -21,13 +21,12 @@ package com.asfusion.mate.core
 {
 import com.asfusion.mate.utils.debug.IMateLogger;
 
-import flash.events.IEventDispatcher;
-
 import mx.logging.ILoggingTarget;
 
 import org.flyti.plexus.PlexusContainerProvider;
+import org.flyti.plexus.component.ComponentDescriptorRegistry;
 
-public interface IMateManager extends IEventDispatcher, PlexusContainerProvider
+public interface IMateManager extends PlexusContainerProvider
 {
 	/**
 	 * An <code>ILoggingTarget</code> used by debugging purpose.
@@ -41,5 +40,7 @@ public interface IMateManager extends IEventDispatcher, PlexusContainerProvider
 	 * Similar to Flex <code>ILogger</code>
 	 */
 	function getLogger(active:Boolean):IMateLogger;
+
+	function get componentDescriptorRegistry():ComponentDescriptorRegistry;
 }
 }

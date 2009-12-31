@@ -1,7 +1,8 @@
 package com.asfusion.mate.core
 {
 import com.asfusion.mate.actionLists.ScopeProperties;
-import com.asfusion.mate.events.EventDispatcher;
+
+import flash.events.EventDispatcher;
 
 public class EventMapBase extends EventDispatcher
 {
