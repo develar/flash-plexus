@@ -21,8 +21,6 @@ package com.asfusion.mate.actionLists
 {
 import com.asfusion.mate.actions.IAction;
 import com.asfusion.mate.core.IEventMap;
-import com.asfusion.mate.core.IMateManager;
-import com.asfusion.mate.core.MateManager;
 import com.asfusion.mate.events.ActionListEvent;
 import com.asfusion.mate.events.DispatcherEvent;
 import com.asfusion.mate.utils.debug.IMateLogger;
@@ -64,11 +62,6 @@ import org.flyti.plexus.PlexusContainer;
 public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IActionList
 {
 	/**
-	 * Internal instance of <code>IMateManager</code>.
-	 */
-	protected var manager:IMateManager;
-
-	/**
 	 * Internal instance of <code>IEventMap</code>.
 	 */
 	protected var map:IEventMap;
@@ -77,11 +70,6 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 	 * Parent scope that is passed to the IActionList when it is a sub-ActionList.
 	 */
 	protected var inheritedScope:IScope;
-
-	/**
-	 * Flag indicating whether the <code>dispatcherType</code> has been changed and needs invalidation.
-	 */
-	protected var dispatcherTypeChanged:Boolean;
 
 	private var _actions:Vector.<IAction>;
 	public function get actions():Vector.<IAction>
@@ -127,11 +115,6 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 		{
 			_dispatcher = value;
 		}
-	}
-
-	public function AbstractHandlers()
-	{
-		manager = MateManager.instance;
 	}
 
 	public function setDispatcher(value:IEventDispatcher):void

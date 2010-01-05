@@ -49,23 +49,20 @@ import com.asfusion.mate.core.MethodCaller;
  */
 public class MethodInvoker extends ObjectBuilder
 {
-	private static var methodCaller:MethodCaller = new MethodCaller();
+	private static const methodCaller:MethodCaller = new MethodCaller();
 
-	private var _arguments:* = undefined;
+	private var _arguments:*;
 
 	/**
 	 *  The property <code>arguments</code> allows you to pass an Object or an Array of objects when calling
 	 * the function defined in the property <code>method</code> .
 	 *  <p>You can use an array to pass multiple arguments or use a simple Object if the signature of the
 	 * <code>method</code> has only one parameter.</p>
-	 *
-	 *  @default undefined
 	 */
 	public function get arguments():*
 	{
 		return _arguments;
 	}
-
 	public function set arguments(value:*):void
 	{
 		_arguments = value;
@@ -74,8 +71,6 @@ public class MethodInvoker extends ObjectBuilder
 	private var _method:String;
 	/**
 	 * The function to call on the created object.
-	 *
-	 *  @default null
 	 */
 	public function get method():String
 	{

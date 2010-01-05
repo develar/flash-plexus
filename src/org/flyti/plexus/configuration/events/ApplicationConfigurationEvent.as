@@ -1,4 +1,4 @@
-package com.asfusion.mate.configuration.events
+package org.flyti.plexus.configuration.events
 {
 import flash.events.Event;
 

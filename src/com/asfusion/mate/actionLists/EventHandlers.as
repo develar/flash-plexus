@@ -49,15 +49,12 @@ public class EventHandlers extends AbstractHandlers
 	 */
 	protected var registered:Boolean;
 
-	/*-.........................................type..........................................*/
 	private var _type:String;
 	/**
 	 * The event type that, when dispatched, should trigger the handlers to run.
 	 * It should match the type specified in the event when created.
 	 * All events extending from flash.events.Event have a "type" property.
 	 * The type is case-sensitive.
-	 *
-	 *  @default null
 	 * */
 	public function get type():String
 	{
@@ -182,14 +179,6 @@ public class EventHandlers extends AbstractHandlers
 	 */
 	override protected function commitProperties():void
 	{
-		if (dispatcherTypeChanged)
-		{
-			dispatcherTypeChanged = false;
-			if (registered)
-			{
-				unregister(type, dispatcher, useCapture);
-			}
-		}
 		if (!registered && type && dispatcher)
 		{
 			dispatcher.addEventListener(type, fireEvent, useCapture, priority, useWeakReference);

@@ -1,8 +1,6 @@
 package org.flyti.plexus
 {
 import com.asfusion.mate.actionLists.Injectors;
-import com.asfusion.mate.configuration.Configurable;
-import com.asfusion.mate.configuration.ConfigurationManager;
 import com.asfusion.mate.events.InjectorEvent;
 
 import flash.events.IEventDispatcher;
@@ -13,6 +11,8 @@ import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.component.ComponentRequirement;
 import org.flyti.plexus.component.InstantiationStrategy;
 import org.flyti.plexus.component.RoleHint;
+import org.flyti.plexus.configuration.Configurable;
+import org.flyti.plexus.configuration.ConfigurationManager;
 
 use namespace plexus;
 
@@ -147,7 +147,12 @@ public class DefaultPlexusContainer implements PlexusContainer
 				injector.fire(injectorEvent);
 			}
 		}
-		
+
+		/* концепция такова, что каждый контейнер слушает некий объект в display list, и получает InjectorEvent посредством баблинга
+		 должен ли контейнер, первым поймавший InjectorEvent событие, полагаться на этот механизм, или же удобнее если дальше событие идет по его иерархии?
+		 нам на данный момент удобно второе — первый контейнер поймавший InjectorEvent, останавливает событие и обрабатывает по своей иерархии
+		 (к тому же у нас два, еще не разделенных типа injector target — компонент (может быть вне display list)) и display object. */
+		injectorEvent.stopImmediatePropagation();
 		if (_parentContainer != null)
 		{
 			_parentContainer.checkInjectors(injectorEvent);

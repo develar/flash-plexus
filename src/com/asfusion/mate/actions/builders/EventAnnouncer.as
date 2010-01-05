@@ -81,8 +81,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 	/**
 	 * Although you can specify the event's bubbles property, whether you set it to true or false will have little effect,
 	 * as the event will be dispatched from the Mate Dispatcher itself.
-	 *
-	 *  @default false
 	 */
 	public function get bubbles():Boolean
 	{
@@ -97,8 +95,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 	private var _cancelable:Boolean = true;
 	/**
 	 * Indicates whether the behavior associated with the event can be prevented.
-	 *
-	 *  @default true
 	 */
 	public function get cancelable():Boolean
 	{
@@ -108,11 +104,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction
 	public function set cancelable(value:Boolean):void
 	{
 		_cancelable = value;
-	}
-
-	override public function set cache(value:String):void
-	{
-		throw(new Error("Events and responses cannot be cached"));
 	}
 
 	override protected function createInstance(scope:IScope):Object

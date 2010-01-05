@@ -1,4 +1,4 @@
-package com.asfusion.mate.configuration
+package org.flyti.plexus.configuration
 {
 import org.flyti.plexus.plexus;
 

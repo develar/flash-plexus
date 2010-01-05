@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>org.flyti.superPOMs</groupId>
 		<artifactId>common</artifactId>
-		<version>1.1.5</version>
+		<version>1.1.6</version>
 	</parent>
 
 	<groupId>com.asfusion</groupId>
@@ -63,10 +64,8 @@
 							<includes>
 								<class>com.asfusion.mate.core.EventMap</class>
 								<class>com.asfusion.mate.core.LocalEventMap</class>
-								<class>com.asfusion.mate.core.SmartObject</class>
 								<class>com.asfusion.mate.core.Properties</class>
 								<class>com.asfusion.mate.core.Property</class>
-								<class>com.asfusion.mate.ioc.InjectorSettings</class>
 
 								<class>com.asfusion.mate.actionLists.EventHandlers</class>
 								<class>com.asfusion.mate.actionLists.ServiceHandlers</class>
@@ -83,7 +82,6 @@
 								<class>com.asfusion.mate.actions.PropertyInjector</class>
 								<class>com.asfusion.mate.actions.ListenerInjector</class>
 								<class>com.asfusion.mate.actions.CallBack</class>
-								<class>com.asfusion.mate.actions.CacheSetter</class>
 								<class>com.asfusion.mate.actions.builders.ObjectBuilder</class>
 								<class>com.asfusion.mate.actions.builders.*Announcer</class>
 								<class>com.asfusion.mate.actions.builders.serviceClasses.Request</class>

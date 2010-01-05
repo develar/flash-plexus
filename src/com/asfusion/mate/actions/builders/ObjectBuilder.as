@@ -23,7 +23,6 @@ import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.BaseAction;
 import com.asfusion.mate.actions.IAction;
 
-import org.flyti.plexus.component.ComponentCachePolicy;
 import org.flyti.plexus.component.RoleHint;
 
 /**
@@ -54,14 +53,13 @@ public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 		_constructorArguments = value;
 	}
 
-	private var _cache:String = ComponentCachePolicy.INHERIT;
+	private var _cache:Boolean = true;
 	/**
 	 * The cache attribute lets you specify whether this newly created object should be kept live
 	 * so that the next time an instance of this class is requested, this already created object
 	 * is returned instead.
 	 */
-	[Inspectable(enumeration="local,global,inherit,none")]
-	public function set cache(value:String):void
+	public function set cache(value:Boolean):void
 	{
 		_cache = value;
 	}
@@ -88,13 +86,13 @@ public class ObjectBuilder extends BaseAction implements IAction, IBuilder
 	 */
 	protected function createInstance(scope:IScope):Object
 	{
-		if (_cache == ComponentCachePolicy.NONE)
+		if (_cache)
 		{
-			currentInstance = new role();
+			currentInstance = scope.eventMap.container.lookup(role, RoleHint.DEFAULT, _constructorArguments == null ? null : getRealArguments(scope, _constructorArguments));
 		}
 		else
 		{
-			currentInstance = scope.eventMap.container.lookup(role, RoleHint.DEFAULT, _constructorArguments == null ? null : getRealArguments(scope, _constructorArguments));
+			currentInstance = new role();
 		}
 
 		return currentInstance;

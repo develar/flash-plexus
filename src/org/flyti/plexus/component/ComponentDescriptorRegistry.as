@@ -5,7 +5,8 @@ import flash.utils.Dictionary;
 import org.flyti.lang.Enum;
 
 /**
- * Мы разрешаем иметь в качестве role конкретный класс, а не интерфейс, и не указывать implementation
+ * Мы разрешаем иметь в качестве role конкретный класс, а не интерфейс, и не указывать implementation.
+ * Если будет добавлен дескриптор с теми же координатами — role&roleHint, то: если у добавляемого есть requirements, то они заменят requirements существующего, если же их нету, то будут оставлены те, что уже есть.
  */
 public class ComponentDescriptorRegistry
 {
