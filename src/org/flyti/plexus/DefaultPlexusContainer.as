@@ -28,17 +28,20 @@ public class DefaultPlexusContainer implements PlexusContainer
 	{
 		return _parentContainer;
 	}
+	public function set parentContainer(value:PlexusContainer):void
+	{
+		_parentContainer = value;
+	}
 
 	private var componentDescriptorRegistry:ComponentDescriptorRegistry;
 
 	private var cache:ComponentCache = new ComponentCache();
 
-	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, parentContainer:PlexusContainer = null, componentDescriptorRegistry:ComponentDescriptorRegistry = null)
+	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, componentDescriptorRegistry:ComponentDescriptorRegistry = null)
 	{
 		_dispatcher = dispatcher;
 		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
-		
-		this._parentContainer = parentContainer;
+
 		this.componentDescriptorRegistry = componentDescriptorRegistry;
 	}
 

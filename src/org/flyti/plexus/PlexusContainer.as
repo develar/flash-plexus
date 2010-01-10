@@ -14,6 +14,8 @@ public interface PlexusContainer
 	function get injectors():Vector.<Injectors>;
 
 	function get parentContainer():PlexusContainer;
+	function set parentContainer(value:PlexusContainer):void;
+	
 	function getComponentDescriptor(role:Class, roleHint:Enum):ComponentDescriptor;
 
 	function checkInjectors(injectorEvent:InjectorEvent):void;

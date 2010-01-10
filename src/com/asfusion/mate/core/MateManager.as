@@ -46,8 +46,6 @@ import com.asfusion.mate.core.IMateManager;
 import com.asfusion.mate.utils.debug.IMateLogger;
 import com.asfusion.mate.utils.debug.Logger;
 
-import flash.events.EventDispatcher;
-
 import mx.logging.ILoggingTarget;
 
 import org.flyti.plexus.DefaultPlexusContainer;
@@ -59,7 +57,7 @@ class MateManagerInstance implements IMateManager
 	public function MateManagerInstance()
 	{
 		_componentDescriptorRegistry = new ComponentDescriptorRegistry();
-		_container = new DefaultPlexusContainer(new GlobalDispatcher(), null, _componentDescriptorRegistry);
+		_container = new DefaultPlexusContainer(new GlobalDispatcher(), _componentDescriptorRegistry);
 	}
 
 	private var _componentDescriptorRegistry:ComponentDescriptorRegistry;
