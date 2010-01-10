@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.flyti.superPOMs</groupId>
-		<artifactId>common</artifactId>
-		<version>1.1.6</version>
+		<groupId>org.flyti</groupId>
+		<artifactId>flyti-forge</artifactId>
+		<version>1.0.2</version>
 	</parent>
 
 	<groupId>com.asfusion</groupId>
@@ -15,8 +15,8 @@
 	<packaging>swc</packaging>
 
 	<properties>
-		<fdk.version>4.0.0.13215</fdk.version>
-		<flex.sdk.version>4.0.0.13215</flex.sdk.version>
+		<fdk.version>4.0.0.13300</fdk.version>
+		<flex.sdk.version>4.0.0.13300</flex.sdk.version>
 	</properties>
 
 	<scm>
@@ -49,14 +49,6 @@
 			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
 				<artifactId>flexmojos-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>sources</id>
-						<goals>
-							<goal>sources</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
 					<manifests>
 						<manifest>
@@ -117,15 +109,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<distributionManagement>
-		<repository>
-			<id>twp-thirdparty-releases</id>
-			<url>http://astra.rit.com:8081/nexus/content/repositories/thirdparty-releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>twp-thirdparty-snapshots</id>
-			<url>http://astra.rit.com:8081/nexus/content/repositories/thirdparty-snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>

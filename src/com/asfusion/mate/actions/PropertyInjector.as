@@ -35,14 +35,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	private var _targetKey:String;
 	/**
 	 * The name of the property that the injector will set in the target object
-	 *
-	 * @default null
-	 * */
-	public function get targetKey():String
-	{
-		return _targetKey;
-	}
-
+	 */
 	public function set targetKey(value:String):void
 	{
 		_targetKey = value;
@@ -55,13 +48,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	 * If the id of the target matches the targetId.
 	 *
 	 * Note:Target is the instance of the target class.
-	 *
-	 * @default null
-	 * */
-	public function get targetId():String
-	{
-		return _targetId;
-	}
+	 */
 	public function set targetId(value:String):void
 	{
 		_targetId = value;
@@ -70,14 +57,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 	private var _source:Object;
 	/**
 	 * An object that contains the data that the injector will use to set the target object
-	 *
-	 * @default null
 	 * */
-	public function get source():Object
-	{
-		return _source;
-	}
-
 	public function set source(value:Object):void
 	{
 		_source = value;
@@ -86,31 +66,10 @@ public class PropertyInjector extends AbstractAction implements IAction
 	private var _sourceKey:String;
 	/**
 	 * The name of the property on the source object that the injector will use to read and set on the target object
-	 *
-	 * @default null
-	 * */
-	public function get sourceKey():String
-	{
-		return _sourceKey;
-	}
-
+	 */
 	public function set sourceKey(value:String):void
 	{
 		_sourceKey = value;
-	}
-
-	private var _softBinding:Boolean = false;
-	/**
-	 * Flag that will be used to define the type of binding used by the PropertyInjector tag.
-	 * If softBinding is true, it will use weak references in the binding. Default value is false
-	 * */
-	public function get softBinding():Boolean
-	{
-		return _softBinding;
-	}
-	public function set softBinding(value:Boolean):void
-	{
-		_softBinding = value;
 	}
 
 	/**
@@ -118,24 +77,24 @@ public class PropertyInjector extends AbstractAction implements IAction
 	 */
 	protected function createInstance(scope:IScope):Object
 	{
-		return scope.eventMap.container.lookup(Class(source));
+		return scope.eventMap.container.lookup(Class(_source));
 	}
 
 	override protected function prepare(scope:IScope):void
 	{
-		if (targetId == null || targetId == InjectorEvent(scope.event).uid)
+		if (_targetId == null || _targetId == InjectorEvent(scope.event).uid)
 		{
-			if (source is Class)
+			if (_source is Class)
 			{
 				currentInstance = createInstance(scope);
 			}
-			else if (source is ISmartObject)
+			else if (_source is ISmartObject)
 			{
-				currentInstance = ISmartObject(source).getValue(scope);
+				currentInstance = ISmartObject(_source).getValue(scope);
 			}
 			else
 			{
-				currentInstance = source;
+				currentInstance = _source;
 			}
 		}
 	}
@@ -143,22 +102,22 @@ public class PropertyInjector extends AbstractAction implements IAction
 	override protected function run(scope:IScope):void
 	{
 		var event:InjectorEvent = InjectorEvent(scope.event);
-		if (targetId != null && targetId != event.uid)
+		if (_targetId != null && _targetId != event.uid)
 		{
 			return;
 		}
 
-		if (sourceKey == null)
+		if (_sourceKey == null)
 		{
-			event.instance[targetKey] = currentInstance;
+			event.instance[_targetKey] = currentInstance;
 		}
 		else if (currentInstance is IEventDispatcher)
 		{
-			ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKey.split("."), event.instance, targetKey);
+			ChangeWatcher.watch(IEventDispatcher(currentInstance), _sourceKey.split("."), event.instance, _targetKey);
 		}
 		else
 		{
-			event.instance[targetKey] = currentInstance[sourceKey];
+			event.instance[_targetKey] = currentInstance[_sourceKey];
 		}
 	}
 }
