@@ -25,6 +25,7 @@ import com.asfusion.mate.utils.debug.IMateLogger;
 
 import flash.events.Event;
 import flash.events.IEventDispatcher;
+import flash.utils.Dictionary;
 
 /**
  * Scope is an object created by the <code>IActionList</code>.
@@ -51,16 +52,13 @@ public class Scope implements IScope
 	 */
 	private var logger:IMateLogger;
 
-	private var _data:Object;
-	/**
-	 * @inheritDoc
-	 */
-	public function get data():Object
+	private var _data:Dictionary;
+	public function get data():Dictionary
 	{
 		return _data;
 	}
 
-	public function set data(value:Object):void
+	public function set data(value:Dictionary):void
 	{
 		_data = value;
 	}
@@ -142,7 +140,7 @@ public class Scope implements IScope
 		{
 			this.event = event;
 			currentEvent = event;
-			data = new Object();
+			data = new Dictionary();
 		}
 		eventMap = map;
 		logger = MateManager.instance.getLogger(active);

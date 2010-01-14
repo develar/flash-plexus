@@ -108,6 +108,11 @@ public dynamic class SmartObject extends Proxy implements ISmartObject
 				var currentSource:Object = realSource;
 				for each (var property:String in chain)
 				{
+					if (currentSource == null)
+					{
+						break;
+					}
+					
 					currentSource = currentSource[property];
 				}
 				return currentSource;

@@ -1,11 +1,11 @@
 package org.flyti.plexus.configuration
 {
-import org.flyti.plexus.plexus;
-
+import flash.utils.Dictionary;
 import flash.utils.getDefinitionByName;
 
 import mx.utils.DescribeTypeCache;
 
+import org.flyti.plexus.plexus;
 import org.flyti.util.HashMap;
 import org.flyti.util.Map;
 import org.flyti.util.ObjectUtil;
@@ -15,23 +15,23 @@ use namespace plexus;
 
 public class ConfigurationManager
 {
-	private var configuration:Object;
+	private var configuration:Dictionary;
 
 	public function setConfiguration(data:XML):void
 	{
-		configuration = new Object();
+		configuration = new Dictionary();
 		for each (var object:XML in data.object)
 		{
-			configuration[object.@type] = object;
+			configuration[String(object.@type)] = object;
 		}
 	}
 
 	public function configurate(instance:Configurable, role:Class):void
 	{
 		var className:String = ObjectUtil.getClassName(role);
-		if (className in configuration)
+		var data:XML = configuration[className];
+		if (data != null)
 		{
-			var data:XML = configuration[className];
 			createObject2(instance, data);
 		}
 		else
@@ -95,25 +95,25 @@ public class ConfigurationManager
 
 	private function mapMap(keyClass:Class, valueClass:Class, data:XML):Map
 	{
-		var map:Map = new HashMap();
+		var dictionary:Dictionary = new Dictionary();
 		var entry:XML;
 		var entries:XMLList = data.children();
 		if (entries[0].hasSimpleContent())
 		{
 			for each (entry in entries)
 			{
-				map.put(String(entry.name()), entry.toString());
+				dictionary[entry.name().toString()] = entry.toString();
 			}
 		}
 		else
 		{
 			for each (entry in entries)
 			{
-				map.put(String(entry.name()), createObject(valueClass, entry));
+				dictionary[entry.name().toString()] = createObject(valueClass, entry);
 			}
 		}
 
-		return map;
+		return new HashMap(false, dictionary, entries.length());
 	}
 
 	private function mapVector(valueClass:Class, vectorClass:Class, data:XML):Object

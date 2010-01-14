@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.flyti</groupId>
 			<artifactId>collections</artifactId>
-			<version>1.1</version>
+			<version>1.2-SNAPSHOT</version>
 			<type>swc</type>
 		</dependency>
 		<dependency>
