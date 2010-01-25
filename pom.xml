@@ -15,8 +15,8 @@
 	<packaging>swc</packaging>
 
 	<properties>
-		<fdk.version>4.0.0.13300</fdk.version>
-		<flex.sdk.version>4.0.0.13300</flex.sdk.version>
+		<fdk.version>4.0.0.13730</fdk.version>
+		<flex.sdk.version>4.0.0.13730</flex.sdk.version>
 	</properties>
 
 	<scm>

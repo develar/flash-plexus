@@ -20,5 +20,11 @@ public interface PlexusContainer
 
 	function checkInjectors(injectorEvent:InjectorEvent):void;
 	function lookup(role:Class, roleHint:Enum = null, constructorArguments:Array = null):Object;
+
+	/**
+	 * Диалоговое окно создается до момента создания его локальной event map, а в ней может быть настройка компонента диалогового окна — requirements.
+	 * Только в текущем контейнере.
+	 */
+	function composeComponent(instance:Object, role:Class = null, roleHint:Enum = null):void;
 }
 }

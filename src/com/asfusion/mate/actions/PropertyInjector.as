@@ -197,9 +197,9 @@ class ChangeWatcher
 	{
 		if (!isExecuting)
         {
-            try
-            {
-                isExecuting = true;
+//            try
+//            {
+//                isExecuting = true;
 
 				var sourcePropertyValue:Object = source == null ? null : source[sourcePropertyName];
 				if (nextWatcher == null)
@@ -210,11 +210,11 @@ class ChangeWatcher
 				{
 					nextWatcher.reset(IEventDispatcher(sourcePropertyValue));
 				}
-			}
-			finally
-            {
-                isExecuting = false;
-            }
+//			}
+//			finally
+//            {
+//                isExecuting = false;
+//            }
         }
 	}
 }

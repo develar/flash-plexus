@@ -141,6 +141,37 @@ public class DefaultPlexusContainer implements PlexusContainer
 		return instance;
 	}
 
+	public function composeComponent(instance:Object, role:Class = null, roleHint:Enum = null):void
+	{
+		if (role == null)
+		{
+			role = instance.constructor;
+		}
+		if (roleHint == null)
+		{
+			roleHint = RoleHint.DEFAULT;
+		}
+		
+		var componentDescriptor:ComponentDescriptor = getComponentDescriptor(role, roleHint);
+		if (componentDescriptor != null && componentDescriptor.requirements != null)
+		{
+			composeComponent2(instance, componentDescriptor);
+		}
+	}
+
+	public function composeComponent2(instance:Object, componentDescriptor:ComponentDescriptor):void
+	{
+		for each (var requirement:ComponentRequirement in componentDescriptor.requirements)
+		{
+			var requiredComponent:Object = cache.get(requirement.role, requirement.roleHint);
+			if (requiredComponent == null)
+			{
+				requiredComponent = lookup(requirement.role, requirement.roleHint);
+			}
+			instance[requirement.field] = requiredComponent;
+		}
+	}
+
 	public function checkInjectors(injectorEvent:InjectorEvent):void
 	{
 		for each (var injector:Injectors in injectors)
