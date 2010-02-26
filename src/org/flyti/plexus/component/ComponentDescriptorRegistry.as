@@ -48,16 +48,29 @@ public class ComponentDescriptorRegistry
 		}
 	}
 
+	/**
+	 * если roleHint не default и мы не нашли — пытаемся возвратить по default
+	 */
 	public function get(role:Class, roleHint:Enum):ComponentDescriptor
 	{
 		var descriptorMap:Dictionary = map[roleHint];
+		var descriptor:ComponentDescriptor;
 		if (descriptorMap == null)
 		{
-			return null;
+			descriptor = null;
 		}
 		else
 		{
-			return descriptorMap[role];
+			descriptor = descriptorMap[role];
+		}
+
+		if (descriptor == null && roleHint != RoleHint.DEFAULT)
+		{
+			return get(role, RoleHint.DEFAULT);
+		}
+		else
+		{
+			return descriptor;
 		}
 	}
 }
