@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.adobe.flex.framework:framework:swc:4.0.0.14697">
+    <CLASSES>
+      <root url="jar://$maven_repository$/com/adobe/flex/framework/framework/4.0.0.14697/framework-4.0.0.14697.swc!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$maven_repository$/com/adobe/flex/framework/framework/4.0.0.14697/framework-4.0.0.14697-asdoc.zip!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$maven_repository$/com/adobe/flex/framework/framework/4.0.0.14697/framework-4.0.0.14697-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

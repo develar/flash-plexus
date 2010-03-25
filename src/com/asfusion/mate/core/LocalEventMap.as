@@ -1,9 +1,13 @@
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.events.DispatcherEvent;
+import com.asfusion.mate.events.InjectorEvent;
 
+import flash.errors.IllegalOperationError;
 import flash.events.IEventDispatcher;
 
+import org.flyti.lang.Enum;
 import org.flyti.plexus.DefaultPlexusContainer;
 import org.flyti.plexus.PlexusContainer;
 import org.flyti.plexus.component.ComponentDescriptor;
@@ -15,6 +19,14 @@ public class LocalEventMap extends EventMapBase implements IEventMap
 	public function set components(value:Vector.<ComponentDescriptor>):void
 	{
 		_componentDescriptors = value;
+		_componentDescriptors.fixed = true;
+	}
+
+	protected var _injectors:Vector.<Injectors>;
+	public function set injectors(value:Vector.<Injectors>):void
+	{
+		_injectors = value;
+		_injectors.fixed = true;
 	}
 
 	private var _dispatcher:IEventDispatcher;
@@ -29,22 +41,49 @@ public class LocalEventMap extends EventMapBase implements IEventMap
 		{
 			_dispatcher = value;
 
-			var componentDescriptorRegistry:ComponentDescriptorRegistry;
-			if (_componentDescriptors != null)
+			if (_container == null)
 			{
-				componentDescriptorRegistry = new ComponentDescriptorRegistry();
-				componentDescriptorRegistry.add(_componentDescriptors);
-				_componentDescriptors = null;
+				initializeContainer();
 			}
-
-			_container = new DefaultPlexusContainer(_dispatcher, componentDescriptorRegistry);
-			_container.parentContainer = _parentContainer == null ? MateManager.instance.container : _parentContainer;
+			else
+			{
+				_container.dispatcher = _dispatcher;
+			}
 
 			var event:DispatcherEvent = new DispatcherEvent(DispatcherEvent.CHANGE);
 			event.newDispatcher = value;
 			event.oldDispatcher = oldValue;
 			dispatchEvent(event);
 		}
+	}
+
+	private function initializeContainer():void
+	{
+		var componentDescriptorRegistry:ComponentDescriptorRegistry;
+		if (_componentDescriptors != null)
+		{
+			componentDescriptorRegistry = new ComponentDescriptorRegistry();
+			componentDescriptorRegistry.add(_componentDescriptors);
+			_componentDescriptors = null;
+		}
+
+		_container = new DefaultPlexusContainer(_dispatcher, componentDescriptorRegistry, _injectors);
+		_container.parentContainer = _parentContainer == null ? MateManager.instance.container : _parentContainer;
+	}
+
+	/**
+	 * @see PlexusContainer#composeComponent
+	 */
+	public function composeOwnerUIComponent(instance:Object, role:Class = null, roleHint:Enum = null):void
+	{
+		if (_dispatcher != null)
+		{
+			throw new IllegalOperationError("dispatcher already set and container is initialized");
+		}
+
+		initializeContainer();
+		container.composeComponent(instance, role, roleHint);
+		container.checkInjectors(new InjectorEvent(instance));
 	}
 
 	private var _parentContainer:PlexusContainer;
@@ -55,12 +94,6 @@ public class LocalEventMap extends EventMapBase implements IEventMap
 		{
 			container.parentContainer = _parentContainer;
 		}
-	}
-
-	private var _container:PlexusContainer;
-	public function get container():PlexusContainer
-	{
-		return _container;
 	}
 }
 }

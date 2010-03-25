@@ -1,11 +1,8 @@
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
+
 import flash.events.IEventDispatcher;
-
-import org.flyti.plexus.PlexusContainer;
-
-[Exclude(name="activate", kind="event")]
-[Exclude(name="deactivate", kind="event")]
 
 /**
  * A fundamental part of <strong>Mate</strong> is the <code>EventMap</code> tag which allows you define mappings for the events that your application creates.
@@ -32,15 +29,26 @@ public class EventMap extends EventMapBase implements IEventMap
 		_container = MateManager.instance.container;
 	}
 
+	public function set injectors(value:Vector.<Injectors>):void
+	{
+		value.fixed = true;
+		var containerInjectors:Vector.<Injectors> = _container.injectors;
+		containerInjectors.fixed = false;
+
+		var n:int = value.length;
+		var oldLength:int = containerInjectors.length;
+		containerInjectors.length = oldLength + n;
+		for (var i:int = 0; i < n; i++)
+		{
+			containerInjectors[i + oldLength] = value[i];
+		}
+
+		containerInjectors.fixed = true;
+	}
+
 	public function get dispatcher():IEventDispatcher
 	{
 		return _container.dispatcher;
-	}
-
-	private var _container:PlexusContainer;
-	public function get container():PlexusContainer
-	{
-		return _container;
 	}
 }
 }

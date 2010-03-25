@@ -11,6 +11,8 @@ import org.flyti.plexus.component.ComponentDescriptor;
 public interface PlexusContainer
 {
 	function get dispatcher():IEventDispatcher;
+	function set dispatcher(value:IEventDispatcher):void;
+
 	function get injectors():Vector.<Injectors>;
 
 	function get parentContainer():PlexusContainer;

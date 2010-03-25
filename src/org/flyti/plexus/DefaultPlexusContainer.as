@@ -3,6 +3,7 @@ package org.flyti.plexus
 import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.events.InjectorEvent;
 
+import flash.errors.IllegalOperationError;
 import flash.events.IEventDispatcher;
 
 import org.flyti.lang.Enum;
@@ -23,6 +24,9 @@ use namespace plexus;
  */
 public class DefaultPlexusContainer implements PlexusContainer
 {
+	private var componentDescriptorRegistry:ComponentDescriptorRegistry;
+	private var cache:ComponentCache = new ComponentCache();
+	
 	private var _parentContainer:PlexusContainer;
 	public function get parentContainer():PlexusContainer
 	{
@@ -33,16 +37,15 @@ public class DefaultPlexusContainer implements PlexusContainer
 		_parentContainer = value;
 	}
 
-	private var componentDescriptorRegistry:ComponentDescriptorRegistry;
-
-	private var cache:ComponentCache = new ComponentCache();
-
-	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, componentDescriptorRegistry:ComponentDescriptorRegistry = null)
+	public function DefaultPlexusContainer(dispatcher:IEventDispatcher, componentDescriptorRegistry:ComponentDescriptorRegistry = null, injectors:Vector.<Injectors> = null)
 	{
-		_dispatcher = dispatcher;
-		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
-
+		if (dispatcher != null)
+		{
+			this.dispatcher = dispatcher;
+		}
 		this.componentDescriptorRegistry = componentDescriptorRegistry;
+
+		_injectors = injectors == null ? new Vector.<Injectors>() : injectors;
 	}
 
 	private function injectHandler(event:InjectorEvent):void
@@ -55,8 +58,18 @@ public class DefaultPlexusContainer implements PlexusContainer
 	{
 		return _dispatcher;
 	}
+	public function set dispatcher(value:IEventDispatcher):void
+	{
+		if (_dispatcher != null)
+		{
+			throw new IllegalOperationError("already set");
+		}
 
-	private var _injectors:Vector.<Injectors> = new Vector.<Injectors>();
+		_dispatcher = value;
+		_dispatcher.addEventListener(InjectorEvent.INJECT, injectHandler);
+	}
+
+	private var _injectors:Vector.<Injectors>;
 	public function get injectors():Vector.<Injectors>
 	{
 		return _injectors;

@@ -1,11 +1,22 @@
 package com.asfusion.mate.core
 {
+import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.actionLists.ScopeProperties;
 
 import flash.events.EventDispatcher;
 
+import org.flyti.plexus.PlexusContainer;
+
+[Exclude(name="activate", kind="event")]
+[Exclude(name="deactivate", kind="event")]
 public class EventMapBase extends EventDispatcher
 {
+	protected var _container:PlexusContainer;
+	public function get container():PlexusContainer
+	{
+		return _container;
+	}
+
 	/**
 	 * It refers to the event that made the <code>EventHandlers</code> execute. The event itself or properties of the event
 	 * can be used as arguments of <code>MethodInvoker</code> methods, service methods, properties of all the <code>IAction</code>, etc.
