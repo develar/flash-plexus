@@ -13,11 +13,6 @@
 	<version>1.1-SNAPSHOT</version>
 	<packaging>swc</packaging>
 
-	<!--<properties>-->
-		<!--<fdk.version>4.0.0.13730</fdk.version>-->
-		<!--<flex.sdk.version>4.0.0.13730</flex.sdk.version>-->
-	<!--</properties>-->
-
 	<scm>
 		<connection>scm:hg:${project.basedir}</connection>
 	</scm>
@@ -25,13 +20,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
-            <artifactId>flex-framework</artifactId>
-			<type>pom</type>
+			<artifactId>rpc</artifactId>
+			<type>swc</type>
+		</dependency>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>playerglobal</artifactId>
+			<type>swc</type>
+			<classifier>10</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.flyti</groupId>
 			<artifactId>collections</artifactId>
-			<version>1.2</version>
+			<version>1.3</version>
 			<type>swc</type>
 		</dependency>
 		<dependency>
