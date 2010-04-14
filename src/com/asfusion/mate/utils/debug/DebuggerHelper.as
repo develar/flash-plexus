@@ -154,7 +154,7 @@ import mx.utils.DescribeTypeCacheRecord;
 	        {
 	        	var tempAttribute:XMLList = prop..@name; 
 	        	attribute = tempAttribute[0].toString();	
-               if(target[attribute] != null && (!omit || !omit.hasOwnProperty(attribute)) )
+               if(target.hasOwnProperty(attribute) && target[attribute] != null && (!omit || !omit.hasOwnProperty(attribute)) )
                {
                		var formatedValue:String = formatValue(target[attribute] , scope);
                		if(formatedValue != "")

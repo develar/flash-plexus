@@ -24,12 +24,6 @@
 			<type>swc</type>
 		</dependency>
 		<dependency>
-			<groupId>com.adobe.flex.framework</groupId>
-			<artifactId>playerglobal</artifactId>
-			<type>swc</type>
-			<classifier>10</classifier>
-		</dependency>
-		<dependency>
 			<groupId>org.flyti</groupId>
 			<artifactId>collections</artifactId>
 			<version>1.3</version>

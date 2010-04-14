@@ -72,12 +72,10 @@ public class PropertyInjector extends AbstractAction implements IAction
 		_sourceKey = value;
 	}
 
-	/**
-	 * Creates an instance of the <code>source</code> class.
-	 */
-	protected function createInstance(scope:IScope):Object
+	private var _changeEventType:String;
+	public function set changeEventType(value:String):void
 	{
-		return scope.eventMap.container.lookup(Class(_source));
+		_changeEventType = value;
 	}
 
 	override protected function prepare(scope:IScope):void
@@ -86,7 +84,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 		{
 			if (_source is Class)
 			{
-				currentInstance = createInstance(scope);
+				currentInstance = scope.eventMap.container.lookup(Class(_source));
 			}
 			else if (_source is ISmartObject)
 			{
@@ -113,7 +111,7 @@ public class PropertyInjector extends AbstractAction implements IAction
 		}
 		else if (currentInstance is IEventDispatcher)
 		{
-			ChangeWatcher.watch(IEventDispatcher(currentInstance), _sourceKey.split("."), event.instance, _targetKey);
+			ChangeWatcher.watch(IEventDispatcher(currentInstance), _sourceKey.split("."), event.instance, _targetKey, _changeEventType);
 		}
 		else
 		{
@@ -156,15 +154,20 @@ class ChangeWatcher
 		eventName = sourcePropertyName + CHANGE_EVENT_TYPE_POSTFIX;
     }
 
-	public static function watch(source:IEventDispatcher, chain:Array, target:Object, targetPropertyName:String):ChangeWatcher
+	public static function watch(source:IEventDispatcher, chain:Array, target:Object, targetPropertyName:String, changeEventType:String = null):ChangeWatcher
     {
 		var nextWatcher:ChangeWatcher;
 		if (chain.length > 1)
 		{
+			assert(changeEventType == null);
 			nextWatcher = watch(null, chain.slice(1), target, targetPropertyName);
 		}
 
 		var watcher:ChangeWatcher = new ChangeWatcher(chain[0], target, targetPropertyName, nextWatcher);
+		if (changeEventType != null)
+		{
+			watcher.eventName = changeEventType;
+		}
 		if (source != null)
 		{
 			watcher.reset(source);
