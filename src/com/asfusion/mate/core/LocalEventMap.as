@@ -27,6 +27,14 @@ public class LocalEventMap extends EventMapBase implements IEventMap
 	{
 		_injectors = value;
 		_injectors.fixed = true;
+
+		for each (var injector:Injectors in _injectors)
+		{
+			if (!isInjectable(injector.target))
+			{
+				throw new Error(injector.target + " is not injectable");
+			}
+		}
 	}
 
 	private var _dispatcher:IEventDispatcher;

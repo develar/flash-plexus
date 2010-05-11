@@ -40,6 +40,10 @@ public class EventMap extends EventMapBase implements IEventMap
 		containerInjectors.length = oldLength + n;
 		for (var i:int = 0; i < n; i++)
 		{
+			if (!isInjectable(value[i].target))
+			{
+				throw new Error(value[i].target + " is not injectable");
+			}
 			containerInjectors[i + oldLength] = value[i];
 		}
 

@@ -177,14 +177,14 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
 	protected function runSequence(scope:IScope, actionList:Vector.<IAction>):void
 	{
 		var logger:IMateLogger = scope.getLogger();
-		var loggerActive:Boolean = logger.active;
+		const loggerActive:Boolean = logger.active;
 		if (loggerActive)
 		{
 			logger.info(LogTypes.SEQUENCE_START, new LogInfo(scope));
 		}
 		dispatchEvent(new ActionListEvent(ActionListEvent.START, scope.event));
 
-		for each(var action:IAction in actionList)
+		for each (var action:IAction in actionList)
 		{
 			if (scope.isRunning())
 			{

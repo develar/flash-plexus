@@ -1,9 +1,9 @@
 package com.asfusion.mate.core
 {
-import com.asfusion.mate.actionLists.Injectors;
 import com.asfusion.mate.actionLists.ScopeProperties;
 
 import flash.events.EventDispatcher;
+import flash.utils.describeType;
 
 import org.flyti.plexus.PlexusContainer;
 
@@ -15,6 +15,20 @@ public class EventMapBase extends EventDispatcher
 	public function get container():PlexusContainer
 	{
 		return _container;
+	}
+
+	protected final function isInjectable(clazz:Class):Boolean
+	{
+		var xml:XML = describeType(clazz);
+		if (xml.factory.implementsInterface.(@type == "org.flyti.plexus::Injectable").length() == 1 || xml.factory.extendsClass.(@type == "spark.components.supportClasses::GroupBase").length() == 1)
+		{
+			return true;
+		}
+		else
+		{
+			var name:String = xml.@name;
+			return name == "cocoa::Application";
+		}
 	}
 
 	/**

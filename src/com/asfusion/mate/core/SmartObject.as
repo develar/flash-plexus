@@ -94,7 +94,7 @@ public dynamic class SmartObject extends Proxy implements ISmartObject
 		return new SmartObject(source, newChain);
 	}
 
-	public function getValue(scope:IScope, debugCall:Boolean = false):Object
+	public final function getValue(scope:IScope, debugCall:Boolean = false):Object
 	{
 		var realSource:Object = source != ScopeProperties.SCOPE ? scope[source] : scope;
 		if (realSource != null)
