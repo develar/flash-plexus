@@ -16,11 +16,6 @@ public class ComponentDescriptorRegistry
 	{
 		for each (var componentDescriptor:ComponentDescriptor in componentDescriptors)
 		{
-			if (componentDescriptor.implementation == null)
-			{
-				componentDescriptor.implementation = componentDescriptor.role;
-			}
-
 			var descriptorMap:Dictionary;
 			if (componentDescriptor.roleHint in map)
 			{
@@ -35,7 +30,11 @@ public class ComponentDescriptorRegistry
 			var existingComponent:ComponentDescriptor = descriptorMap[componentDescriptor.role];
 			if (existingComponent != null)
 			{
-				existingComponent.implementation = componentDescriptor.implementation;
+				if (componentDescriptor.implementation != null)
+				{
+					existingComponent.implementation = componentDescriptor.implementation;
+				}
+				
 				if (componentDescriptor.requirements != null)
 				{
 					existingComponent.requirements = componentDescriptor.requirements;
@@ -44,6 +43,11 @@ public class ComponentDescriptorRegistry
 			else
 			{
 				descriptorMap[componentDescriptor.role] = componentDescriptor;
+			}
+
+			if (componentDescriptor.implementation == null)
+			{
+				componentDescriptor.implementation = componentDescriptor.role;
 			}
 		}
 	}
