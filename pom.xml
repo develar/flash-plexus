@@ -17,6 +17,11 @@
 		<connection>scm:hg:${project.basedir}</connection>
 	</scm>
 
+	<properties>
+		<fdk.version>4.1.0.15885</fdk.version>
+		<flex.sdk.version>4.1.0.15885</flex.sdk.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
