@@ -1,5 +1,5 @@
 .DS_Store
-.iml
+*.iml
 target
 .idea/libraries
 .idea/workspace.xml
