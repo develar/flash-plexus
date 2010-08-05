@@ -13,5 +13,7 @@ public class ComponentDescriptor
 	public var requirements:Vector.<ComponentRequirement>;
 
 	public var instantiationStrategy:InstantiationStrategy = InstantiationStrategy.KEEP_ALIVE;
+
+//	public var configurationKey:String;
 }
 }
