@@ -17,17 +17,14 @@
 
  @ignore
  */
-package com.asfusion.mate.actionLists
-{
-import com.asfusion.mate.events.UnhandledFaultEvent;
-
+package com.asfusion.mate.actionLists {
 import flash.events.Event;
+import flash.events.UncaughtErrorEvent;
 
 import mx.rpc.AsyncToken;
 import mx.rpc.events.AbstractEvent;
 import mx.rpc.events.FaultEvent;
 import mx.rpc.events.ResultEvent;
-
 
 /**
  * A inner-action-list to run when the server call returns a result.
@@ -35,77 +32,58 @@ import mx.rpc.events.ResultEvent;
  * body of a &lt;IActionList&gt;, including other service calls.
  * <p>This inner-action-list is used by the ServiceInvoker</p>
  */
-public class ServiceHandlers extends EventHandlers implements IActionList
-{
-	private var _token:AsyncToken;
-	/**
-	 * Generated when making asynchronous RPC operations.
-	 * The same object is available in the <code>result</code> and <code>fault</code> events in the <code>token</code> property.
-	 */
-	public function get token():AsyncToken
-	{
-		return _token;
-	}
+public class ServiceHandlers extends EventHandlers implements IActionList {
+  private var _token:AsyncToken;
+  /**
+   * Generated when making asynchronous RPC operations.
+   * The same object is available in the <code>result</code> and <code>fault</code> events in the <code>token</code> property.
+   */
+  public function get token():AsyncToken {
+    return _token;
+  }
 
-	public function set token(value:AsyncToken):void
-	{
-		_token = value;
-	}
+  public function set token(value:AsyncToken):void {
+    _token = value;
+  }
 
-	public function ServiceHandlers(inheritedScope:IScope = null)
-	{
-		super();
-		this.inheritedScope = inheritedScope;
-	}
+  public function ServiceHandlers(inheritedScope:IScope = null) {
+    super();
+    this.inheritedScope = inheritedScope;
+  }
 
-	override public function errorString():String
-	{
-		var eType:String;
-		try
-		{
-			var inheritedEvent:Event = inheritedScope.event;
-			eType = inheritedEvent.type;
-		}
-		catch(e:Error)
-		{
-			eType = type;
-		}
-		return "EventType:" + eType + ". Error was found in a ServiceHandlers list in " + map;
-	}
+  override public function errorString():String {
+    var eType:String;
+    try {
+      var inheritedEvent:Event = inheritedScope.event;
+      eType = inheritedEvent.type;
+    }
+    catch(e:Error) {
+      eType = type;
+    }
+    return "EventType:" + eType + ". Error was found in a ServiceHandlers list in " + map;
+  }
 
-	override protected function fireEvent(event:Event):void
-	{
-		if (AbstractEvent(event).token == token)
-		{
-			if (actions != null && actions.length > 0)
-			{
-				var currentScope:ServiceScope = new ServiceScope(inheritedScope.event, debug, inheritedScope);
-				currentScope.owner = this;
+  override protected function fireEvent(event:Event):void {
+    if (AbstractEvent(event).token == token) {
+      if (actions != null && actions.length > 0) {
+        var currentScope:ServiceScope = new ServiceScope(inheritedScope.event, debug, inheritedScope);
+        currentScope.owner = this;
 
-				if (event is FaultEvent)
-				{
-					currentScope.fault = FaultEvent(event).fault;
-				}
-				if (event is ResultEvent)
-				{
-					currentScope.result = ResultEvent(event).result;
-				}
+        if (event is FaultEvent) {
+          currentScope.fault = FaultEvent(event).fault;
+        }
+        if (event is ResultEvent) {
+          currentScope.result = ResultEvent(event).result;
+        }
 
 
-				setScope(currentScope);
-				runSequence(currentScope, actions);
-			}
-			else if (event is FaultEvent)
-			{
-				var faultEvent:UnhandledFaultEvent = new UnhandledFaultEvent(UnhandledFaultEvent.FAULT);
-				faultEvent.fault = FaultEvent(event).fault;
-				faultEvent.headers = FaultEvent(event).headers;
-				faultEvent.message = FaultEvent(event).message;
-				faultEvent.token = FaultEvent(event).token;
-				faultEvent.messageId = FaultEvent(event).messageId;
-				inheritedScope.dispatcher.dispatchEvent(faultEvent);
-			}
-		}
-	}
+        setScope(currentScope);
+        runSequence(currentScope, actions);
+      }
+      else if (event is FaultEvent) {
+        inheritedScope.dispatcher.dispatchEvent(new UncaughtErrorEvent(UncaughtErrorEvent.UNCAUGHT_ERROR, true, true, event));
+      }
+    }
+  }
 }
 }

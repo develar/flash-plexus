@@ -20,7 +20,8 @@ Author: Nahuel Foronda, Principal Architect
 package com.asfusion.mate.actionLists
 {
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.events.UnhandledMessageFaultEvent;
+
+import flash.events.UncaughtErrorEvent;
 
 import mx.messaging.Consumer;
 import mx.messaging.events.MessageEvent;
@@ -266,13 +267,7 @@ import mx.messaging.events.MessageFaultEvent;
 			}
 			else
 			{
-				var faultEvent:UnhandledMessageFaultEvent = new UnhandledMessageFaultEvent(UnhandledMessageFaultEvent.FAULT);
-				faultEvent.faultCode = event.faultCode;
-				faultEvent.faultDetail = event.faultDetail;
-				faultEvent.faultString = event.faultString;
-				faultEvent.message = event.message;
-				faultEvent.rootCause = event.rootCause;
-				dispatcher.dispatchEvent(faultEvent);
+				dispatcher.dispatchEvent(new UncaughtErrorEvent(UncaughtErrorEvent.UNCAUGHT_ERROR, true, true, event));
 			}
 		}
 		
