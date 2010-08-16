@@ -50,7 +50,7 @@ public class Scope implements IScope
 	 * An <code>IMateLogger</code> used to log errors.
 	 * Similar to Flex <code>ILogger</code>
 	 */
-	private var logger:IMateLogger;
+	private var _logger:IMateLogger;
 
 	private var _data:Dictionary;
 	public function get data():Dictionary
@@ -143,7 +143,7 @@ public class Scope implements IScope
 			data = new Dictionary();
 		}
 		eventMap = map;
-		logger = MateManager.instance.getLogger(active);
+		_logger = MateManager.instance.getLogger(active);
 		dispatcher = map.dispatcher;
 	}
 
@@ -162,9 +162,9 @@ public class Scope implements IScope
 		return currentTarget;
 	}
 
-	public function getLogger():IMateLogger
+	public function get logger():IMateLogger
 	{
-		return logger;
+		return _logger;
 	}
 
 	public function stopRunning():void

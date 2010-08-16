@@ -17,12 +17,9 @@
 
  @ignore
  */
-package com.asfusion.mate.actions.builders
-{
+package com.asfusion.mate.actions.builders {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.utils.debug.LogInfo;
-import com.asfusion.mate.utils.debug.LogTypes;
 
 import flash.events.Event;
 
@@ -41,12 +38,12 @@ import flash.events.Event;
  *
  * <listing version="3.0">
  * &lt;EventAnnouncer
- *		  generator="MyEventClass"
- *		  type="myEventType"/&gt;
+ *      generator="MyEventClass"
+ *      type="myEventType"/&gt;
  *
- *		  &lt;Properties
- *		  myProperty="myValue"
- *		  myProperty2="100"/&gt;
+ *      &lt;Properties
+ *      myProperty="myValue"
+ *      myProperty2="100"/&gt;
  *
  * &lt;/EventAnnouncer/&gt;
  * </listing>
@@ -66,96 +63,75 @@ import flash.events.Event;
  *
  * @see com.asfusion.mate.actionLists.EventHandlers
  */
-public class EventAnnouncer extends ObjectBuilder implements IAction
-{
-	private var _type:String;
-	/**
-	 *  The type attribute specifies the event type you want to dispatch.
-	 */
-	public function set type(value:String):void
-	{
-		_type = value;
-	}
+public class EventAnnouncer extends ObjectBuilder implements IAction {
+  private var _type:String;
+  /**
+   *  The type attribute specifies the event type you want to dispatch.
+   */
+  public function set type(value:String):void {
+    _type = value;
+  }
 
-	private var _bubbles:Boolean;
-	/**
-	 * Although you can specify the event's bubbles property, whether you set it to true or false will have little effect,
-	 * as the event will be dispatched from the Mate Dispatcher itself.
-	 */
-	public function get bubbles():Boolean
-	{
-		return _bubbles;
-	}
+  private var _bubbles:Boolean;
+  /**
+   * Although you can specify the event's bubbles property, whether you set it to true or false will have little effect,
+   * as the event will be dispatched from the Mate Dispatcher itself.
+   */
+  public function get bubbles():Boolean {
+    return _bubbles;
+  }
 
-	public function set bubbles(value:Boolean):void
-	{
-		_bubbles = value;
-	}
+  public function set bubbles(value:Boolean):void {
+    _bubbles = value;
+  }
 
-	private var _cancelable:Boolean = true;
-	/**
-	 * Indicates whether the behavior associated with the event can be prevented.
-	 */
-	public function get cancelable():Boolean
-	{
-		return _cancelable;
-	}
+  private var _cancelable:Boolean = true;
+  /**
+   * Indicates whether the behavior associated with the event can be prevented.
+   */
+  public function get cancelable():Boolean {
+    return _cancelable;
+  }
 
-	public function set cancelable(value:Boolean):void
-	{
-		_cancelable = value;
-	}
+  public function set cancelable(value:Boolean):void {
+    _cancelable = value;
+  }
 
-	override protected function createInstance(scope:IScope):Object
-	{
-		var realArguments:Array;
-		if (_constructorArguments != null)
-		{
-			realArguments = getRealArguments(scope, _constructorArguments);
-		}
-		else if (_type != null)
-		{
-			realArguments = [_type, bubbles, cancelable];
-		}
-		else
-		{
-			currentInstance = null;
-			scope.getLogger().error(LogTypes.TYPE_NOT_FOUND, new LogInfo(scope));
-			return null;
-		}
+  override protected function createInstance(scope:IScope):Object {
+    var realArguments:Array;
+    if (_constructorArguments != null) {
+      realArguments = getRealArguments(scope, _constructorArguments);
+    }
+    else {
+      assert(_type != null);
+      realArguments = [_type, bubbles, cancelable];
+    }
 
-		currentInstance = newInstance(role, realArguments);
-		return currentInstance;
-	}
+    currentInstance = newInstance(role, realArguments);
+    return currentInstance;
+  }
 
-	override protected function run(scope:IScope):void
-	{
-		scope.lastReturn = scope.dispatcher.dispatchEvent(Event(currentInstance));
-	}
+  override protected function run(scope:IScope):void {
+    scope.lastReturn = scope.dispatcher.dispatchEvent(Event(currentInstance));
+  }
 
-	private function newInstance(template:Class, p:Array):Object
-	{
-		if (p == null || p.length == 0)
-		{
-			return new template();
-		}
-		else
-		{
-			// ugly way to call a constructor.
-			// if someone knows a better way please let me know (nahuel at asfusion dot com).
-			switch (p.length)
-			{
-				case 1:	return new template(p[0]); break;
-				case 2:	return new template(p[0], p[1]); break;
-				case 3:	return new template(p[0], p[1], p[2]); break;
-				case 4:	return new template(p[0], p[1], p[2], p[3]); break;
-				case 5:	return new template(p[0], p[1], p[2], p[3], p[4]); break;
-				case 6:	return new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
-				case 7:	return new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
-			}
+  private function newInstance(template:Class, p:Array):Object {
+    if (p == null || p.length == 0) {
+      return new template();
+    }
+    else {
+      switch (p.length) {
+        case 1: return new template(p[0]); break;
+        case 2: return new template(p[0], p[1]); break;
+        case 3: return new template(p[0], p[1], p[2]); break;
+        case 4: return new template(p[0], p[1], p[2], p[3]); break;
+        case 5: return new template(p[0], p[1], p[2], p[3], p[4]); break;
+        case 6: return new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
+        case 7: return new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
+      }
 
-			throw new ArgumentError("constructorArguments is too long");
-		}
-	}
+      throw new ArgumentError("constructorArguments is too long");
+    }
+  }
 }
 }

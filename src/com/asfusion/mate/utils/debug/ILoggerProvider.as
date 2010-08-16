@@ -36,7 +36,7 @@ package com.asfusion.mate.utils.debug
 		 * Returns an <code>IMateLogger</code> used to log errors.
 		 * Similar to Flex <code>ILogger</code>
 		 */
-		function getLogger():IMateLogger;
+		function get logger():IMateLogger;
 		
 		/**
 		 * A reference to the document object associated with this <code>ILoggerProvider</code>.

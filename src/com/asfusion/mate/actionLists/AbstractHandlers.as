@@ -17,8 +17,7 @@
 
  @ignore
  */
-package com.asfusion.mate.actionLists
-{
+package com.asfusion.mate.actionLists {
 import com.asfusion.mate.actions.IAction;
 import com.asfusion.mate.core.IEventMap;
 import com.asfusion.mate.events.ActionListEvent;
@@ -59,209 +58,183 @@ import org.flyti.plexus.PlexusContainer;
 /**
  * AbstractHandlers is a base class for all the IActionList implementations.
  */
-public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IActionList
-{
-	/**
-	 * Internal instance of <code>IEventMap</code>.
-	 */
-	protected var map:IEventMap;
+public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IActionList {
+  /**
+   * Internal instance of <code>IEventMap</code>.
+   */
+  protected var map:IEventMap;
 
-	/**
-	 * Parent scope that is passed to the IActionList when it is a sub-ActionList.
-	 */
-	protected var inheritedScope:IScope;
+  /**
+   * Parent scope that is passed to the IActionList when it is a sub-ActionList.
+   */
+  protected var inheritedScope:IScope;
 
-	private var _actions:Vector.<IAction>;
-	public function get actions():Vector.<IAction>
-	{
-		return _actions;
-	}
-	public function set actions(value:Vector.<IAction>):void
-	{
-		_actions = value;
-		_actions.fixed = true;
-	}
+  private var _actions:Vector.<IAction>;
+  public function get actions():Vector.<IAction> {
+    return _actions;
+  }
 
-	private var _scope:IScope;
-	[Bindable(event="scopeChange")]
-	public function get scope():IScope
-	{
-		return _scope;
-	}
+  public function set actions(value:Vector.<IAction>):void {
+    _actions = value;
+    _actions.fixed = true;
+  }
 
-	private var _debug:Boolean;
-	public function get debug():Boolean
-	{
-		return Keyboard.capsLock ? true : _debug;
-	}
+  private var _scope:IScope;
+  [Bindable(event="scopeChange")]
+  public function get scope():IScope {
+    return _scope;
+  }
 
-	public function set debug(value:Boolean):void
-	{
-		_debug = value;
-	}
+  private var _debug:Boolean;
+  public function get debug():Boolean {
+    return Keyboard.capsLock ? true : _debug;
+  }
 
-	private var _dispatcher:IEventDispatcher;
-	/**
-	 *	The IActionList registers itself as an event listener of the dispatcher specified in this property
-	 */
-	protected function get dispatcher():IEventDispatcher
-	{
-		return _dispatcher;
-	}
+  public function set debug(value:Boolean):void {
+    _debug = value;
+  }
 
-	protected function set dispatcher(value:IEventDispatcher):void
-	{
-		if (_dispatcher != value)
-		{
-			_dispatcher = value;
-		}
-	}
+  private var _dispatcher:IEventDispatcher;
+  /**
+   *  The IActionList registers itself as an event listener of the dispatcher specified in this property
+   */
+  protected function get dispatcher():IEventDispatcher {
+    return _dispatcher;
+  }
 
-	public function setDispatcher(value:IEventDispatcher):void
-	{
-		if (value == dispatcher)
-		{
-			return;
-		}
+  protected function set dispatcher(value:IEventDispatcher):void {
+    if (_dispatcher != value) {
+      _dispatcher = value;
+    }
+  }
 
-		dispatcher = value;
-		validateNow();
-	}
+  public function setDispatcher(value:IEventDispatcher):void {
+    if (value == dispatcher) {
+      return;
+    }
 
-	private var needsInvalidation:Boolean;
+    dispatcher = value;
+    validateNow();
+  }
 
-	public function invalidateProperties():void
-	{
-		if (!isInitialized) needsInvalidation = true;
-		else commitProperties();
-	}
+  private var needsInvalidation:Boolean;
 
-	public function setInheritedScope(inheritedScope:IScope):void
-	{
-		this.inheritedScope = inheritedScope;
-	}
+  public function invalidateProperties():void {
+    if (!isInitialized) {
+      needsInvalidation = true;
+    }
+    else {
+      commitProperties();
+    }
+  }
 
-	public function validateNow():void
-	{
-		commitProperties();
-	}
+  public function setInheritedScope(inheritedScope:IScope):void {
+    this.inheritedScope = inheritedScope;
+  }
 
-	public function errorString():String
-	{
-		return "Error was found in a Handlers in " + map;
-	}
+  public function validateNow():void {
+    commitProperties();
+  }
 
-	/**
-	 * Internal storage for a group id.
-	 */
-	private var _groupId:int = -1;
-	public function getGroupId():int
-	{
-		return _groupId;
-	}
-	public function setGroupId(id:int):void
-	{
-		_groupId = id;
-	}
+  public function errorString():String {
+    return "Error was found in a Handlers in " + map;
+  }
 
-	public function clearReferences():void
-	{
-		// this method is abstract it will be implemented by children
-	}
+  /**
+   * Internal storage for a group id.
+   */
+  private var _groupId:int = -1;
 
-	/**
-	 * Goes over all the listeners (<code>IAction</code>s)
-	 * and calls the method <code>trigger</code> on them, passing the scope as an argument.
-	 * It also dispatches the <code>start</code> and <code>end</code> sequence events.
-	 */
-	protected function runSequence(scope:IScope, actionList:Vector.<IAction>):void
-	{
-		var logger:IMateLogger = scope.getLogger();
-		const loggerActive:Boolean = logger.active;
-		if (loggerActive)
-		{
-			logger.info(LogTypes.SEQUENCE_START, new LogInfo(scope));
-		}
-		dispatchEvent(new ActionListEvent(ActionListEvent.START, scope.event));
+  public function getGroupId():int {
+    return _groupId;
+  }
 
-		for each (var action:IAction in actionList)
-		{
-			if (scope.isRunning())
-			{
-				scope.currentTarget = action;
-				if (loggerActive)
-				{
-					logger.info(LogTypes.SEQUENCE_TRIGGER, new LogInfo(scope));
-				}
-				action.trigger(scope);
-			}
-		}
+  public function setGroupId(id:int):void {
+    _groupId = id;
+  }
 
-		dispatchEvent(new ActionListEvent(ActionListEvent.END));
-		if (loggerActive)
-		{
-			logger.debug(LogTypes.SEQUENCE_END, new LogInfo(scope));
-		}
-		_scope = null;
-	}
+  public function clearReferences():void {
+    // this method is abstract it will be implemented by children
+  }
 
-	/**
-	 * Processes the properties set on the component.
-	 */
-	protected function commitProperties():void
-	{
-		// this method is abstract it will be implemented by children
-	}
+  /**
+   * Goes over all the listeners (<code>IAction</code>s)
+   * and calls the method <code>trigger</code> on them, passing the scope as an argument.
+   * It also dispatches the <code>start</code> and <code>end</code> sequence events.
+   */
+  protected function runSequence(scope:IScope, actionList:Vector.<IAction>):void {
+    var logger:IMateLogger = scope.logger;
+    const loggerActive:Boolean = logger.active;
+    if (loggerActive) {
+      logger.info(LogTypes.SEQUENCE_START, new LogInfo(scope));
+    }
+    dispatchEvent(new ActionListEvent(ActionListEvent.START, scope.event));
 
-	/**
-	 * Set the scope on this IActionList.
-	 */
-	protected function setScope(scope:IScope):void
-	{
-		_scope = scope;
-		dispatchEvent(new ActionListEvent(ActionListEvent.SCOPE_CHANGE));
-	}
+    for each (var action:IAction in actionList) {
+      if (scope.isRunning()) {
+        scope.currentTarget = action;
+        if (loggerActive) {
+          logger.info(LogTypes.SEQUENCE_TRIGGER, new LogInfo(scope));
+        }
+        action.trigger(scope);
+      }
+    }
 
-	/**
-	 * A handler for the mate dispatcher changed.
-	 * This method is called by <code>IMateManager</code> when the dispatcher changes.
-	 */
-	protected function dispatcherChangeHandler(event:DispatcherEvent):void
-	{
-		setDispatcher(event.newDispatcher);
-	}
+    dispatchEvent(new ActionListEvent(ActionListEvent.END));
+    if (loggerActive) {
+      logger.debug(LogTypes.SEQUENCE_END, new LogInfo(scope));
+    }
+    _scope = null;
+  }
 
-	public function getDocument():Object
-	{
-		return map;
-	}
+  /**
+   * Processes the properties set on the component.
+   */
+  protected function commitProperties():void {
+    // this method is abstract it will be implemented by children
+  }
 
-	private var isInitialized:Boolean;
+  /**
+   * Set the scope on this IActionList.
+   */
+  protected function setScope(scope:IScope):void {
+    _scope = scope;
+    dispatchEvent(new ActionListEvent(ActionListEvent.SCOPE_CHANGE));
+  }
 
-	public function initialized(document:Object, id:String):void
-	{
-		map = IEventMap(document);
-		// service can set dispatcher for inner handlers
-		if (dispatcher == null)
-		{
-			var container:PlexusContainer = map.container;
-			if (container == null)
-			{
-				map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
-			}
-			else
-			{
-				setDispatcher(container.dispatcher);
-			}
-		}
+  /**
+   * A handler for the mate dispatcher changed.
+   * This method is called by <code>IMateManager</code> when the dispatcher changes.
+   */
+  protected function dispatcherChangeHandler(event:DispatcherEvent):void {
+    setDispatcher(event.newDispatcher);
+  }
 
-		if (needsInvalidation)
-		{
-			commitProperties();
-			needsInvalidation = false;
-		}
+  public function getDocument():Object {
+    return map;
+  }
 
-		isInitialized = true;
-	}
+  private var isInitialized:Boolean;
+
+  public function initialized(document:Object, id:String):void {
+    map = IEventMap(document);
+    // service can set dispatcher for inner handlers
+    if (dispatcher == null) {
+      var container:PlexusContainer = map.container;
+      if (container == null) {
+        map.addEventListener(DispatcherEvent.CHANGE, dispatcherChangeHandler);
+      }
+      else {
+        setDispatcher(container.dispatcher);
+      }
+    }
+
+    if (needsInvalidation) {
+      commitProperties();
+      needsInvalidation = false;
+    }
+
+    isInitialized = true;
+  }
 }
 }

@@ -17,27 +17,16 @@
 
  @ignore
  */
-package com.asfusion.mate.core
-{
-/**
- * <code>MateManager</code> is in charge of returning an instance of the
- * <code>IMateManager</code> that is one of the core classes of Mate.
- */
-public class MateManager
-{
-	private static var _instance:IMateManager;
-	/**
-	 * Returns a single <code>IMateManager</code> instance.
-	 */
-	public static function get instance():IMateManager
-	{
-		if (_instance == null)
-		{
-			_instance = new MateManagerInstance();
-		}
+package com.asfusion.mate.core {
+public final class MateManager {
+  private static var _instance:IMateManager;
+  public static function get instance():IMateManager {
+    if (_instance == null) {
+      _instance = new MateManagerInstance();
+    }
 
-		return _instance;
-	}
+    return _instance;
+  }
 }
 }
 
@@ -52,60 +41,49 @@ import org.flyti.plexus.DefaultPlexusContainer;
 import org.flyti.plexus.PlexusContainer;
 import org.flyti.plexus.component.ComponentDescriptorRegistry;
 
-class MateManagerInstance implements IMateManager
-{
-	public function MateManagerInstance()
-	{
-		_componentDescriptorRegistry = new ComponentDescriptorRegistry();
-		_container = new DefaultPlexusContainer(new GlobalDispatcher(), _componentDescriptorRegistry);
-	}
+class MateManagerInstance implements IMateManager {
+  public function MateManagerInstance() {
+    _componentDescriptorRegistry = new ComponentDescriptorRegistry();
+    _container = new DefaultPlexusContainer(new GlobalDispatcher(), _componentDescriptorRegistry);
+  }
 
-	private var _componentDescriptorRegistry:ComponentDescriptorRegistry;
-	public function get componentDescriptorRegistry():ComponentDescriptorRegistry
-	{
-		return _componentDescriptorRegistry;
-	}
+  private var _componentDescriptorRegistry:ComponentDescriptorRegistry;
+  public function get componentDescriptorRegistry():ComponentDescriptorRegistry {
+    return _componentDescriptorRegistry;
+  }
 
-	private var _container:PlexusContainer;
-	public function get container():PlexusContainer
-	{
-		return _container;
-	}
+  private var _container:PlexusContainer;
+  public function get container():PlexusContainer {
+    return _container;
+  }
 
-	private var _loggerClass:Class = Logger;
-	public function get loggerClass():Class
-	{
-		return _loggerClass;
-	}
+  private var _loggerClass:Class = Logger;
+  public function get loggerClass():Class {
+    return _loggerClass;
+  }
 
-	public function set loggerClass(value:Class):void
-	{
-		_loggerClass = value;
-	}
+  public function set loggerClass(value:Class):void {
+    _loggerClass = value;
+  }
 
-	private var _debugger:ILoggingTarget;
-	public function get debugger():ILoggingTarget
-	{
-		return _debugger;
-	}
+  private var _debugger:ILoggingTarget;
+  public function get debugger():ILoggingTarget {
+    return _debugger;
+  }
 
-	public function set debugger(value:ILoggingTarget):void
-	{
-		_debugger = value;
-	}
+  public function set debugger(value:ILoggingTarget):void {
+    _debugger = value;
+  }
 
-	public function getLogger(active:Boolean):IMateLogger
-	{
-		var logger:IMateLogger;
-		if (debugger != null)
-		{
-			logger = new loggerClass(active);
-			debugger.addLogger(logger);
-		}
-		else
-		{
-			logger = new loggerClass(false);
-		}
-		return logger;
-	}
+  public function getLogger(active:Boolean):IMateLogger {
+    var logger:IMateLogger;
+    if (debugger != null) {
+      logger = new loggerClass(active);
+      debugger.addLogger(logger);
+    }
+    else {
+      logger = new loggerClass(false);
+    }
+    return logger;
+  }
 }

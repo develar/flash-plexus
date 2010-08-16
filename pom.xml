@@ -97,7 +97,7 @@
                 </class>
                 <class>
                   <name>ComponentDescriptorSet</name>
-                  <id>ComponentMap</id>
+                  <id>ComponentSet</id>
                 </class>
               </names>
             </manifest>

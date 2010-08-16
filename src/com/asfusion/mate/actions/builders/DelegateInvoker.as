@@ -22,8 +22,6 @@ package com.asfusion.mate.actions.builders {
 import com.asfusion.mate.actionLists.IScope;
 import com.asfusion.mate.actionLists.ServiceHandlers;
 import com.asfusion.mate.actions.IAction;
-import com.asfusion.mate.utils.debug.LogInfo;
-import com.asfusion.mate.utils.debug.LogTypes;
 
 import flash.events.EventDispatcher;
 
@@ -138,30 +136,16 @@ public class DelegateInvoker extends ServiceInvokerBuilder implements IAction {
    * @inheritDoc
    */
   override protected function run(scope:IScope):void {
-    var logInfo:LogInfo;
     var argumentList:Array = getRealArguments(scope, this.arguments);
 
-    if (!currentInstance) {
-      logInfo = new LogInfo(scope, currentInstance, null, method, argumentList);
-      scope.getLogger().error(LogTypes.INSTANCE_UNDEFINED, logInfo);
-    }
-    else if (method && currentInstance.hasOwnProperty(method)) {
-      token = AsyncToken(currentInstance[ method ].apply(currentInstance, argumentList));
+    assert(currentInstance.hasOwnProperty(method));
 
-      // Make sure we got a token back so we can add responders to it
-      if (token == null) {
-        logInfo = new LogInfo(scope, currentInstance, null, method);
-        scope.getLogger().error("Delegate method must return an AsyncToken", logInfo);
-      }
-      else {
-        if (showBusyCursor) {
-          CursorManager.setBusyCursor();
-        }
-      }
-    }
-    else {
-      logInfo = new LogInfo(scope, currentInstance, null, method, argumentList);
-      scope.getLogger().error(LogTypes.METHOD_UNDEFINED, logInfo);
+    token = AsyncToken(currentInstance[ method ].apply(currentInstance, argumentList));
+
+    assert(token != null, "Delegate method must return an AsyncToken");
+
+    if (showBusyCursor) {
+      CursorManager.setBusyCursor();
     }
 
     scope.lastReturn = token;
@@ -235,11 +219,15 @@ public class DelegateInvoker extends ServiceInvokerBuilder implements IAction {
                           if (info is FaultEvent) {
                             faultEvent = FaultEvent.createEvent(FaultEvent(info).fault, token);
                           }
-                          else if (info is Fault) {
-                            faultEvent = FaultEvent.createEvent(Fault(info), token);
-                          }
                           else {
-                            faultEvent = FaultEvent.createEvent(new Fault(info.toString(), info.toString()), token);
+                            if (info is
+                                    Fault
+                                    ) {
+                              faultEvent = FaultEvent.createEvent(Fault(info), token);
+                            }
+                            else {
+                              faultEvent = FaultEvent.createEvent(new Fault(info.toString(), info.toString()), token);
+                            }
                           }
                           dispatcher.dispatchEvent(faultEvent);
                         });

@@ -1,5 +1,4 @@
-package com.asfusion.mate.core
-{
+package com.asfusion.mate.core {
 import com.asfusion.mate.actionLists.Injectors;
 
 import flash.events.IEventDispatcher;
@@ -12,47 +11,41 @@ import flash.events.IEventDispatcher;
  *
  * <listing version="3.0">
  * &lt;EventMap
- *		  xmlns:mx="http://www.adobe.com/2006/mxml"
- *		  xmlns:mate="http://mate.asfusion.com/"&gt;
+ *      xmlns:mx="http://www.adobe.com/2006/mxml"
+ *      xmlns:mate="http://mate.asfusion.com/"&gt;
  *
- *		  &lt;EventHandlers type="myEventType"&gt;
- *			   ... here what you want to happen when this event is dispatched...
- *		  &lt;/EventHandlers&gt;
+ *      &lt;EventHandlers type="myEventType"&gt;
+ *         ... here what you want to happen when this event is dispatched...
+ *      &lt;/EventHandlers&gt;
  *
  * &lt;/EventMap&gt;
  * </listing>
  */
-public class EventMap extends EventMapBase implements IEventMap
-{
-	public function EventMap()
-	{
-		_container = MateManager.instance.container;
-	}
+public class EventMap extends EventMapBase implements IEventMap {
+  public function EventMap() {
+    _container = MateManager.instance.container;
+  }
 
-	public function set injectors(value:Vector.<Injectors>):void
-	{
-		value.fixed = true;
-		var containerInjectors:Vector.<Injectors> = _container.injectors;
-		containerInjectors.fixed = false;
+  public function set injectors(value:Vector.<Injectors>):void {
+    value.fixed = true;
+    var containerInjectors:Vector.<Injectors> = _container.injectors;
+    containerInjectors.fixed = false;
 
-		var n:int = value.length;
-		var oldLength:int = containerInjectors.length;
-		containerInjectors.length = oldLength + n;
-		for (var i:int = 0; i < n; i++)
-		{
-			if (!isInjectable(value[i].target))
-			{
-				throw new Error(value[i].target + " is not injectable");
-			}
-			containerInjectors[i + oldLength] = value[i];
-		}
+    var n:int = value.length;
+    var oldLength:int = containerInjectors.length;
+    containerInjectors.length = oldLength + n;
+    for (var i:int = 0; i < n; i++) {
+      if (!isInjectable(value[i].target)) {
+        throw new Error(value[i].target + " is not injectable");
+      }
+      containerInjectors[i + oldLength] = value[i];
+    }
 
-		containerInjectors.fixed = true;
-	}
+    containerInjectors.fixed = true;
+  }
 
-	public function get dispatcher():IEventDispatcher
-	{
-		return _container.dispatcher;
-	}
+  public function get dispatcher():IEventDispatcher {
+    return _container.dispatcher;
+  }
 }
 }

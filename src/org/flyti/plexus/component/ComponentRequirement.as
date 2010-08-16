@@ -1,13 +1,13 @@
-package org.flyti.plexus.component
-{
-import org.flyti.plexus.*;
+package org.flyti.plexus.component {
 import org.flyti.lang.Enum;
 
-public class ComponentRequirement
-{
-	public var role:Class;
-	public var roleHint:Enum = RoleHint.DEFAULT;
+public final class ComponentRequirement {
+  public var role:Class;
+  public var roleHint:Enum = RoleHint.DEFAULT;
 
-	public var field:String;
+  /**
+   * if not specified, then constructor injection
+   */
+  public var field:String;
 }
 }

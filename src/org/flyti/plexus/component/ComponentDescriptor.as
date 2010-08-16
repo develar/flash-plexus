@@ -1,19 +1,15 @@
-package org.flyti.plexus.component
-{
+package org.flyti.plexus.component {
 import org.flyti.lang.Enum;
 
 [DefaultProperty("requirements")]
-public class ComponentDescriptor
-{
-	public var role:Class;
-	public var roleHint:Enum = RoleHint.DEFAULT;
-	
-	public var implementation:Class;
+public final class ComponentDescriptor {
+  public var role:Class;
+  public var roleHint:Enum = RoleHint.DEFAULT;
 
-	public var requirements:Vector.<ComponentRequirement>;
+  public var implementation:Class;
 
-	public var instantiationStrategy:InstantiationStrategy = InstantiationStrategy.KEEP_ALIVE;
+  public var requirements:Vector.<ComponentRequirement>;
 
-//	public var configurationKey:String;
+  public var instantiationStrategy:InstantiationStrategy = InstantiationStrategy.KEEP_ALIVE;
 }
 }
