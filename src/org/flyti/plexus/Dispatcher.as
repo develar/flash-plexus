@@ -3,7 +3,7 @@ import flash.events.Event;
 
 public final class Dispatcher {
   public static function dispatch(event:Event):void {
-    MateManager.instance.container.dispatcher.dispatchEvent(event);
+    PlexusManager.instance.container.dispatcher.dispatchEvent(event);
   }
 }
 }

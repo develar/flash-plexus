@@ -3,7 +3,7 @@ package org.flyti.plexus.events
 import flash.events.Event;
 import flash.events.IEventDispatcher;
 
-import org.flyti.plexus.MateManager;
+import org.flyti.plexus.PlexusManager;
 
 public class ContextEventDispatcher
 {
@@ -11,7 +11,7 @@ public class ContextEventDispatcher
 
 	public function ContextEventDispatcher()
 	{
-		dispatcher = MateManager.instance.container.dispatcher;
+		dispatcher = PlexusManager.instance.container.dispatcher;
 	}
 
 	public function dispatchContextEvent(event:Event):Boolean

@@ -69,7 +69,7 @@ public class DefaultPlexusContainer implements PlexusContainer {
     return componentDescriptorRegistry == null ? null : componentDescriptorRegistry.get(role, roleHint);
   }
 
-  public function lookup(role:Class, roleHint:Enum = null, constructorArguments:Array = null):Object {
+  public function lookup(role:Class, roleHint:Enum = null, constructorArguments:Vector.<Object> = null):Object {
     if (roleHint == null) {
       roleHint = RoleHint.DEFAULT;
     }
@@ -104,11 +104,23 @@ public class DefaultPlexusContainer implements PlexusContainer {
       implementation = componentDescriptor.implementation;
       // компонент может использовать только или setter, или constructor injection — но не оба разом
       if (componentDescriptor.requirements != null) {
-        useSetterInjection = componentDescriptor.requirements[0].field == null;
+        useSetterInjection = componentDescriptor.requirements[0].field != null;
         if (!useSetterInjection) {
-          assert(constructorArguments == null);
           const n:int = componentDescriptor.requirements.length;
-          constructorArguments = new Array(n);
+
+          if (constructorArguments == null) {
+            constructorArguments = new Vector.<Object>(n, true);
+          }
+          else {
+            const oldLength:int = constructorArguments.length;
+            constructorArguments.fixed = false;
+            constructorArguments.length = oldLength + n;
+            constructorArguments.fixed = true;
+            for (var j:int = oldLength - 1; j > -1; j--) {
+              constructorArguments[j + n] = constructorArguments[j];
+            }
+          }
+
           for (var i:int = 0; i < n; i++) {
             requirement = componentDescriptor.requirements[i];
             requiredComponent = cache.get(requirement.role, requirement.roleHint);
@@ -196,7 +208,7 @@ public class DefaultPlexusContainer implements PlexusContainer {
     }
   }
 
-  private function createInstance(template:Class, p:Array):Object {
+  private function createInstance(template:Class, p:Vector.<Object>):Object {
     if (p == null || p.length == 0) {
       return new template();
     }

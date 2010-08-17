@@ -17,8 +17,8 @@
 
  @ignore
  */
-package org.flyti.plexus.actions.builders
-{
+package org.flyti.plexus.actions.builders {
+import org.flyti.plexus.ISmartObject;
 import org.flyti.plexus.actionLists.IScope;
 import org.flyti.plexus.actions.BaseAction;
 import org.flyti.plexus.actions.IAction;
@@ -28,83 +28,91 @@ import org.flyti.plexus.component.RoleHint;
  * ObjectBuilder is the base class for all the classes that use the <code>generator</code> property
  * to create instances. The <code>generator</code> is the class template to use to instantiate new objects.
  */
-public class ObjectBuilder extends BaseAction implements IAction, IBuilder
-{
-	private var _role:Class;
-	public function get role():Class
-	{
-		return _role;
-	}
-	public function set role(value:Class):void
-	{
-		_role = value;
-	}
+public class ObjectBuilder extends BaseAction implements IAction, IBuilder {
+  private var _role:Class;
+  public function get role():Class {
+    return _role;
+  }
 
-	protected var _constructorArguments:Array;
-	/**
-	 *  The constructorArgs allows you to pass an Object or an Array of objects to the contructor
-	 *  when the instance is created.
-	 *  <p>You can use an array to pass multiple arguments or use a simple Object if your
-	 * signature has only one parameter.</p>
-	 */
-	public function set constructorArguments(value:Array):void
-	{
-		_constructorArguments = value;
-	}
+  public function set role(value:Class):void {
+    _role = value;
+  }
 
-	private var _cache:Boolean = true;
-	/**
-	 * The cache attribute lets you specify whether this newly created object should be kept live
-	 * so that the next time an instance of this class is requested, this already created object
-	 * is returned instead.
-	 */
-	public function set cache(value:Boolean):void
-	{
-		_cache = value;
-	}
+  protected var _constructorArguments:Vector.<Object>;
+  /**
+   *  The constructorArgs allows you to pass an Object or an Array of objects to the contructor
+   *  when the instance is created.
+   *  <p>You can use an array to pass multiple arguments or use a simple Object if your
+   * signature has only one parameter.</p>
+   */
+  public function set constructorArguments(value:Vector.<Object>):void {
+    _constructorArguments = value;
+  }
 
-	private var _registerTarget:Boolean = true;
-	/**
-	 * Registers the newly created object as an injector target. If true, this allows this object to be injected
-	 * with properties using the <code>Injectors</code> tags.
-	 */
-	public function get registerTarget():Boolean
-	{
-		return _registerTarget;
-	}
+  private var _cache:Boolean = true;
+  /**
+   * The cache attribute lets you specify whether this newly created object should be kept live
+   * so that the next time an instance of this class is requested, this already created object
+   * is returned instead.
+   */
+  public function set cache(value:Boolean):void {
+    _cache = value;
+  }
 
-	public function set registerTarget(value:Boolean):void
-	{
-		_registerTarget = value;
-	}
+  private var _registerTarget:Boolean = true;
+  /**
+   * Registers the newly created object as an injector target. If true, this allows this object to be injected
+   * with properties using the <code>Injectors</code> tags.
+   */
+  public function get registerTarget():Boolean {
+    return _registerTarget;
+  }
 
-	/**
-	 * Where the currentInstance is created using the
-	 * <code>generator</code> class as the template, passing arguments to the constructor
-	 * as specified by the <code>constructorArgs</code> (if any).
-	 */
-	protected function createInstance(scope:IScope):Object
-	{
-		if (_cache)
-		{
-			currentInstance = scope.eventMap.container.lookup(role, RoleHint.DEFAULT, _constructorArguments == null ? null : getRealArguments(scope, _constructorArguments));
-		}
-		else
-		{
-			currentInstance = new role();
-		}
+  public function set registerTarget(value:Boolean):void {
+    _registerTarget = value;
+  }
 
-		return currentInstance;
-	}
+  protected static function getRealArgumentsFromVector(scope:IScope, parameters:Vector.<Object>):Vector.<Object> {
+    var realArguments:Vector.<Object> = parameters;
+    if (scope != null) {
+      var copied:Boolean = false;
+      for (var i:int = 0, n:int = parameters.length; i < n; i++) {
+        var argument:Object = parameters[i];
+        if (argument is ISmartObject) {
+          if (!copied) {
+            copied = true;
+            realArguments = parameters.slice();
+          }
+          realArguments[i] = ISmartObject(argument).getValue(scope);
+        }
+      }
+    }
 
-	override protected function prepare(scope:IScope):void
-	{
-		createInstance(scope);
-	}
+    return realArguments;
+  }
 
-	override protected function run(scope:IScope):void
-	{
-		scope.lastReturn = currentInstance;
-	}
+  /**
+   * Where the currentInstance is created using the
+   * <code>generator</code> class as the template, passing arguments to the constructor
+   * as specified by the <code>constructorArgs</code> (if any).
+   */
+  protected function createInstance(scope:IScope):Object {
+    if (_cache) {
+      currentInstance = scope.eventMap.container.lookup(role, RoleHint.DEFAULT, _constructorArguments == null ? null : getRealArgumentsFromVector(scope, _constructorArguments));
+    }
+    else {
+      currentInstance = new role();
+    }
+
+    return currentInstance;
+  }
+
+  override protected function prepare(scope:IScope):void {
+    createInstance(scope);
+  }
+
+  override protected function run(scope:IScope):void {
+    scope.lastReturn = currentInstance;
+  }
 }
 }

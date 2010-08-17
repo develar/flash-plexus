@@ -23,7 +23,7 @@ import org.flyti.plexus.actionLists.Injectors;
  */
 public class EventMap extends EventMapBase implements IEventMap {
   public function EventMap() {
-    _container = MateManager.instance.container;
+    _container = PlexusManager.instance.container;
   }
 
   public function set injectors(value:Vector.<Injectors>):void {

@@ -98,13 +98,13 @@ public class EventAnnouncer extends ObjectBuilder implements IAction {
   }
 
   override protected function createInstance(scope:IScope):Object {
-    var realArguments:Array;
+    var realArguments:Vector.<Object>;
     if (_constructorArguments != null) {
-      realArguments = getRealArguments(scope, _constructorArguments);
+      realArguments = getRealArgumentsFromVector(scope, _constructorArguments);
     }
     else {
       assert(_type != null);
-      realArguments = [_type, bubbles, cancelable];
+      realArguments = new <Object>[_type, bubbles, cancelable];
     }
 
     currentInstance = newInstance(role, realArguments);
@@ -115,7 +115,7 @@ public class EventAnnouncer extends ObjectBuilder implements IAction {
     scope.lastReturn = scope.dispatcher.dispatchEvent(Event(currentInstance));
   }
 
-  private function newInstance(template:Class, p:Array):Object {
+  private function newInstance(template:Class, p:Vector.<Object>):Object {
     if (p == null || p.length == 0) {
       return new template();
     }
@@ -126,8 +126,6 @@ public class EventAnnouncer extends ObjectBuilder implements IAction {
         case 3: return new template(p[0], p[1], p[2]); break;
         case 4: return new template(p[0], p[1], p[2], p[3]); break;
         case 5: return new template(p[0], p[1], p[2], p[3], p[4]); break;
-        case 6: return new template(p[0], p[1], p[2], p[3], p[4], p[5]); break;
-        case 7: return new template(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
       }
 
       throw new ArgumentError("constructorArguments is too long");

@@ -24,7 +24,7 @@ import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
 import org.flyti.plexus.IEventMap;
-import org.flyti.plexus.MateManager;
+import org.flyti.plexus.PlexusManager;
 import org.flyti.plexus.debug.IMateLogger;
 
 /**
@@ -143,7 +143,7 @@ public class Scope implements IScope
 			data = new Dictionary();
 		}
 		eventMap = map;
-		_logger = MateManager.instance.getLogger(active);
+		_logger = PlexusManager.instance.getLogger(active);
 		dispatcher = map.dispatcher;
 	}
 

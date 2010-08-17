@@ -24,17 +24,17 @@ import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.debug.IMateLogger;
 import org.flyti.plexus.debug.Logger;
 
-public final class MateManager implements IMateManager {
-  private static var _instance:IMateManager;
+public final class PlexusManager {
+  private static var _instance:PlexusManager;
 
-  public function MateManager() {
+  public function PlexusManager() {
     _componentDescriptorRegistry = new ComponentDescriptorRegistry();
     _container = new DefaultPlexusContainer(new GlobalDispatcher(), _componentDescriptorRegistry);
   }
 
-  public static function get instance():IMateManager {
+  public static function get instance():PlexusManager {
     if (_instance == null) {
-      _instance = new MateManager();
+      _instance = new PlexusManager();
     }
 
     return _instance;

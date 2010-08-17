@@ -73,7 +73,7 @@ public class LocalEventMap extends EventMapBase implements IEventMap
 		}
 
 		_container = new DefaultPlexusContainer(_dispatcher, componentDescriptorRegistry, _injectors);
-		_container.parentContainer = _parentContainer == null ? MateManager.instance.container : _parentContainer;
+		_container.parentContainer = _parentContainer == null ? PlexusManager.instance.container : _parentContainer;
 	}
 
 	/**

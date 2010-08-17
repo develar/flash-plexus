@@ -18,8 +18,7 @@
  @ignore
  */
 
-package org.flyti.plexus.actions.builders
-{
+package org.flyti.plexus.actions.builders {
 import org.flyti.plexus.actionLists.IScope;
 import org.flyti.plexus.actions.AbstractServiceInvoker;
 
@@ -29,60 +28,53 @@ import org.flyti.plexus.actions.AbstractServiceInvoker;
  * also supports the <code>IBuilder</code> interface that will allow
  * creating an object using a <code>generator</code> class.
  */
-public class ServiceInvokerBuilder extends AbstractServiceInvoker implements IBuilder
-{
-	private var _role:Class;
-	public function get role():Class
-	{
-		return _role;
-	}
-	public function set role(value:Class):void
-	{
-		_role = value;
-	}
+public class ServiceInvokerBuilder extends AbstractServiceInvoker implements IBuilder {
+  private var _role:Class;
+  public function get role():Class {
+    return _role;
+  }
 
-	private var _constructorArguments:Array;
-	/**
-	 *  The constructorArgs allows you to pass an Object or an Array of objects to the contructor
-	 *  when the instance is created.
-	 */
-	public function set constructorArguments(value:Array):void
-	{
-		_constructorArguments = value;
-	}
+  public function set role(value:Class):void {
+    _role = value;
+  }
 
-	private var _registerTarget:Boolean = true;
-	/**
-	 * Registers the newly created object as an injector target. If true, this allows this object to be injected
-	 * with properties using the <code>Injectors</code> tags.
-	 */
-	[Inspectable(enumeration="true,false")]
-	public function set registerTarget(value:Boolean):void
-	{
-		_registerTarget = value;
-	}
+  private var _constructorArguments:Vector.<Object>;
+  /**
+   *  The constructorArgs allows you to pass an Object or an Array of objects to the contructor
+   *  when the instance is created.
+   */
+  public function set constructorArguments(value:Vector.<Object>):void {
+    _constructorArguments = value;
+  }
 
-	/**
-	 * Where the currentInstance is created using the
-	 * <code>generator</code> class as the template, passing arguments to the constructor
-	 * as specified by the <code>constructorArgs</code> (if any).
-	 */
-	protected function createInstance(scope:IScope):Object
-	{
-		currentInstance = scope.eventMap.container.lookup(role, null, _constructorArguments);
+  private var _registerTarget:Boolean = true;
+  /**
+   * Registers the newly created object as an injector target. If true, this allows this object to be injected
+   * with properties using the <code>Injectors</code> tags.
+   */
+  [Inspectable(enumeration="true,false")]
+  public function set registerTarget(value:Boolean):void {
+    _registerTarget = value;
+  }
 
-		return currentInstance;
-	}
+  /**
+   * Where the currentInstance is created using the
+   * <code>generator</code> class as the template, passing arguments to the constructor
+   * as specified by the <code>constructorArgs</code> (if any).
+   */
+  protected function createInstance(scope:IScope):Object {
+    currentInstance = scope.eventMap.container.lookup(role, null, _constructorArguments);
 
-	override protected function prepare(scope:IScope):void
-	{
-		super.prepare(scope);
-		createInstance(scope);
-	}
+    return currentInstance;
+  }
 
-	override protected function run(scope:IScope):void
-	{
-		scope.lastReturn = currentInstance;
-	}
+  override protected function prepare(scope:IScope):void {
+    super.prepare(scope);
+    createInstance(scope);
+  }
+
+  override protected function run(scope:IScope):void {
+    scope.lastReturn = currentInstance;
+  }
 }
 }

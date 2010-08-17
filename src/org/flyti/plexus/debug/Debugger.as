@@ -22,7 +22,7 @@ import mx.logging.ILogger;
 import mx.logging.ILoggingTarget;
 import mx.logging.LogEvent;
 
-import org.flyti.plexus.MateManager;
+import org.flyti.plexus.PlexusManager;
 
 /**
  * The <code>Debugger</code> tag allows debugging your Mate code
@@ -166,7 +166,7 @@ public class Debugger implements ILoggingTarget {
    * Constructor
    */
   public function Debugger() {
-    MateManager.instance.debugger = this;
+    PlexusManager.instance.debugger = this;
     helper = new DebuggerHelper();
   }
 
