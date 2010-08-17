@@ -1,11 +1,9 @@
 package org.flyti.plexus {
-import com.asfusion.mate.actionLists.Injectors;
-import com.asfusion.mate.events.InjectorEvent;
-
 import flash.errors.IllegalOperationError;
 import flash.events.IEventDispatcher;
 
 import org.flyti.lang.Enum;
+import org.flyti.plexus.actionLists.Injectors;
 import org.flyti.plexus.component.ComponentDescriptor;
 import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.component.ComponentRequirement;
@@ -13,6 +11,7 @@ import org.flyti.plexus.component.InstantiationStrategy;
 import org.flyti.plexus.component.RoleHint;
 import org.flyti.plexus.configuration.Configurable;
 import org.flyti.plexus.configuration.ConfigurationManager;
+import org.flyti.plexus.events.InjectorEvent;
 
 use namespace plexus;
 

@@ -1,6 +1,6 @@
 package org.flyti.plexus
 {
-import com.asfusion.mate.actions.ChangeWatcher;
+import org.flyti.plexus.actions.ChangeWatcher;
 
 public interface Uninjectable
 {

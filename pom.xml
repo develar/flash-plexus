@@ -5,16 +5,17 @@
   <parent>
     <groupId>org.flyti</groupId>
     <artifactId>flash-forge</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
   </parent>
 
-  <groupId>org.flyti.plexus</groupId>
-  <artifactId>mate</artifactId>
-  <version>1.2.2</version>
+  <groupId>org.flyti</groupId>
+  <artifactId>plexus</artifactId>
+  <version>1.2.3</version>
   <packaging>swc</packaging>
 
   <scm>
-    <connection>scm:hg:${project.basedir}</connection>
+    <connection>scm:git:git@github.com:develar/flash-plexus.git</connection>
+    <url>http://github.com/develar/flash-plexus</url>
   </scm>
 
   <properties>
@@ -53,38 +54,38 @@
             <manifest>
               <uri>http://mate.asfusion.com</uri>
               <includes>
-                <class>com.asfusion.mate.core.EventMap</class>
-                <class>com.asfusion.mate.core.LocalEventMap</class>
-                <class>com.asfusion.mate.core.Properties</class>
-                <class>com.asfusion.mate.core.Property</class>
+                <class>**.EventMap</class>
+                <class>**.LocalEventMap</class>
+                <class>**.Properties</class>
+                <class>**.Property</class>
 
-                <class>com.asfusion.mate.actionLists.EventHandlers</class>
-                <class>com.asfusion.mate.actionLists.ServiceHandlers</class>
-                <class>com.asfusion.mate.actionLists.MessageHandlers</class>
-                <class>com.asfusion.mate.actionLists.Injectors</class>
+                <class>org.flyti.plexus.actionLists.EventHandlers</class>
+                <class>org.flyti.plexus.actionLists.ServiceHandlers</class>
+                <class>org.flyti.plexus.actionLists.MessageHandlers</class>
+                <class>org.flyti.plexus.actionLists.Injectors</class>
 
                 <class>**.ComponentDescriptor</class>
                 <class>**.ComponentRequirement</class>
                 <class>**.ComponentDescriptorSet</class>
 
-                <class>com.asfusion.mate.actions.DataCopier</class>
-                <class>com.asfusion.mate.actions.StopHandlers</class>
-                <class>com.asfusion.mate.actions.InlineInvoker</class>
-                <class>com.asfusion.mate.actions.PropertyInjector</class>
-                <class>com.asfusion.mate.actions.ListenerInjector</class>
-                <class>com.asfusion.mate.actions.CallBack</class>
-                <class>com.asfusion.mate.actions.builders.ObjectBuilder</class>
-                <class>com.asfusion.mate.actions.builders.*Announcer</class>
-                <class>com.asfusion.mate.actions.builders.serviceClasses.Request</class>
-                <class>com.asfusion.mate.actions.builders.PropertySetter</class>
-                <class>com.asfusion.mate.actions.builders.*Invoker</class>
+                <class>org.flyti.plexus.actions.DataCopier</class>
+                <class>org.flyti.plexus.actions.StopHandlers</class>
+                <class>org.flyti.plexus.actions.InlineInvoker</class>
+                <class>org.flyti.plexus.actions.PropertyInjector</class>
+                <class>org.flyti.plexus.actions.ListenerInjector</class>
+                <class>org.flyti.plexus.actions.CallBack</class>
+                <class>org.flyti.plexus.actions.builders.ObjectBuilder</class>
+                <class>org.flyti.plexus.actions.builders.*Announcer</class>
+                <class>org.flyti.plexus.actions.builders.serviceClasses.Request</class>
+                <class>org.flyti.plexus.actions.builders.PropertySetter</class>
+                <class>org.flyti.plexus.actions.builders.*Invoker</class>
 
-                <class>com.asfusion.mate.utils.debug.Debugger</class>
+                <class>org.flyti.plexus.debug.Debugger</class>
 
-                <class>com.asfusion.mate.testing.MockRemoteObject</class>
-                <class>com.asfusion.mate.testing.MockWebService</class>
-                <class>com.asfusion.mate.testing.MockMethod</class>
-                <class>com.asfusion.mate.testing.MockDelegate</class>
+                <class>org.flyti.plexus.testing.MockRemoteObject</class>
+                <class>org.flyti.plexus.testing.MockWebService</class>
+                <class>org.flyti.plexus.testing.MockMethod</class>
+                <class>org.flyti.plexus.testing.MockDelegate</class>
               </includes>
               <names>
                 <class>

@@ -1,5 +1,5 @@
 package org.flyti.plexus.component {
-import com.asfusion.mate.core.MateManager;
+import org.flyti.plexus.MateManager;
 
 [DefaultProperty("components")]
 public class ComponentDescriptorSet {
