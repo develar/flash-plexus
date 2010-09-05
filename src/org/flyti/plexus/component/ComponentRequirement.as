@@ -1,5 +1,5 @@
 package org.flyti.plexus.component {
-import org.flyti.lang.Enum;
+import cocoa.lang.Enum;
 
 public final class ComponentRequirement {
   public var role:Class;

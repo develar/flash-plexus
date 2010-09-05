@@ -1,5 +1,5 @@
 package org.flyti.plexus.component {
-import org.flyti.lang.Enum;
+import cocoa.lang.Enum;
 
 [DefaultProperty("requirements")]
 public final class ComponentDescriptor {

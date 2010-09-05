@@ -3,7 +3,7 @@ package org.flyti.plexus
 import flash.errors.IllegalOperationError;
 import flash.events.IEventDispatcher;
 
-import org.flyti.lang.Enum;
+import cocoa.lang.Enum;
 import org.flyti.plexus.actionLists.Injectors;
 import org.flyti.plexus.component.ComponentDescriptor;
 import org.flyti.plexus.component.ComponentDescriptorRegistry;

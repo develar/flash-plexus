@@ -1,6 +1,6 @@
 package org.flyti.plexus.component
 {
-import org.flyti.lang.Enum;
+import cocoa.lang.Enum;
 
 /**
  * http://plexus.codehaus.org/ref/component-configuration.html

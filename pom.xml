@@ -10,18 +10,19 @@
 
   <groupId>org.flyti</groupId>
   <artifactId>plexus</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
   <packaging>swc</packaging>
+
+  <properties>
+		<fdk.version>4.5.0.17440</fdk.version>
+		<flex.sdk.version>4.5.0.17440</flex.sdk.version>
+		<flexMojos.version>3.8-de3.1</flexMojos.version>
+	</properties>
 
   <scm>
     <connection>scm:git:git@github.com:develar/flash-plexus.git</connection>
     <url>http://github.com/develar/flash-plexus</url>
   </scm>
-
-  <properties>
-    <!--<fdk.version>4.1.0.15885</fdk.version>-->
-    <!--<flex.sdk.version>4.1.0.15885</flex.sdk.version>-->
-  </properties>
 
   <dependencies>
     <dependency>
@@ -37,8 +38,8 @@
     </dependency>
     <dependency>
       <groupId>org.flyti</groupId>
-      <artifactId>lang</artifactId>
-      <version>1.1.5</version>
+      <artifactId>foundation</artifactId>
+      <version>1.1.7</version>
       <type>swc</type>
     </dependency>
   </dependencies>

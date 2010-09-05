@@ -1,7 +1,7 @@
 package org.flyti.plexus.component {
 import flash.utils.Dictionary;
 
-import org.flyti.lang.Enum;
+import cocoa.lang.Enum;
 
 /**
  * Мы разрешаем иметь в качестве role конкретный класс, а не интерфейс, и не указывать implementation.
