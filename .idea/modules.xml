@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mate.iml" filepath="$PROJECT_DIR$/mate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plexus.iml" filepath="$PROJECT_DIR$/plexus.iml" />
     </modules>
   </component>
 </project>
