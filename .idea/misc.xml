@@ -8,6 +8,7 @@
       <facet-type id="flex">
         <modules>
           <module name="mate" />
+          <module name="plexus" />
         </modules>
       </facet-type>
     </autodetection-disabled>

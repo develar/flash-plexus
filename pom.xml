@@ -5,12 +5,12 @@
   <parent>
     <groupId>org.flyti</groupId>
     <artifactId>flash-forge</artifactId>
-    <version>15</version>
+    <version>17</version>
   </parent>
 
   <groupId>org.flyti</groupId>
   <artifactId>plexus</artifactId>
-  <version>1.2.5</version>
+  <version>1.2.6-SNAPSHOT</version>
   <packaging>swc</packaging>
 
   <scm>

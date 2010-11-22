@@ -130,6 +130,19 @@ public class DefaultPlexusContainer implements PlexusContainer {
             constructorArguments[i] = requiredComponent;
           }
         }
+
+        // если компонент (DocumentManager) требует как зависимость другой компонент (ElementManager), который посредством инжектирования
+        /*
+         <Injectors target="{ElementManager}">
+          <PropertySetter source="{DocumentManager}" sourceKey="document" role="{ToolManager}" targetKey="document"/>
+          <PropertyInjector source="{DocumentManager}" sourceKey="document" targetKey="document"/>
+         </Injectors>
+         */
+        // требует этот компонент неявно — как бы не сам компонент, а данные (document), то мы должны еще раз проверить наличие в кеше запрошенного компонента
+        instance = cache.get(role, roleHint);
+        if (instance != null) {
+          return instance;
+        }
       }
     }
 
