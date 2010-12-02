@@ -167,8 +167,7 @@ public class DefaultPlexusContainer implements PlexusContainer {
     }
 
     if (!perLookup && instance is Injectable) {
-      var injectorEvent:InjectorEvent = new InjectorEvent(instance);
-      checkInjectors(injectorEvent);
+      checkInjectors(new InjectorEvent(instance));
     }
 
     if (instance is Configurable) {

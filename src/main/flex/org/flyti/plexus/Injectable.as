@@ -1,6 +1,4 @@
-package org.flyti.plexus
-{
-public interface Injectable
-{
+package org.flyti.plexus {
+public interface Injectable {
 }
 }
