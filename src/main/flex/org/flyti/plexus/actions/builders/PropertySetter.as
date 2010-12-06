@@ -17,8 +17,7 @@
 
  @ignore
  */
-package org.flyti.plexus.actions.builders
-{
+package org.flyti.plexus.actions.builders {
 import org.flyti.plexus.ISmartObject;
 import org.flyti.plexus.actionLists.IScope;
 
@@ -30,87 +29,75 @@ import org.flyti.plexus.actionLists.IScope;
  * The value to set can be the <code>source</code> object or a property of
  * the source object that is specified in the <code>sourceKey</code> attribute.
  */
-public class PropertySetter extends ObjectBuilder
-{
-	private var _targetKey:String;
+public class PropertySetter extends ObjectBuilder {
+  private var _targetKey:String;
 
-	/**
-	 * The name of the property that will be set in the generated object.
-	 * */
-	public function get targetKey():String
-	{
-		return _targetKey;
-	}
-	public function set targetKey(value:String):void
-	{
-		_targetKey = value;
-	}
+  /**
+   * The name of the property that will be set in the generated object.
+   * */
+  public function get targetKey():String {
+    return _targetKey;
+  }
 
-	private var _source:Object;
-	/**
-	 * An object that contains the data that will be used to set the target object.
-	 */
-	public function get source():Object
-	{
-		return _source;
-	}
+  public function set targetKey(value:String):void {
+    _targetKey = value;
+  }
 
-	[Inspectable(enumeration="event,data,result,fault,lastReturn,message,scope")]
-	public function set source(value:Object):void
-	{
-		_source = value;
-	}
+  private var _source:Object;
+  /**
+   * An object that contains the data that will be used to set the target object.
+   */
+  public function get source():Object {
+    return _source;
+  }
 
-	private var _sourceKey:String;
-	/**
-	 * The name of the property on the source object that will be used to read
-	 * the value to be set the generated object.
-	 */
-	public function get sourceKey():String
-	{
-		return _sourceKey;
-	}
-	public function set sourceKey(value:String):void
-	{
-		_sourceKey = value;
-	}
+  [Inspectable(enumeration="event,data,result,fault,lastReturn,message,scope")]
+  public function set source(value:Object):void {
+    _source = value;
+  }
 
-	override protected function run(scope:IScope):void
-	{
-		var realSource:Object = getRealObject(source, scope);
-		var value:Object;
-		value = sourceKey == null ? realSource : realSource[sourceKey];
-		currentInstance[targetKey] = value;
-		scope.lastReturn = value;
-	}
+  private var _sourceKey:String;
+  /**
+   * The name of the property on the source object that will be used to read
+   * the value to be set the generated object.
+   */
+  public function get sourceKey():String {
+    return _sourceKey;
+  }
 
-	/**
-	 * Helper function to get the source or destination objects
-	 * from either a String value, a SmartObject or other.
-	 */
-	protected function getRealObject(object:Object, scope:IScope):Object
-	{
-		if (object is Function)
-		{
-			object = (object as Function)();
-		}
+  public function set sourceKey(value:String):void {
+    _sourceKey = value;
+  }
 
-		if (object is Class)
-		{
-			return scope.eventMap.container.lookup(Class(object));
-		}
-		else if (object is ISmartObject)
-		{
-			return ISmartObject(object).getValue(scope);
-		}
-		else if (object is String)
-		{
-			return scope[object];
-		}
-		else
-		{
-			return object;
-		}
-	}
+  override protected function run(scope:IScope):void {
+    var realSource:Object = getRealObject(source, scope);
+    var value:Object;
+    value = sourceKey == null ? realSource : realSource[sourceKey];
+    currentInstance[targetKey] = value;
+    scope.lastReturn = value;
+  }
+
+  /**
+   * Helper function to get the source or destination objects
+   * from either a String value, a SmartObject or other.
+   */
+  protected function getRealObject(object:Object, scope:IScope):Object {
+    if (object is Function) {
+      object = (object as Function)();
+    }
+
+    if (object is Class) {
+      return scope.eventMap.container.lookup(Class(object));
+    }
+    else if (object is ISmartObject) {
+      return ISmartObject(object).getValue(scope);
+    }
+    else if (object is String) {
+      return scope[object];
+    }
+    else {
+      return object;
+    }
+  }
 }
 }
