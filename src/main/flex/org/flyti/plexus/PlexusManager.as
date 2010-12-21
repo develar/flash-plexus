@@ -1,5 +1,10 @@
 package org.flyti.plexus {
+import flash.events.IEventDispatcher;
+import flash.system.ApplicationDomain;
+import flash.utils.getDefinitionByName;
+
 import mx.logging.ILoggingTarget;
+import mx.managers.SystemManagerGlobals;
 
 import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.debug.IMateLogger;
@@ -10,9 +15,20 @@ public final class PlexusManager {
 
   public function PlexusManager() {
     _componentDescriptorRegistry = new ComponentDescriptorRegistry();
-    _container = new DefaultPlexusContainer(GlobalDispatcher.createIfApplicable(), _componentDescriptorRegistry);
+    _container = new DefaultPlexusContainer(createIfApplicable(), _componentDescriptorRegistry);
   }
 
+  private static function createIfApplicable():IEventDispatcher {
+    var systemManager:* = SystemManagerGlobals.topLevelSystemManagers[0];
+    if (ApplicationDomain.currentDomain.hasDefinition("mx.managers.SystemManager") && systemManager is Class(ApplicationDomain.currentDomain.getDefinition("mx.managers.SystemManager"))) {
+      var globalDispatcherClass:Class = Class(getDefinitionByName("org.flyti.plexus.GlobalDispatcher"));
+      return new globalDispatcherClass(systemManager);
+    }
+    else {
+      return null;
+    }
+  }
+  
   public static function get instance():PlexusManager {
     if (_instance == null) {
       _instance = new PlexusManager();

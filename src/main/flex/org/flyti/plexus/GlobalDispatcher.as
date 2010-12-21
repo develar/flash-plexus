@@ -3,9 +3,7 @@ import flash.events.Event;
 import flash.events.IEventDispatcher;
 
 import mx.core.mx_internal;
-import mx.managers.ISystemManager;
 import mx.managers.SystemManager;
-import mx.managers.SystemManagerGlobals;
 
 use namespace mx_internal;
 
@@ -14,16 +12,6 @@ internal class GlobalDispatcher implements IEventDispatcher {
 
   public function GlobalDispatcher(systemManager:SystemManager) {
     topLevelDispatcher = systemManager;
-  }
-
-  public static function createIfApplicable():IEventDispatcher {
-    var systemManager:ISystemManager = SystemManagerGlobals.topLevelSystemManagers[0];
-    if (systemManager is SystemManager) {
-      return new GlobalDispatcher(SystemManager(systemManager));
-    }
-    else {
-      return null;
-    }
   }
 
   public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void {
