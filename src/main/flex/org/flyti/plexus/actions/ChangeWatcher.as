@@ -73,6 +73,10 @@ public class ChangeWatcher {
   private function wrapHandler(event:Event):void {
     execute();
   }
+  
+  private function resetNotBindable(newSource:Object):void {
+    target[targetPropertyName] = newSource[sourcePropertyName];
+  }
 
   private function execute():void {
     if (!isExecuting) {
@@ -84,8 +88,11 @@ public class ChangeWatcher {
       if (nextWatcher == null) {
         target[targetPropertyName] = sourcePropertyValue;
       }
-      else {
+      else if (sourcePropertyValue is IEventDispatcher || sourcePropertyValue == null) {
         nextWatcher.reset(IEventDispatcher(sourcePropertyValue));
+      }
+      else {
+        nextWatcher.resetNotBindable(sourcePropertyValue);
       }
       //			}
       //			finally
