@@ -1,25 +1,7 @@
-/*
- Copyright 2008 Nahuel Foronda/AsFusion
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License. Y
- ou may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, s
- oftware distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and limitations under the License
-
- Author: Nahuel Foronda, Principal Architect
- nahuel at asfusion dot com
-
- @ignore
- */
 package org.flyti.plexus.actions.builders {
 import org.flyti.plexus.ISmartObject;
 import org.flyti.plexus.actionLists.IScope;
+import org.flyti.plexus.events.InjectorEvent;
 
 [Exclude(name="properties", kind="property")]
 /**
@@ -31,14 +13,9 @@ import org.flyti.plexus.actionLists.IScope;
  */
 public class PropertySetter extends ObjectBuilder {
   private var _targetKey:String;
-
   /**
    * The name of the property that will be set in the generated object.
    * */
-  public function get targetKey():String {
-    return _targetKey;
-  }
-
   public function set targetKey(value:String):void {
     _targetKey = value;
   }
@@ -47,10 +24,6 @@ public class PropertySetter extends ObjectBuilder {
   /**
    * An object that contains the data that will be used to set the target object.
    */
-  public function get source():Object {
-    return _source;
-  }
-
   [Inspectable(enumeration="event,data,result,fault,lastReturn,message,scope")]
   public function set source(value:Object):void {
     _source = value;
@@ -61,19 +34,14 @@ public class PropertySetter extends ObjectBuilder {
    * The name of the property on the source object that will be used to read
    * the value to be set the generated object.
    */
-  public function get sourceKey():String {
-    return _sourceKey;
-  }
-
   public function set sourceKey(value:String):void {
     _sourceKey = value;
   }
 
   override protected function run(scope:IScope):void {
-    var realSource:Object = getRealObject(source, scope);
-    var value:Object;
-    value = sourceKey == null ? realSource : realSource[sourceKey];
-    currentInstance[targetKey] = value;
+    var realSource:Object = _source == null ? InjectorEvent(scope.event).instance : getRealObject(_source, scope);
+    var value:Object = _sourceKey == null ? realSource : realSource[_sourceKey];
+    currentInstance[_targetKey] = value;
     scope.lastReturn = value;
   }
 

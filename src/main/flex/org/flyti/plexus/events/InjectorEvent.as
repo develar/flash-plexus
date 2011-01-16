@@ -18,9 +18,11 @@ public class InjectorEvent extends Event {
 
   public function InjectorEvent(target:Object, uid:String = null) {
     this.instance = target;
-    this.uid = uid;
     if (uid == null && target is IDeferredInstantiationUIComponent) {
       this.uid = IDeferredInstantiationUIComponent(target).id;
+    }
+    else {
+      this.uid = uid;
     }
 
     super(INJECT, true);

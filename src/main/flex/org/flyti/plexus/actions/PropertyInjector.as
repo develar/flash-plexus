@@ -1,22 +1,3 @@
-/*
- Copyright 2008 Nahuel Foronda/AsFusion
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License. Y
- ou may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, s
- oftware distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and limitations under the License
-
- Author: Nahuel Foronda, Principal Architect
- nahuel at asfusion dot com
-
- @ignore
- */
 package org.flyti.plexus.actions {
 import flash.events.IEventDispatcher;
 
@@ -37,6 +18,11 @@ public class PropertyInjector extends AbstractAction implements IAction {
    */
   public function set targetKey(value:String):void {
     _targetKey = value;
+  }
+  
+  private var _target:Class;
+  public function set target(value:Class):void {
+    _target = value;
   }
 
   private var _targetId:String;
@@ -81,6 +67,10 @@ public class PropertyInjector extends AbstractAction implements IAction {
         if (_source is ISmartObject) {
           currentInstance = ISmartObject(_source).getValue(scope);
         }
+        else if (_source == null) {
+          assert(_target != null);
+          currentInstance = InjectorEvent(scope.event).instance;
+        }
         else {
           currentInstance = _source;
         }
@@ -93,20 +83,25 @@ public class PropertyInjector extends AbstractAction implements IAction {
     if (_targetId != null && _targetId != event.uid) {
       return;
     }
-
+    
+    var targetKey:String = _targetKey == null ? _sourceKey : _targetKey;
+    var target:Object = _target == null ? event.instance : scope.eventMap.container.lookup(_target);
     if (_sourceKey == null) {
-      event.instance[_targetKey] = currentInstance;
+      target[targetKey] = currentInstance;
+    }
+    else if (currentInstance is IEventDispatcher) {
+      var sourceKeys:Array = _sourceKey.split(".");
+      if (_targetKey == null) {
+        targetKey = sourceKeys[sourceKeys.length - 1];
+      }
+      
+      var watcher:ChangeWatcher = ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKeys, target, targetKey, _changeEventType);
+      if (target is Uninjectable) {
+        Uninjectable(target).addWatcher(watcher);
+      }
     }
     else {
-      if (currentInstance is IEventDispatcher) {
-        var watcher:ChangeWatcher = ChangeWatcher.watch(IEventDispatcher(currentInstance), _sourceKey.split("."), event.instance, _targetKey, _changeEventType);
-        if (event.instance is Uninjectable) {
-          Uninjectable(event.instance).addWatcher(watcher);
-        }
-      }
-      else {
-        event.instance[_targetKey] = currentInstance[_sourceKey];
-      }
+      target[targetKey] = currentInstance[_sourceKey];
     }
   }
 }
