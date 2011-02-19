@@ -7,7 +7,7 @@ import mx.managers.SystemManager;
 
 use namespace mx_internal;
 
-internal class GlobalDispatcher implements IEventDispatcher {
+public class GlobalDispatcher implements IEventDispatcher {
   private var topLevelDispatcher:SystemManager;
 
   public function GlobalDispatcher(systemManager:SystemManager) {
