@@ -17,7 +17,7 @@ Author: Nahuel Foronda, Principal Architect
                 
 @ignore
 */
-package org.flyti.plexus.actions.builders.serviceClasses
+package org.flyti.plexus.actions.builders
 {
 	/**
 	 * <code>Request</code> allows you to add variables to an <code>HTTPServiceInvoker</code> 

@@ -25,7 +25,7 @@ import org.flyti.plexus.ISmartObject;
 import org.flyti.plexus.Properties;
 import org.flyti.plexus.actionLists.IScope;
 import org.flyti.plexus.actions.IAction;
-import org.flyti.plexus.actions.builders.serviceClasses.Request;
+import org.flyti.plexus.actions.builders.Request;
 
 [DefaultProperty("MXMLrequest")]
 [Exclude(name="MXMLrequest", kind="property")]

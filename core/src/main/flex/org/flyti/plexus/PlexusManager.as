@@ -19,7 +19,7 @@ public final class PlexusManager {
   }
 
   private static function createIfApplicable():IEventDispatcher {
-    var systemManager:* = SystemManagerGlobals.topLevelSystemManagers[0];
+    var systemManager:Object = SystemManagerGlobals.topLevelSystemManagers[0];
     if (ApplicationDomain.currentDomain.hasDefinition("mx.managers.SystemManager") && systemManager is Class(ApplicationDomain.currentDomain.getDefinition("mx.managers.SystemManager"))) {
       var globalDispatcherClass:Class = Class(getDefinitionByName("org.flyti.plexus.GlobalDispatcher"));
       return new globalDispatcherClass(systemManager);

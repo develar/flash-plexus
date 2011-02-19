@@ -9,6 +9,8 @@
         <modules>
           <module name="mate" />
           <module name="plexus" />
+          <module name="plexus (1)" />
+          <module name="plexus-rpc" />
         </modules>
       </facet-type>
     </autodetection-disabled>

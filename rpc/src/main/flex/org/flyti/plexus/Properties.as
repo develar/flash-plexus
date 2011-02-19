@@ -20,7 +20,7 @@
 package org.flyti.plexus
 {
 import org.flyti.plexus.actionLists.IScope;
-import org.flyti.plexus.actions.builders.serviceClasses.Request;
+import org.flyti.plexus.actions.builders.Request;
 
 /**
  * <code>Properties</code> tag allows you to add properties to an object.
