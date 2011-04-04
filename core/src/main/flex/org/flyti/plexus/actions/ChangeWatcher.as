@@ -18,26 +18,28 @@ public class ChangeWatcher {
   private var targetPropertyName:String;
 
   private var eventName:String;
+  private var nullValue:Object;
 
-  public function ChangeWatcher(sourcePropertyName:String, target:Object, targetPropertyName:String, nextWatcher:ChangeWatcher) {
+  public function ChangeWatcher(sourcePropertyName:String, target:Object, targetPropertyName:String, nextWatcher:ChangeWatcher, nullValue:Object) {
     this.sourcePropertyName = sourcePropertyName;
 
     this.target = target;
     this.targetPropertyName = targetPropertyName;
 
     this.nextWatcher = nextWatcher;
+    this.nullValue = nullValue;
 
     eventName = sourcePropertyName + CHANGE_EVENT_TYPE_POSTFIX;
   }
 
-  public static function watch(source:IEventDispatcher, chain:Array, target:Object, targetPropertyName:String, changeEventType:String = null):ChangeWatcher {
+  public static function watch(source:IEventDispatcher, chain:Array, target:Object, targetPropertyName:String, changeEventType:String = null, nullValue:Object = null):ChangeWatcher {
     var nextWatcher:ChangeWatcher;
     if (chain.length > 1) {
       assert(changeEventType == null);
-      nextWatcher = watch(null, chain.slice(1), target, targetPropertyName);
+      nextWatcher = watch(null, chain.slice(1), target, targetPropertyName, null, nullValue);
     }
 
-    var watcher:ChangeWatcher = new ChangeWatcher(chain[0], target, targetPropertyName, nextWatcher);
+    var watcher:ChangeWatcher = new ChangeWatcher(chain[0], target, targetPropertyName, nextWatcher, nullValue);
     if (changeEventType != null) {
       watcher.eventName = changeEventType;
     }
@@ -84,7 +86,7 @@ public class ChangeWatcher {
       //            {
       //                isExecuting = true;
 
-      var sourcePropertyValue:Object = source == null ? null : source[sourcePropertyName];
+      var sourcePropertyValue:Object = source == null ? nullValue : source[sourcePropertyName];
       if (nextWatcher == null) {
         target[targetPropertyName] = sourcePropertyValue;
       }

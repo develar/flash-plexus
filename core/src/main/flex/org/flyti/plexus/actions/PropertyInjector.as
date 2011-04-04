@@ -12,6 +12,8 @@ import org.flyti.plexus.events.InjectorEvent;
  * the source to the targetKey. Otherwise, it will only set the property once.
  */
 public class PropertyInjector extends AbstractAction implements IAction {
+  public var nullValue:Object;
+  
   private var _targetKey:String;
   /**
    * The name of the property that the injector will set in the target object
@@ -95,7 +97,7 @@ public class PropertyInjector extends AbstractAction implements IAction {
         targetKey = sourceKeys[sourceKeys.length - 1];
       }
       
-      var watcher:ChangeWatcher = ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKeys, target, targetKey, _changeEventType);
+      var watcher:ChangeWatcher = ChangeWatcher.watch(IEventDispatcher(currentInstance), sourceKeys, target, targetKey, _changeEventType, nullValue);
       if (target is Uninjectable) {
         Uninjectable(target).addWatcher(watcher);
       }

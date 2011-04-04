@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core/plexus.iml" filepath="$PROJECT_DIR$/core/plexus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/plexus.iml" filepath="$PROJECT_DIR$/core/plexus.iml" />
       <module fileurl="file://$PROJECT_DIR$/rpc/plexus-rpc.iml" filepath="$PROJECT_DIR$/rpc/plexus-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rpc/plexus-rpc.iml" filepath="$PROJECT_DIR$/rpc/plexus-rpc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plexusAggregator.iml" filepath="$PROJECT_DIR$/plexusAggregator.iml" />
       <module fileurl="file://$PROJECT_DIR$/plexusAggregator.iml" filepath="$PROJECT_DIR$/plexusAggregator.iml" />
     </modules>
   </component>
