@@ -62,18 +62,8 @@ package org.flyti.plexus.debug
 		 * Any extra data that you need to pass to the logger
 		 */
 		public var data:Object;
-		
-		/**
-		 * A flag indicating that a problem was found
-		 */
-		public var foundProblem:Boolean;
-		
-		/**
-		 * The description of the problem
-		 */
-		public var problem:String;
-		
-		/**
+
+    /**
 		 * The current scope at the time that the log occurs.
 		 */
 		public var loggerProvider:ILoggerProvider;

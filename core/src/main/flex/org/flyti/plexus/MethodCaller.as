@@ -17,31 +17,26 @@
 
  @ignore
  */
-package org.flyti.plexus
-{
+package org.flyti.plexus {
 import org.flyti.plexus.actionLists.IScope;
 
 /**
  * MethodCaller has the ability to call a method on any object.
  * If an error ocurrs, it will send it to the logger.
  */
-public class MethodCaller
-{
-	/**
-	 * The function used to call methods on objects.
-	 * It can also call methods that have arguments if they are provided.
-	 */
-	public function call(scope:IScope, instance:Object, method:String, args:*, parseArguments:Boolean = true):Object
-	{
-		var parameters:Array = parseArguments ? SmartArguments.getRealArguments(scope, args) : args as Array;
-		if (parameters == null)
-		{
-			return instance[method]();
-		}
-		else
-		{
-			return (instance[method] as Function).apply(instance, parameters);
-		}
-	}
+public final class MethodCaller {
+  /**
+   * The function used to call methods on objects.
+   * It can also call methods that have arguments if they are provided.
+   */
+  public static function call(scope:IScope, instance:Object, method:String, args:*, parseArguments:Boolean = true):Object {
+    var parameters:Array = parseArguments ? SmartArguments.getRealArguments(scope, args) : args as Array;
+    if (parameters == null) {
+      return instance[method]();
+    }
+    else {
+      return (instance[method] as Function).apply(instance, parameters);
+    }
+  }
 }
 }

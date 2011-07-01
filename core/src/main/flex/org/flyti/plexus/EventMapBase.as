@@ -1,7 +1,12 @@
 package org.flyti.plexus {
-import flash.events.EventDispatcher;
-import flash.utils.describeType;
+import avmplus.HIDE_OBJECT;
+import avmplus.INCLUDE_BASES;
+import avmplus.INCLUDE_INTERFACES;
+import avmplus.INCLUDE_TRAITS;
+import avmplus.USE_ITRAITS;
+import avmplus.describe;
 
+import flash.events.EventDispatcher;
 import org.flyti.plexus.actionLists.ScopeProperties;
 
 [Exclude(name="activate", kind="event")]
@@ -13,14 +18,14 @@ internal class EventMapBase extends EventDispatcher {
     return _container;
   }
 
-  protected final function isInjectable(clazz:Class):Boolean {
-    var xml:XML = describeType(clazz);
-    if (xml.factory.implementsInterface.(@type == "org.flyti.plexus::Injectable").length() == 1 || xml.factory.extendsClass.(@type == "spark.components.supportClasses::GroupBase").length() == 1) {
+  protected static function isInjectable(clazz:Class):Boolean {
+    var info:Object = describe(clazz, INCLUDE_INTERFACES | INCLUDE_BASES | HIDE_OBJECT | INCLUDE_TRAITS | USE_ITRAITS);
+    var traits:Object = info.traits;
+    if (traits.interfaces.indexOf("org.flyti.plexus::Injectable") != -1 || traits.bases.indexOf("spark.components.supportClasses::GroupBase") != -1) {
       return true;
     }
     else {
-      var name:String = xml.@name;
-      return name == "cocoa::Application";
+      return info.name == "cocoa::Application";
     }
   }
 

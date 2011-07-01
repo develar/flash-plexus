@@ -220,7 +220,7 @@ public class DefaultPlexusContainer implements PlexusContainer {
     }
   }
 
-  private function createInstance(template:Class, p:Vector.<Object>):Object {
+  private static function createInstance(template:Class, p:Vector.<Object>):Object {
     if (p == null || p.length == 0) {
       return new template();
     }

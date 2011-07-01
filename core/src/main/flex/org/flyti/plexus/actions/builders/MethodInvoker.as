@@ -1,24 +1,4 @@
-/*
- Copyright 2008 Nahuel Foronda/AsFusion
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License. Y
- ou may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, s
- oftware distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and limitations under the License
-
- Author: Nahuel Foronda, Principal Architect
- nahuel at asfusion dot com
-
- @ignore
- */
-package org.flyti.plexus.actions.builders
-{
+package org.flyti.plexus.actions.builders {
 import org.flyti.plexus.MethodCaller;
 import org.flyti.plexus.actionLists.IScope;
 
@@ -47,44 +27,22 @@ import org.flyti.plexus.actionLists.IScope;
  *
  * @see org.flyti.plexus.actionLists.EventHandlers
  */
-public class MethodInvoker extends ObjectBuilder
-{
-	private static const methodCaller:MethodCaller = new MethodCaller();
+public class MethodInvoker extends ObjectBuilder {
+  private var _arguments:*;
+  /**
+   *  The property <code>arguments</code> allows you to pass an Object or an Array of objects when calling
+   * the function defined in the property <code>method</code> .
+   *  <p>You can use an array to pass multiple arguments or use a simple Object if the signature of the
+   * <code>method</code> has only one parameter.</p>
+   */
+  public function set arguments(value:*):void {
+    _arguments = value;
+  }
 
-	private var _arguments:*;
+  public var method:String;
 
-	/**
-	 *  The property <code>arguments</code> allows you to pass an Object or an Array of objects when calling
-	 * the function defined in the property <code>method</code> .
-	 *  <p>You can use an array to pass multiple arguments or use a simple Object if the signature of the
-	 * <code>method</code> has only one parameter.</p>
-	 */
-	public function get arguments():*
-	{
-		return _arguments;
-	}
-	public function set arguments(value:*):void
-	{
-		_arguments = value;
-	}
-
-	private var _method:String;
-	/**
-	 * The function to call on the created object.
-	 */
-	public function get method():String
-	{
-		return _method;
-	}
-
-	public function set method(value:String):void
-	{
-		_method = value;
-	}
-
-	override protected function run(scope:IScope):void
-	{
-		scope.lastReturn = methodCaller.call(scope, currentInstance, method, this.arguments);
-	}
+  override protected function run(scope:IScope):void {
+    scope.lastReturn = MethodCaller.call(scope, currentInstance, method, _arguments);
+  }
 }
 }

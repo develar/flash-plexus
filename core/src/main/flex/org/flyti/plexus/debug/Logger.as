@@ -393,10 +393,10 @@ import org.flyti.plexus.events.MateLogEvent;
 			{
 				trace("---------------------------------------------------------");
 				trace( msg + ', turn on the debugger for more information');
-				var message:String = '';
-				var info:LogInfo;
-				var scope:IScope;
-				if(parameters[0] is LogInfo)
+
+        var info:LogInfo;
+        var scope:IScope;
+        if(parameters[0] is LogInfo)
 				{
 					info = parameters[0];
 					trace(info.loggerProvider.errorString());

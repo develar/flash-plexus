@@ -17,50 +17,41 @@
 
  @ignore
  */
-package org.flyti.plexus
-{
+package org.flyti.plexus {
 import org.flyti.plexus.actionLists.IScope;
 
 /**
  * SmartArguments is a helper class that parses the arguments with ISmartObject
  * and returns an Array with simple Objects
  */
-public class SmartArguments
-{
-	/**
-	 * Parses the arguments and removes all ISmartObjects.
-	 * It returns an array with the actual objects.
-	 */
-	public static function getRealArguments(scope:IScope, parameters:*):Array
-	{
-		var realArguments:Array;
-		if (parameters is Array)
-		{
-			realArguments = parameters;
-			if (scope != null)
-			{
-				var copied:Boolean = false;
-				for (var i:int = 0, n:int = parameters.length; i < n; i++)
-				{
-					var argument:Object = parameters[i];
-					if (argument is ISmartObject)
-					{
-						if (!copied)
-						{
-							copied = true;
-							realArguments = parameters.slice();
-						}
-						realArguments[i] = ISmartObject(argument).getValue(scope);
-					}
-				}
-			}
-		}
-		else if (parameters !== undefined)
-		{
-			realArguments = [(scope != null && parameters is ISmartObject) ? ISmartObject(parameters).getValue(scope) : parameters];
-		}
+public class SmartArguments {
+  /**
+   * Parses the arguments and removes all ISmartObjects.
+   * It returns an array with the actual objects.
+   */
+  public static function getRealArguments(scope:IScope, parameters:*):Array {
+    var realArguments:Array;
+    if (parameters is Array) {
+      realArguments = parameters;
+      if (scope != null) {
+        var copied:Boolean = false;
+        for (var i:int = 0, n:int = parameters.length; i < n; i++) {
+          var argument:Object = parameters[i];
+          if (argument is ISmartObject) {
+            if (!copied) {
+              copied = true;
+              realArguments = parameters.slice();
+            }
+            realArguments[i] = ISmartObject(argument).getValue(scope);
+          }
+        }
+      }
+    }
+    else if (parameters !== undefined) {
+      realArguments = [(scope != null && parameters is ISmartObject) ? ISmartObject(parameters).getValue(scope) : parameters];
+    }
 
-		return realArguments;
-	}
+    return realArguments;
+  }
 }
 }
