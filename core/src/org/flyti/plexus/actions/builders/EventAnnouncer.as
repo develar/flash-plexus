@@ -115,7 +115,7 @@ public class EventAnnouncer extends ObjectBuilder implements IAction {
     scope.lastReturn = scope.dispatcher.dispatchEvent(Event(currentInstance));
   }
 
-  private function newInstance(template:Class, p:Vector.<Object>):Object {
+  private static function newInstance(template:Class, p:Vector.<Object>):Object {
     if (p == null || p.length == 0) {
       return new template();
     }
