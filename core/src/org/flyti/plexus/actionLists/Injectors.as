@@ -10,7 +10,7 @@ public class Injectors extends AbstractHandlers {
   public var targetId:String;
 
   public function fire(injectorEvent:InjectorEvent):void {
-    var currentScope:Scope = new Scope(injectorEvent, debug, map, inheritedScope);
+    var currentScope:Scope = new Scope(injectorEvent, map, inheritedScope);
     currentScope.owner = this;
     setScope(currentScope);
     runSequence(currentScope, actions);

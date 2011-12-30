@@ -44,9 +44,8 @@ import org.flyti.plexus.IEventMap;
 		/**
 		 * Constructor
 		 */
-		public function MessageScope(event:Event, active:Boolean, map:IEventMap, inheritScope:IScope = null)
-		{
-			super(event, active, map, inheritScope);
+        public function MessageScope(event:Event, map:IEventMap, inheritScope:IScope = null) {
+			super(event, map, inheritScope);
 		}
 		
 	}

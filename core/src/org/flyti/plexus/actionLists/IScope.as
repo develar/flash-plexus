@@ -24,7 +24,6 @@ import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
 import org.flyti.plexus.IEventMap;
-import org.flyti.plexus.debug.ILoggerProvider;
 
 /**
  * Scope is an object created by the <code>IActionList</code>.
@@ -32,7 +31,7 @@ import org.flyti.plexus.debug.ILoggerProvider;
  * The <code>IActionList</code> and its <code>IAction</code>s inner tags share this object to transfer data
  * between them.</p>
  */
-public interface IScope extends ILoggerProvider
+public interface IScope
 {
 	/**
 	 * Data Object (holder for custom data)

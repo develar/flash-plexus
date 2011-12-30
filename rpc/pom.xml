@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.flyti</groupId>
     <artifactId>plexusAggregator</artifactId>
-    <version>1.4</version>
+    <version>1.4.1</version>
   </parent>
 
   <artifactId>plexus-rpc</artifactId>
@@ -21,7 +21,7 @@
       <groupId>org.flyti</groupId>
       <artifactId>plexus</artifactId>
       <type>swc</type>
-      <version>1.4</version>
+      <version>1.4.1</version>
     </dependency>
     <dependency>
       <groupId>com.adobe.flex.framework</groupId>

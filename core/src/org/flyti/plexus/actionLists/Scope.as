@@ -24,8 +24,6 @@ import flash.events.IEventDispatcher;
 import flash.utils.Dictionary;
 
 import org.flyti.plexus.IEventMap;
-import org.flyti.plexus.PlexusManager;
-import org.flyti.plexus.debug.IMateLogger;
 
 /**
  * Scope is an object created by the <code>IActionList</code>.
@@ -45,12 +43,6 @@ public class Scope implements IScope
 	 * Flag that indicates whether <code>IActionList</code> is running or not.
 	 */
 	public var running:Boolean = true;
-
-	/**
-	 * An <code>IMateLogger</code> used to log errors.
-	 * Similar to Flex <code>ILogger</code>
-	 */
-	private var _logger:IMateLogger;
 
 	private var _data:Dictionary;
 	public function get data():Dictionary
@@ -127,8 +119,7 @@ public class Scope implements IScope
 		_eventMap = value;
 	}
 
-	public function Scope(event:Event, active:Boolean, map:IEventMap, inheritScope:IScope = null)
-	{
+    public function Scope(event:Event, map:IEventMap, inheritScope:IScope = null) {
 		if (inheritScope)
 		{
 			lastReturn = inheritScope.lastReturn;
@@ -143,28 +134,12 @@ public class Scope implements IScope
 			data = new Dictionary();
 		}
 		eventMap = map;
-		_logger = PlexusManager.instance.getLogger(active);
 		dispatcher = map.dispatcher;
-	}
-
-	public function getDocument():Object
-	{
-		return owner.getDocument();
-	}
-
-	public function errorString():String
-	{
-		return owner.errorString();
 	}
 
 	public function getCurrentTarget():Object
 	{
 		return currentTarget;
-	}
-
-	public function get logger():IMateLogger
-	{
-		return _logger;
 	}
 
 	public function stopRunning():void

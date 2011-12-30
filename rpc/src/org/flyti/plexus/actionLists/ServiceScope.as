@@ -47,9 +47,8 @@ import flash.events.Event;
 		/**
 		 * Constructor
 		 */
-		public function ServiceScope(event:Event, active:Boolean, inheritScope:IScope = null)
-		{
-			super(event, active, inheritScope.eventMap, inheritScope);
+        public function ServiceScope(event:Event, inheritScope:IScope = null) {
+			super(event, inheritScope.eventMap, inheritScope);
 		}
 
 	}

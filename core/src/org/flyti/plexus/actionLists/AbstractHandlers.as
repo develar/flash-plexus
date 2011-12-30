@@ -27,9 +27,6 @@ import mx.core.IMXMLObject;
 import org.flyti.plexus.IEventMap;
 import org.flyti.plexus.PlexusContainer;
 import org.flyti.plexus.actions.IAction;
-import org.flyti.plexus.debug.IMateLogger;
-import org.flyti.plexus.debug.LogInfo;
-import org.flyti.plexus.debug.LogTypes;
 import org.flyti.plexus.events.ActionListEvent;
 import org.flyti.plexus.events.DispatcherEvent;
 
@@ -162,27 +159,16 @@ public class AbstractHandlers extends EventDispatcher implements IMXMLObject, IA
    * It also dispatches the <code>start</code> and <code>end</code> sequence events.
    */
   protected function runSequence(scope:IScope, actionList:Vector.<IAction>):void {
-    var logger:IMateLogger = scope.logger;
-    const loggerActive:Boolean = logger.active;
-    if (loggerActive) {
-      logger.info(LogTypes.SEQUENCE_START, new LogInfo(scope));
-    }
     dispatchEvent(new ActionListEvent(ActionListEvent.START, scope.event));
 
     for each (var action:IAction in actionList) {
       if (scope.isRunning()) {
         scope.currentTarget = action;
-        if (loggerActive) {
-          logger.info(LogTypes.SEQUENCE_TRIGGER, new LogInfo(scope));
-        }
         action.trigger(scope);
       }
     }
 
     dispatchEvent(new ActionListEvent(ActionListEvent.END));
-    if (loggerActive) {
-      logger.debug(LogTypes.SEQUENCE_END, new LogInfo(scope));
-    }
     _scope = null;
   }
 

@@ -259,7 +259,7 @@ import org.flyti.plexus.actions.IAction;
 		{
 			if(faultHandlers && faultHandlers.length > 0)
 			{
-				var currentScope:MessageScope = new MessageScope(event,debug, map, inheritedScope);
+				var currentScope:MessageScope = new MessageScope(event, map, inheritedScope);
 				currentScope.owner = this;
 				currentScope.message = event.message;
 				currentScope.currentEvent = event;
@@ -278,7 +278,7 @@ import org.flyti.plexus.actions.IAction;
 		*/
 		protected function fireEvent(event:MessageEvent):void
 		{
-			var currentScope:MessageScope = new MessageScope(event,debug, map, inheritedScope);
+			var currentScope:MessageScope = new MessageScope(event, map, inheritedScope);
 			currentScope.owner = this;
 			currentScope.message = event.message;
 			currentScope.currentEvent = event;

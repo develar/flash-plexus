@@ -1,19 +1,16 @@
 package org.flyti.plexus {
+import cocoa.lang.Enum;
+
 import flash.errors.IllegalOperationError;
 import flash.events.IEventDispatcher;
 
-import cocoa.lang.Enum;
 import org.flyti.plexus.actionLists.Injectors;
 import org.flyti.plexus.component.ComponentDescriptor;
 import org.flyti.plexus.component.ComponentDescriptorRegistry;
 import org.flyti.plexus.component.ComponentRequirement;
 import org.flyti.plexus.component.InstantiationStrategy;
 import org.flyti.plexus.component.RoleHint;
-import org.flyti.plexus.configuration.Configurable;
-import org.flyti.plexus.configuration.ConfigurationManager;
 import org.flyti.plexus.events.InjectorEvent;
-
-use namespace plexus;
 
 /**
  * Компонент кешируется там, где его дескриптор (http://juick.com/develar/450898)
@@ -168,12 +165,6 @@ public class DefaultPlexusContainer implements PlexusContainer {
 
     if (!perLookup && instance is Injectable) {
       checkInjectors(new InjectorEvent(instance));
-    }
-
-    if (instance is Configurable) {
-      var globalContainer:PlexusContainer = _parentContainer == null ? this : _parentContainer;
-      var configurationManager:ConfigurationManager = ConfigurationManager(globalContainer.lookup(ConfigurationManager));
-      configurationManager.configurate(Configurable(instance), role);
     }
 
     return instance;

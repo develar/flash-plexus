@@ -66,7 +66,7 @@ public class ServiceHandlers extends EventHandlers implements IActionList {
   override protected function fireEvent(event:Event):void {
     if (AbstractEvent(event).token == token) {
       if (actions != null && actions.length > 0) {
-        var currentScope:ServiceScope = new ServiceScope(inheritedScope.event, debug, inheritedScope);
+        var currentScope:ServiceScope = new ServiceScope(inheritedScope.event, inheritedScope);
         currentScope.owner = this;
 
         if (event is FaultEvent) {

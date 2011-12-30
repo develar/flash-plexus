@@ -2,12 +2,8 @@ package org.flyti.plexus.actions {
 import flash.events.Event;
 import flash.events.IEventDispatcher;
 
-import mx.core.EventPriority;
-
 public class ChangeWatcher {
   private static const CHANGE_EVENT_TYPE_POSTFIX:String = "Changed";
-
-  private var isExecuting:Boolean;
 
   private var source:IEventDispatcher;
 
@@ -66,7 +62,7 @@ public class ChangeWatcher {
 
     source = newSource;
     if (source != null) {
-      source.addEventListener(eventName, wrapHandler, false, EventPriority.BINDING);
+      source.addEventListener(eventName, wrapHandler, false, 100);
     }
 
     execute();
@@ -81,6 +77,7 @@ public class ChangeWatcher {
   }
 
   private function execute():void {
+    var isExecuting:Boolean;
     if (!isExecuting) {
       //            try
       //            {

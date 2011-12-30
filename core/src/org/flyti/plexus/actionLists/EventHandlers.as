@@ -204,7 +204,7 @@ public class EventHandlers extends AbstractHandlers
 	 */
 	protected function fireEvent(event:Event):void
 	{
-		var currentScope:Scope = new Scope(event, debug, map, inheritedScope);
+		var currentScope:Scope = new Scope(event, map, inheritedScope);
 		currentScope.owner = this;
 		setScope(currentScope);
 		runSequence(currentScope, actions);
